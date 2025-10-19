@@ -1,4 +1,7 @@
 import Card from "../../../shared/components/ui/Card";
+import Lock from "../../../assets/icons/lock.svg";
+import Target from "../../../assets/icons/target.svg";
+import Speed from "../../../assets/icons/speed.svg";
 
 const SectionWhoWeAre = () => {
   return (
@@ -12,19 +15,19 @@ const SectionWhoWeAre = () => {
         <Card
           heading="Data Perusahaan Dijamin Aman"
           subheading="Dokumen perusahaan Anda tidak akan pernah tercampur atau dilihat oleh perusahaan lain yang menggunakan SmartAI."
-          icon="/src/assets/icons/lock.svg"
+          icon={Lock}
           classname="shadow-xl"
         />
         <Card
           heading="Jawaban Selalu Tepat & Jelas"
           subheading="Chatbot hanya menjawab dari dokumen yang Anda unggah, tidak mengarang, sehingga informasinya selalu akurat."
-          icon="/src/assets/icons/target.svg"
+          icon={Target}
           classname="shadow-xl"
         />
         <Card
           heading="Langsung Bisa Dipakai"
           subheading="Proses pemasangan dan pengenalan dokumen cepat. Perusahaan Anda bisa mulai menggunakan Chatbot dalam waktu singkat."
-          icon="/src/assets/icons/speed.svg"
+          icon={Speed}
           classname="shadow-xl"
         />
       </div>

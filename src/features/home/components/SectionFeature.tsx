@@ -1,4 +1,8 @@
 import Card from "../../../shared/components/ui/Card";
+import UploadCloud from "../../../assets/icons/upload-cloud.svg";
+import Ocr from "../../../assets/icons/ocr.svg";
+import Chatbot from "../../../assets/icons/chatbot.svg";
+import Dashboard from "../../../assets/icons/dashboard-and-monitoring.svg";
 
 const SectionFeature = () => {
   return (
@@ -17,25 +21,25 @@ const SectionFeature = () => {
           classname="outline-2 shadow-xl"
           heading="Upload Dokumen"
           subheading="Unggah dokumen penting perusahaan dengan mudah. Sistem akan otomatis memprosesnya untuk digunakan chatbot."
-          icon="/src/assets/icons/upload-cloud.svg"
+          icon={UploadCloud}
         />
         <Card
           classname="outline-2 shadow-xl"
           heading="Pemindaian OCR Otomatis"
           subheading="Dokumen yang diunggah akan dipindai otomatis menggunakan OCR untuk mengenali dan mengekstrak teks secara cepat dan akurat."
-          icon="/src/assets/icons/ocr.svg"
+          icon={Ocr}
         />
         <Card
           classname="outline-2 shadow-xl"
           heading="Chatbot"
           subheading="Ajukan pertanyaan dan dapatkan jawaban akurat berdasarkan dokumen perusahaan Anda, didukung teknologi AI terkini."
-          icon="/src/assets/icons/chatbot.svg"
+          icon={Chatbot}
         />
         <Card
           classname="outline-2 shadow-xl"
           heading="Dashboard & Monitoring"
           subheading="Pantau status dokumen, proses OCR, dan performa chatbot dalam satu tampilan dashboard yang informatif."
-          icon="/src/assets/icons/dashboard-and-monitoring.svg"
+          icon={Dashboard}
         />
       </div>
     </div>

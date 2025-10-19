@@ -1,4 +1,9 @@
 import Card from "../../../shared/components/ui/Card";
+import UploadCloud from "../../../assets/icons/upload-cloud.svg";
+import Ocr from "../../../assets/icons/ekstaksi-text.svg";
+import Embeding from "../../../assets/icons/embeding.svg";
+import Chatbot from "../../../assets/icons/chatbot.svg";
+import Arrow from "../../../assets/icons/arrow.svg";
 
 const SectionHowItWorks = () => {
   return (
@@ -12,28 +17,28 @@ const SectionHowItWorks = () => {
       <div className="flex container gap-5">
         <Card
           classname="outline-0"
-          icon="/src/assets/icons/upload-cloud.svg"
+          icon={UploadCloud}
           heading="Upload Dokumen"
           subheading="Unggah dokumen perusahaan (PDF, gambar, atau teks). Sistem otomatis memulai proses analisis."
         />
-        <img src="/src/assets/icons/arrow.svg" alt="" />
+        <img src={Arrow} alt="" />
         <Card
           classname="outline-0"
-          icon="/src/assets/icons/ekstaksi-text.svg"
+          icon={Ocr}
           heading="Ekstraksi Teks (OCR)"
           subheading="SmartAI mengekstrak isi dokumen menggunakan teknologi OCR agar teks bisa dipahami sistem."
         />
-        <img src="/src/assets/icons/arrow.svg" alt="" />
+        <img src={Arrow} alt="" />
         <Card
           classname="outline-0"
-          icon="/src/assets/icons/embeding.svg"
+          icon={Embeding}
           heading="Pembuatan Embedding"
           subheading="Teks yang sudah dibaca diubah menjadi vektor embedding dan disimpan ke basis data pintar (Vector DB)."
         />
-        <img src="/src/assets/icons/arrow.svg" alt="" />
+        <img src={Arrow} alt="" />
         <Card
           classname="outline-0"
-          icon="/src/assets/icons/chatbot.svg"
+          icon={Chatbot}
           heading="Chat dengan AI"
           subheading="Ajukan pertanyaan apa pun! SmartAI akan mencari jawaban dari dokumen Anda dengan cepat dan akurat."
         />
