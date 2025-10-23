@@ -11,7 +11,7 @@ const AuthSection = ({
 }: AuthSectionProps) => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-8 h-screen">
+      <div className="flex flex-col items-center justify-center gap-8 2xl:h-screen md:h-full md:py-20">
         <div className="flex flex-col gap-5 items-center">
           <img className="size-56" src={logoSmartAi} alt="logo.png" />
           <h1 className="text-5xl font-bold text-[#282222]">{headingAuth}</h1>
