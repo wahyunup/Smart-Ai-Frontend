@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie, removeCookie } from "../utils/Cookies";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || import.meta.env.LOCALHOST,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -10,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = getCookie("accessToken");
+  const token = getCookie("accesstoken");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -21,7 +21,6 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (Response) => {
-    console.log("dapet");
     return Response;
   },
   async (error) => {
@@ -34,8 +33,8 @@ api.interceptors.response.use(
 );
 
 const redirectToLogin = () => {
-  removeCookie("accessToken");
-  window.location.href = "/auth/login";
+  removeCookie("accesstoken");
+  window.location.href = "/";
 };
 
 export default api;

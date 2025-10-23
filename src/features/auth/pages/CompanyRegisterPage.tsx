@@ -2,63 +2,204 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../shared/components/ui/Input";
 import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
+import Button from "../../../shared/components/ui/Button";
+import { useState } from "react";
+import { Icon } from "@iconify/react";
 
 const CompanyRegisterPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+
+  const [form, setForm] = useState({
+    companyName: "",
+    companyEmail: "",
+    picName: "",
+    picNo: 62,
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <AuthLayout>
-      <AuthSection
-        classname="gap-3"
-        headingAuth="Daftar Perusahaan"
-        subHeadingAuth="Kami perlu verifikasi manual akun perusahaan"
-        formContent={
-          <>
-            <div>
-              <Input
-                name="company-name"
-                placeholder="nama lengkap"
-                type="text"
-                htmlFor="company-name"
-                label="Nama Perusahaan"
-              />
-              <span className="text-gray-400 text-xs">Nama resmi yang lengkap</span>
+      {step === 1 ? (
+        <AuthSection
+          classname="gap-3"
+          headingAuth="Daftar Admin Perusahaan"
+          subHeadingAuth="Kami perlu verifikasi manual akun admin perusahaan."
+          formContent={
+            <>
+              <div className="flex flex-col items-start w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.companyName}
+                  name="companyName"
+                  placeholder="Masukan nama perusahaan"
+                  type="text"
+                  htmlFor="companyName"
+                  label="Nama Perusahaan"
+                />
+                <p className="text-center text-black/65 mt-3 text-xs">
+                  Nama resmi yang lengkap.
+                </p>
+              </div>
+              <div className="flex flex-col items-start w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.companyEmail}
+                  name="companyEmail"
+                  placeholder="Masukan email perusahaan"
+                  type="email"
+                  htmlFor="companyEmail"
+                  label="Email Perusahaan"
+                />
+                <p className="text-center text-black/65 mt-3 text-xs">
+                  Email resmi yang lengkap.
+                </p>
+              </div>
+            </>
+          }
+          footerContent={
+            <div className="w-80">
+              <Button
+                onclick={() => setStep(2)}
+                variant="primary"
+                classname="py-3 w-full rounded-xl cursor-pointer">
+                Selanjutnya
+              </Button>
+              <p className="text-center text-black/65 mt-3 text-sm">
+                sudah punya aku?{" "}
+                <span
+                  className="text-[#3BC152] cursor-pointer"
+                  onClick={() => navigate("/auth/company-admin/login")}>
+                  masuk disini
+                </span>
+              </p>
             </div>
-            <div>
-              <Input
-                name="email"
-                placeholder="email"
-                type="email"
-                htmlFor="email"
-                label="Email"
-              />
-              <span className="text-gray-400 text-xs">Disarankan email domain resmi, misal: manager@namaperusahaan.com</span>
+          }
+        />
+      ) : step === 2 ? (
+        <AuthSection
+          classname="gap-3"
+          headingAuth="Daftar Admin Perusahaan"
+          subHeadingAuth="Kami perlu verifikasi manual akun perusahaan"
+          formContent={
+            <>
+              <div className="w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.picName}
+                  name="picName"
+                  placeholder="Masukan nama PIC"
+                  type="text"
+                  htmlFor="picName"
+                  label="Nama PIC"
+                />
+              </div>
+              <div className="w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.picNo}
+                  name="no-pic"
+                  placeholder="Masukan nomor PIC"
+                  type="number"
+                  htmlFor="no-pic"
+                  label="Nomor PIC"
+                />
+                <span className="text-gray-400 text-xs">
+                  Nomor Whatsapp Yang Aktif
+                </span>
+              </div>
+              <div className="w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.password}
+                  name="password"
+                  placeholder="Kata sandi"
+                  type="password"
+                  htmlFor="password"
+                  label="Kata sandi"
+                />
+              </div>
+              <div className="w-100">
+                <Input
+                  onchange={handleOnChange}
+                  value={form.confirmPassword}
+                  name="confirmPassword"
+                  placeholder="Konfirmasi kata sandi"
+                  type="password"
+                  htmlFor="confirmPassword"
+                />
+              </div>
+            </>
+          }
+          footerContent={
+            <div className="w-80">
+              <Button
+                onclick={() => setStep(3)}
+                variant="primary"
+                classname="py-3 w-full rounded-xl cursor-pointer">
+                Selanjutnya
+              </Button>
+              <p className="text-center text-black/65 mt-3 text-sm">
+                sudah punya aku?{" "}
+                <span
+                  className="text-[#3BC152] cursor-pointer"
+                  onClick={() => navigate("/auth/company-admin/login")}>
+                  masuk disini
+                </span>
+              </p>
             </div>
-            <div>
-              <Input
-                name="company-name"
-                placeholder="nama lengkap"
-                type="text"
-                htmlFor="company-name"
-                label="Nama Perusahaan"
-              />
-              <span className="text-gray-400 text-xs">Contoh: Nomor SIUP/NPWP Perusahaan</span>
+          }
+        />
+      ) : step === 3 ? (
+        <AuthSection
+          classname="gap-3"
+          headingAuth="Permintaan Anda Sedang Ditinjau"
+          subHeadingAuth={
+            <>
+              <p className="text-center font-light font-inter text-[#282222]">
+                Terima kasih telah mendaftar. Kami akan menghubungi 08******53
+                dalam 1x24 <br /> jam untuk verifikasi manual oleh tim Super
+                Admin.
+              </p>
+            </>
+          }
+          formContent={
+            <div className="relative flex justify-center">
+              {isLoading && (
+                <div className="absolute inset-0 flex justify-center items-center">
+                <Icon icon="line-md:loading-loop" width="50" height="50" />
+                </div>
+              )}
+
+              <iframe
+                width="350"
+                height="350"
+                src="https://lottie.host/embed/a21bfb0a-9614-44ae-8570-4e8ccc51c538/lJq53o4oER.lottie"
+                onLoad={() => setIsLoading(false)}></iframe>
             </div>
-          </>
-        }
-        footerContent={
-          <>
-            <button className="bg-[#3BC152] text-white px-20 py-3 rounded-xl cursor-pointer">
-              Lanjut & kode verifikasi
-            </button>
-            <p className="text-center text-black/65">
-              sudah punya aku?{" "}
-              <span className="text-[#3BC152] cursor-pointer" onClick={() => navigate("/auth/company/login")}>
-                Daftar disini
-              </span>
-            </p>
-          </>
-        }
-      />
+          }
+          footerContent={
+            <>
+              <a href="#" className="underline text-[#000000A6] text-sm">
+                Hubungi Tim Dukungan Teknis
+              </a>
+            </>
+          }
+        />
+      ) : (
+        ""
+      )}
     </AuthLayout>
   );
 };

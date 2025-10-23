@@ -12,14 +12,13 @@ const Button = ({
       <button
         onClick={onclick}
         className={clsx(
-          "cursor-pointer   transition-all duration-200",
+          "cursor-pointer transition-all duration-200",
           {
-            "bg-white rounded-lg text-[#3BC152] px-10 py-4 text-md hover:shadow-md shadow-[#3BC152]/30 outline-1 outline-[#3BC152]  hover:outline-[2px]":
+            "bg-white rounded-lg text-[#09976F]  text-md hover:shadow-md shadow-[#09976F]/30 outline-1 outline-[#09976F]  hover:outline-[2px]":
               variant === "primary",
-            "bg-[#3BC152] text-white hover:bg-white px-10 py-3 rounded-2xl hover:text-[#3BC152] border hover:border-[#3BC152]":
+            "bg-[#1D8A45] text-white hover:bg-white   hover:text-[#09976F] border hover:border-[#09976F]":
               variant === "secondary",
-            "text-[#3BC152] hover:underline":
-              variant === "link",
+            "text-[#09976F] hover:underline": variant === "link",
           },
           classname
         )}>

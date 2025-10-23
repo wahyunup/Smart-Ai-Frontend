@@ -9,11 +9,12 @@ export interface AuthLayoutProps {
 }
 
 export interface AuthSectionProps {
-  headingAuth: string;
-  subHeadingAuth: string;
-  formContent: React.ReactNode;
-  footerContent: React.ReactNode;
-  classname: string;
+  headingAuth?: string;
+  subHeadingAuth?: string | React.ReactNode;
+  formContent?: React.ReactNode;
+  footerContent?: React.ReactNode;
+  classname?: string;
+  subabHeading?: string;
 }
 
 export interface InputProps {
@@ -22,6 +23,9 @@ export interface InputProps {
   placeholder: string;
   type: string;
   htmlFor?: string;
+  classname?: string;
+  value?: string | number;
+  onchange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface ButtonProps {
@@ -32,8 +36,17 @@ export interface ButtonProps {
 }
 
 export interface CardProps {
-  icon: string;
+  icon: React.ReactNode;
   heading: string;
   classname: string;
   subheading: string;
+  iconLayout: "left" | "right" | "center";
+}
+
+export interface logo {
+  src: string;
+}
+
+export interface CaroselProps {
+  logos: logo[];
 }
