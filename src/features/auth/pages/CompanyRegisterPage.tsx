@@ -69,7 +69,7 @@ const CompanyRegisterPage = () => {
             </>
           }
           footerContent={
-            <div className="w-80">
+            <div className="w-70">
               <Button
                 onclick={() => setStep(2)}
                 variant="primary"

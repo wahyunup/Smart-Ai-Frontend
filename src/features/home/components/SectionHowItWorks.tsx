@@ -6,8 +6,8 @@ const SectionHowItWorks = () => {
     <div
       className="bg-white py-50 flex flex-col items-center gap-10 rounded-4xl  "
       id="howitworks">
-      <h1 className="text-6xl font-semibold font-manrope">Bagaimana SmartAI Bekerja</h1>
-      <p className="text-xl text-[#5A5A5A]">
+      <h1 className="2xl:text-6xl md:text-5xl font-semibold font-manrope">Bagaimana SmartAI Bekerja</h1>
+      <p className="2xl:text-xl md:text-md text-[#5A5A5A] font-inter">
         SmartAI mengubah dokumen perusahaan Anda menjadi pengetahuan cerdas yang
         bisa diakses melalui chatbot.
       </p>
@@ -16,7 +16,9 @@ const SectionHowItWorks = () => {
         <Card
           iconLayout="center"
           classname="outline-0 text-center"
-          icon={<Icon color="#2BA54B" icon="carbon:cloud-upload" width="58" />}
+          icon={<Icon color="#2BA54B" 
+            className="2xl:size-[58px] md:size-[48px]"
+            icon="carbon:cloud-upload" />}
           heading="Upload Dokumen"
           subheading="Unggah dokumen perusahaan (PDF, gambar, atau teks). Sistem otomatis memulai proses analisis."
         />
@@ -29,7 +31,7 @@ const SectionHowItWorks = () => {
             <Icon
               icon="fluent:document-multiple-20-regular"
               color="#2BA54B"
-              width="58"
+              className="2xl:size-[58px] md:size-[48px]"
             />
           }
           heading="Ekstraksi Teks (OCR)"
@@ -44,7 +46,7 @@ const SectionHowItWorks = () => {
             <Icon
               icon="fluent:brain-circuit-28-regular"
               color="#2BA54B"
-              width="58"
+              className="2xl:size-[58px] md:size-[48px]"
             />
           }
           heading="Pembuatan Embedding"
@@ -58,7 +60,7 @@ const SectionHowItWorks = () => {
             <Icon
               icon="fluent:chat-multiple-28-regular"
               color="#2BA54B"
-              width="58"
+              className="2xl:size-[58px] md:size-[48px]"
             />
           }
           heading="Chat dengan AI"

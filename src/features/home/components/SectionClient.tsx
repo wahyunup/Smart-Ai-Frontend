@@ -29,12 +29,12 @@ const logos = [
   ];
 
   return (
-    <div className="bg-white py-20 rounded-4xl flex flex-col items-center gap-20 px-10 overflow-hidden">
-      <div className="flex flex-col gap-7 items-center">
-        <h1 className="font-semibold font-manrope text-5xl text-center">
+    <div className="bg-white py-30 rounded-4xl flex flex-col items-center gap-40 px-10 overflow-hidden">
+      <div className="flex flex-col gap-7 items-center text-center">
+        <h1 className="2xl:text-6xl md:text-4xl font-semibold font-manrope">
           Dipercaya oleh Perusahaan-Perusahaan Terkemuka.
         </h1>
-        <p className="font-inter text-[#5A5A5A] text-xl">
+        <p className="2xl:text-xl md:text-md text-[#5A5A5A] font-inter">
           Dibangun dengan keamanan tingkat enterprise dan akurasi yang teruji di
           berbagai industri.
         </p>

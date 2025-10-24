@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie, removeCookie } from "../utils/Cookies";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_LOCALHOST,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

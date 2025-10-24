@@ -27,8 +27,8 @@ const Card = ({
       ) : (
         ""
       )}
-      <h2 className="text-lg font-bold font-manrope">{heading}</h2>
-      <p className="text-[#5A5A5A] font-inter">{subheading}</p>
+      <h2 className="2xl:text-lg md:text-md font-bold font-manrope">{heading}</h2>
+      <p className="text-[#5A5A5A] font-inter 2xl:text-base md:text-sm">{subheading}</p>
     </div>
   );
 };

@@ -9,10 +9,10 @@ const SectionHome = () => {
       <div
         className="flex flex-col items-center justify-center h-screen  text-center gap-8"
         id="home">
-        <h1 className="text-6xl font-semibold font-manrope">
+        <h1 className="2xl:text-6xl md:text-5xl font-semibold font-manrope">
           Bangun Chatbot Cerdas dari <br /> Dokumen Perusahaan Anda
         </h1>
-        <p className="text-xl">
+        <p className="2xl:text-xl md:text-md text-[#5A5A5A] font-inter">
           Integrasikan dokumen perusahaan Anda dengan AI untuk menjawab <br />{" "}
           pertanyaan secara otomatis.
         </p>
@@ -20,14 +20,14 @@ const SectionHome = () => {
           <Button
             onclick={() => navigate("/auth/company-employe/login")}
             variant="secondary"
-            classname="font-medium w-fit py-4 px-7 rounded-lg flex items-center justify-center text-3xl gap-2 font-manrope group">
+            classname="font-medium w-fit 2xl:py-4 2xl:px-7 md:py-3 md:px-8 rounded-lg flex items-center justify-center 2xl:text-3xl md:text-md gap-2 font-manrope group">
             Get Started
-            <Icon className="transition-all duration-500 group-hover:ml-5" icon="carbon:arrow-right" width="32" height="32" />
+            <Icon className="transition-all duration-500 group-hover:ml-5 2xl:size-[32px] md:size-[25px]" icon="carbon:arrow-right" />
           </Button>
           <Button
             onclick={() => navigate("/auth/company-admin/register")}
             variant="primary"
-            classname="font-medium py-5 px-7 font-manrope text-2xl">
+            classname="font-medium 2xl:py-5 2xl:px-7 md:py-3 md:px-5 font-manrope 2xl:text-2xl md:text-md">
             Daftarkan Perusahaan Anda
           </Button>
         </div>

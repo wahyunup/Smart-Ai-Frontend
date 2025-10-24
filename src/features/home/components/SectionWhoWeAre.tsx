@@ -6,8 +6,8 @@ const SectionWhoWeAre = () => {
     <div
       className="bg-white py-50 flex flex-col items-center gap-10 rounded-4xl"
       id="whoweare">
-      <h1 className="text-6xl font-semibold font-manrope">Alasan Terbaik Memilih SmartAI</h1>
-      <p className="text-xl">
+      <h1 className="2xl:text-6xl md:text-5xl font-semibold font-manrope">Alasan Terbaik Memilih SmartAI</h1>
+      <p className="2xl:text-xl md:text-md text-[#5A5A5A] font-inter">
         Solusi Chatbot cerdas yang dirancang khusus untuk menjaga rahasia
         dokumen setiap perusahaan.
       </p>

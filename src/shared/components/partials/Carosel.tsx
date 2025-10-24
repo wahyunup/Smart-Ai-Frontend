@@ -8,10 +8,10 @@ const Carosel = ({ logos }: CaroselProps) => {
         {infiniteScroll.map((item, index) => (
           <div
             key={index}
-            className="flex-shrink-0 flex justify-center items-center p-4 ">
+            className="flex-shrink-0 flex justify-center items-center">
             <img
               src={item.src}
-              className="h-fit max-w-50 grayscale hover:grayscale-0 transition-all"
+              className="h-fit 2xl:max-w-45 md:max-w-35 grayscale hover:grayscale-0 transition-all"
             />
           </div>
         ))}
