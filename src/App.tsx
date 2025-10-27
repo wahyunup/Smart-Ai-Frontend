@@ -41,6 +41,7 @@ function App() {
           <Route path="manage-staff" element={<ManageStaffPage />} />
           <Route path="company-profile" element={<CompanyProfilePage />} />
         </Route>
+        
         <Route path="/" element={<HomePage />} />
         <Route path="/chat" element={<AiChatPage />} />
       </Routes>
