@@ -5,11 +5,12 @@ import AuthSection from "../components/AuthSection";
 import Button from "../../../shared/components/ui/Button";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
+import { authCompanyRegisterApi } from "../services/authApis";
 
 const CompanyRegisterPage = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     companyName: "",
     companyEmail: "",
@@ -19,7 +20,25 @@ const CompanyRegisterPage = () => {
     confirmPassword: "",
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const handleRegister = async () => {
+    setIsLoading(true);
+    try {
+      const res = await authCompanyRegisterApi(
+        form.picName,
+        form.companyEmail,
+        form.password,
+        form.companyName,
+        form.picNo
+      );
+      alert("akun berhasil didaftarkan");
+      console.log("regis sukses", res);
+      setStep(3);
+    } catch (error: any) {
+      alert(error.response.data.detail[0].msg)
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -109,10 +128,10 @@ const CompanyRegisterPage = () => {
                 <Input
                   onchange={handleOnChange}
                   value={form.picNo}
-                  name="no-pic"
+                  name="picNo"
                   placeholder="Masukan nomor PIC"
                   type="number"
-                  htmlFor="no-pic"
+                  htmlFor="picNo"
                   label="Nomor PIC"
                 />
                 <span className="text-gray-400 text-xs">
@@ -144,12 +163,20 @@ const CompanyRegisterPage = () => {
           }
           footerContent={
             <div className="w-80">
-              <Button
-                onclick={() => setStep(3)}
-                variant="primary"
-                classname="py-3 w-full rounded-xl cursor-pointer">
-                Selanjutnya
-              </Button>
+              {isLoading ? (
+                <Button
+                  variant="primary"
+                  classname="py-3 w-full rounded-xl cursor-pointer flex items-center justify-center">
+                  <Icon icon="line-md:loading-loop" width="24" height="24" />
+                </Button>
+              ) : (
+                <Button
+                  onclick={handleRegister}
+                  variant="primary"
+                  classname="py-3 w-full rounded-xl cursor-pointer">
+                  Daftar
+                </Button>
+              )}
               <p className="text-center text-black/65 mt-3 text-sm">
                 sudah punya aku?{" "}
                 <span
@@ -176,9 +203,9 @@ const CompanyRegisterPage = () => {
           }
           formContent={
             <div className="relative flex justify-center">
-              {isLoading && (
+              {!isLoading && (
                 <div className="absolute inset-0 flex justify-center items-center">
-                <Icon icon="line-md:loading-loop" width="50" height="50" />
+                  <Icon icon="line-md:loading-loop" width="50" height="50" />
                 </div>
               )}
 
@@ -186,7 +213,7 @@ const CompanyRegisterPage = () => {
                 width="350"
                 height="350"
                 src="https://lottie.host/embed/a21bfb0a-9614-44ae-8570-4e8ccc51c538/lJq53o4oER.lottie"
-                onLoad={() => setIsLoading(false)}></iframe>
+                onLoad={() => setIsLoading(true)}></iframe>
             </div>
           }
           footerContent={

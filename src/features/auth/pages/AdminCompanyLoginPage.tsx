@@ -4,8 +4,8 @@ import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
 import Button from "../../../shared/components/ui/Button";
 import { authLoginApi } from "../services/authApis";
-import React, { useState } from "react";
-import { setCookie } from "../../../shared/utils/Cookies";
+import React, { useEffect, useState } from "react";
+import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { Icon } from "@iconify/react";
 
 const CompanyLoginPage = () => {
@@ -36,13 +36,20 @@ const CompanyLoginPage = () => {
 
       setCookie("accesstoken", token, 3600);
       alert("login sukses der");
-    } catch (error) {
-      console.log(error);
-      alert("login gagal");
+      window.location.reload()
+    } catch (error:any) {
+      alert(error.response.data.detail[0].msg)
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const token = getCookie("accesstoken")
+    if (token) {
+      navigate("/admin/dashboard")
+    }
+  },[])
   return (
     <AuthLayout>
       <AuthSection

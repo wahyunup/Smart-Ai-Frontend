@@ -24,7 +24,7 @@ api.interceptors.response.use(
     return Response;
   },
   async (error) => {
-    if (error.response && [401, 403].includes(error.response.status)) {
+    if (error.response && [401].includes(error.response.status)) {
       console.error("accessToken Expired");
       redirectToLogin();
     }

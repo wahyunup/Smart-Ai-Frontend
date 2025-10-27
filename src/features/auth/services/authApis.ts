@@ -1,9 +1,9 @@
 import api from "../../../shared/lib/Axios";
 
-const authLoginApi = async (email: string, password: string) => {
+const authLoginApi = async (username: string, password: string) => {
   try {
-    const res = await api.post("/auth/token", {
-      email: email,
+    const res = await api.post("/auth/user/token", {
+      username: username,
       password: password,
     });
     return res.data;
@@ -17,7 +17,7 @@ const authCompanyRegisterApi = async (
   email: string,
   password: string,
   company_name: string,
-  company_code: string
+  pic_phone_number : number
 ) => {
   try {
     const res = await api.post("/auth/register", {
@@ -25,7 +25,7 @@ const authCompanyRegisterApi = async (
       email: email,
       password: password,
       company_name: company_name,
-      company_code: company_code,
+      pic_phone_number: pic_phone_number,
     });
 
     return res.data;
