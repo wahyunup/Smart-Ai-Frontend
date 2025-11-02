@@ -1,4 +1,4 @@
-import MainLayout from "../../../../shared/layouts/MainLayout"
+import MainLayout from "../../../../../shared/layouts/MainLayout"
 
 const ManageStaffPage = () => {
     return (

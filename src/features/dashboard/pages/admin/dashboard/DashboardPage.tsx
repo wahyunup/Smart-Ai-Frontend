@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import MainLayout from "../../../../shared/layouts/MainLayout";
-import { getCookie } from "../../../../shared/utils/Cookies";
+import { getCookie } from "../../../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
+import MainLayout from "../../../../../shared/layouts/MainLayout";
 
 const AdminDashboard = () => {
 const navigate = useNavigate()

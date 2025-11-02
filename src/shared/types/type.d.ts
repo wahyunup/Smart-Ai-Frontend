@@ -19,13 +19,16 @@ export interface AuthSectionProps {
 
 export interface InputProps {
   label?: string;
-  name: string;
-  placeholder: string;
-  type: string;
+  name?: string;
+  placeholder?: string;
+  type?: string;
   htmlFor?: string;
   classname?: string;
   value?: string | number;
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
+  icon?: React.ReactNode;
+  variant?: "primary" | "secondary";
+  labelLayout?: "inline" | "block";
 }
 
 export interface ButtonProps {
@@ -49,4 +52,29 @@ export interface logo {
 
 export interface CaroselProps {
   logos: logo[];
+}
+
+export interface HeaderTableProps {
+  onchange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  placeholderSearch?: string;
+  onclickAdd?: () => void;
+  labelButtonAdd?: string;
+}
+
+export interface TableHeaderListProps {
+  children: ReactNode;
+  classname: string;
+}
+
+export interface TableBodyProps {
+  data?: EmployedProps[] | CustomerProps[];
+  onclickEdit?: (id: number) => void;
+  onclickDelete?: (id: number) => void;
+  renderItem?: (item: any) => ReactNode;
+  classname?: string;
+  userIsLogin?: string;
+  nextPage?: () => void;
+  prevPage?: () => void;
+  page? : number
 }
