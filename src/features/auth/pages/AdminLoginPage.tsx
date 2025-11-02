@@ -59,6 +59,7 @@ const AdminLoginPage = () => {
         formContent={
           <div className="flex flex-col gap-2 w-100">
             <Input
+            variant="primary"
               onchange={handleOnChange}
               value={form.username}
               name="username"
@@ -68,6 +69,7 @@ const AdminLoginPage = () => {
               label="Username"
             />
             <Input
+            variant="primary"
               onchange={handleOnChange}
               value={form.password}
               name="password"

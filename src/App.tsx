@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
 import {
+  AddDocument,
   AdminDashboardPage,
   AiChatPage,
   ChatLogPage,
@@ -34,14 +35,21 @@ function App() {
           <Route path="admin/login" element={<AdminLoginPage />} />
           <Route path="account-verified" element={<VerifiedAccountPage />} />
         </Route>
+
         <Route path="/admin">
           <Route path="dashboard" element={<AdminDashboardPage />} />
-          <Route path="manage-documents" element={<ManageDocumentsPage />} />
+
+          <Route path="manage-documents">
+            <Route index element={<ManageDocumentsPage />} />
+            <Route path="create" element={<AddDocument/>}/>
+            <Route path="edit" element={<AddDocument/>}/>
+          </Route>
+
           <Route path="chat-log" element={<ChatLogPage />} />
           <Route path="manage-staff" element={<ManageStaffPage />} />
           <Route path="company-profile" element={<CompanyProfilePage />} />
         </Route>
-        
+
         <Route path="/" element={<HomePage />} />
         <Route path="/chat" element={<AiChatPage />} />
       </Routes>

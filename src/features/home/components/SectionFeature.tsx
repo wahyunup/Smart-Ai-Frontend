@@ -6,17 +6,17 @@ const SectionFeature = () => {
     <div
       className="bg-white py-20 flex flex-col items-center gap-10 rounded-4xl"
       id="feature">
-      <h1 className="2xl:text-6xl md:text-4xl font-semibold font-manrope">
+      <h1 className="text-xl 2xl:text-6xl md:text-4xl font-semibold font-manrope">
         Apa yang Bisa Dilakukan SmartAI?
       </h1>
-      <p className="2xl:text-xl md:text-md text-[#5A5A5A] font-inter">
+      <p className="text-center text-[15px] 2xl:text-xl md:text-base text-[#5A5A5A] font-inter">
         Solusi pintar untuk membantu perusahaan mengelola dan mengakses dokumen
         internal dengan cepat dan efisien.
       </p>
-      <div className="grid grid-cols-4 gap-5 container mt-10">
+      <div className="grid px-3 md:grid-cols-4 gap-5 container mt-10">
         <Card
           iconLayout="left"
-          classname=" bg-[#8BEC8940] 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+          classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Upload Dokumen"
           subheading="Unggah dokumen penting perusahaan dengan mudah. Sistem akan otomatis memprosesnya untuk digunakan chatbot."
           icon={
@@ -29,7 +29,7 @@ const SectionFeature = () => {
         />
         <Card
           iconLayout="left"
-          classname=" bg-[#8BEC8940] 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+          classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Pemindaian OCR Otomatis"
           subheading="Dokumen yang diunggah akan dipindai otomatis menggunakan OCR untuk mengenali dan mengekstrak teks secara cepat dan akurat."
           icon={
@@ -42,7 +42,7 @@ const SectionFeature = () => {
         />
         <Card
           iconLayout="left"
-          classname=" bg-[#8BEC8940] 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+          classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Chatbot"
           subheading="Ajukan pertanyaan dan dapatkan jawaban akurat berdasarkan dokumen perusahaan Anda, didukung teknologi AI terkini."
           icon={
@@ -51,7 +51,7 @@ const SectionFeature = () => {
         />
         <Card
           iconLayout="left"
-          classname=" bg-[#8BEC8940] 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+          classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Dashboard & Monitoring"
           subheading="Pantau status dokumen, proses OCR, dan performa chatbot dalam satu tampilan dashboard yang informatif."
           icon={

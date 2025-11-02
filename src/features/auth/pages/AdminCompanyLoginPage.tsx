@@ -59,6 +59,7 @@ const CompanyLoginPage = () => {
         formContent={
           <div className="w-100 flex flex-col gap-2">
             <Input
+            variant="primary"
               label="Email Perusahaan"
               name="email"
               type="email"
@@ -69,6 +70,7 @@ const CompanyLoginPage = () => {
             />
             <div>
               <Input
+              variant="primary"
                 label="Kata Sandi"
                 name="password"
                 placeholder="Masukan kata sandi"
