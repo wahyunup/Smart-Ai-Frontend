@@ -35,7 +35,7 @@ const CompanyLoginPage = () => {
       }
 
       setCookie("accesstoken", token, 3600);
-      alert("login sukses der");
+      alert("login sukses");
       window.location.reload()
     } catch (error:any) {
       alert(error.response.data.detail[0].msg)

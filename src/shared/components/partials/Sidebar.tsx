@@ -58,18 +58,20 @@ const Sidebar = () => {
   };
   return (
     <div
-      className={`bg-[#E3F9E8] ${
+      className={`bg-[#F2F2F2] ${
         isOpen ? "2xl:w-[17%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
       }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
       <div className="flex items-center flex-col gap-8">
         <img className="size-15" src={logo} alt="" />
         <img className="size-15" src="/Logo.png" alt="" />
-        <div className="flex flex-col gap-10 font-inter">
-          {navlist.map((item,i) => (
+        <div className="flex flex-col items-start gap-10 font-inter">
+          {navlist.map((item, i) => (
             <Button
-            key={i}
+              key={i}
               variant="link"
-              classname={`flex items-center gap-3 ${location.pathname.startsWith(item.link) ? " border-b-2" : ""}`}
+              classname={`flex items-center gap-3 transition-all duration-300 py-3 px-5 justify-start hover:bg-[#1D8A45] hover:text-white rounded-full underline- ${
+                location.pathname.startsWith(item.link) ? " bg-[#1D8A45] text-white rounded-full" : ""
+              }`}
               onclick={() => navigate(item.link)}>
               {item.icon}
               <span
@@ -83,7 +85,7 @@ const Sidebar = () => {
 
           <Button
             variant="link"
-            classname="flex items-center gap-3 text-red-500 "
+            classname="flex items-center gap-3 text-red-500 py-3 px-5"
             onclick={logout}>
             <LogOut size={27} />
             <span

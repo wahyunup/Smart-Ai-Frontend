@@ -77,4 +77,16 @@ export interface TableBodyProps {
   nextPage?: () => void;
   prevPage?: () => void;
   page? : number
+  totalPage? : number
+  canEdit? : boolean
+  isLoading? : number
 }
+
+export interface ChatLogProps {
+  id: number;
+  conversation_id: string;
+  username: string;
+  question: string;
+  answer: string;
+  created_at: string;
+};  

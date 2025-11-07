@@ -6,25 +6,26 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDocuments } from "../../../services/DashboardApis";
+import { deleteDocument, getDocuments } from "../../../services/ManageDocuments";
 
 const ManageDocuments = () => {
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  console.log(page, "page");
-  
+  const [totalPage, setTotalPage] = useState(0);
+
+  const fetchDocument = async () => {
+    try {
+      const res = await getDocuments(page, 4);
+      setData(res.documents);
+      setTotalPage(res.total_pages);
+    } catch (error) {
+      console.log(Response.error);
+    }
+  };
 
   useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const res = await getDocuments(page, 5);
-        setData(res);
-      } catch (error) {
-        console.log(Response.error);
-      }
-    };
     fetchDocument();
   }, [page]);
 
@@ -45,12 +46,27 @@ const ManageDocuments = () => {
   };
 
   const handleNextPage = () => {
-    setPage(page + 1);
+    if(page < totalPage) {
+      setPage(page + 1);
+    }
   };
 
   const handlePrevPage = () => {
     if (page > 1) {
       setPage(page - 1);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const confirmation = confirm("yakin menghapus dokumen?");
+      if (confirmation) {
+        await deleteDocument(id);
+        alert("dokumen terhapus")
+        fetchDocument()
+      }
+    } catch (error) {
+      alert(`data gagal dihapus ${error}`);
     }
   };
 
@@ -96,12 +112,14 @@ const ManageDocuments = () => {
               <span>Tanggal Unggah</span>
             </TableHeaderList>
             <TableBody
+              onclickDelete={handleDelete}
               nextPage={handleNextPage}
               prevPage={handlePrevPage}
               onclickEdit={handleEdit}
               classname="grid grid-cols-5"
               data={fillterDatas}
               page={page}
+              totalPage={totalPage}
               renderItem={(item) => {
                 const uploadedAt = new Date(item.uploaded_at);
                 const formattedDate = uploadedAt.toLocaleString("id-ID", {
@@ -111,7 +129,7 @@ const ManageDocuments = () => {
                 });
                 return (
                   <>
-                    <span>{item.title}</span>
+                    <span className="text-center">{item.title}</span>
                     <span
                       className={`lowercase px-4 py-1 rounded-full ${
                         item.status === "UPLOAD_FAILED" ||
@@ -123,7 +141,7 @@ const ManageDocuments = () => {
                           : item.status === "UPLOADING" ||
                             item.status === "OCR_PROCESSING" ||
                             item.status === "PENDING_VALIDATION" ||
-                            item.status === "EMBEDDING "
+                            item.status === "EMBEDDING"
                           ? "bg-orange-500 text-white"
                           : ""
                       }`}>

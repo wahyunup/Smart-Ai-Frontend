@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     <>
-      {!location.pathname.startsWith("/admin") ? (
+      {!location.pathname.startsWith("/admin") && !location.pathname.startsWith("/chat") ? (
         <>
           {/* desktop */}
           <div

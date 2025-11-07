@@ -20,7 +20,7 @@ const aiChatResponse = async () => {
   }
 };
 
-const getDocuments = async (page:number, limit:number) => {
+const getDocuments = async (page: number, limit: number) => {
   try {
     const res = await api.get(`/documents/?page=${page}&limit=${limit}`);
     return res.data;
@@ -47,13 +47,38 @@ const uploadDocuments = async (file: File, name: string, tags: string) => {
   }
 };
 
-const editDocument = async (id:number) => {
+const editDocument = async (
+  id: number,
+  new_content: string,
+  title: string,
+  tags: string[]
+) => {
   try {
-    const res = await api.put(`/documents/${id}/content`)    
-    return res.data
+    const res = await api.put(`/documents/${id}/content`, {
+      new_content: new_content,
+      title: title,
+      tags: tags,
+    });
+    return res.data;
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
-export { chatApi, aiChatResponse, getDocuments, uploadDocuments, editDocument };
+const deleteDocument = async (id: number) => {
+  try {
+    const res = await api.delete(`/documents/${id}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {
+  chatApi,
+  aiChatResponse,
+  getDocuments,
+  uploadDocuments,
+  editDocument,
+  deleteDocument,
+};

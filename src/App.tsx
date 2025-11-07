@@ -2,8 +2,10 @@ import "./App.css";
 import { Route, Routes } from "react-router";
 import {
   AddDocument,
+  AddStaffPage,
   AdminDashboardPage,
   AiChatPage,
+  ChatLogDetailPage,
   ChatLogPage,
   CompanyProfilePage,
   ManageDocumentsPage,
@@ -41,12 +43,23 @@ function App() {
 
           <Route path="manage-documents">
             <Route index element={<ManageDocumentsPage />} />
-            <Route path="create" element={<AddDocument/>}/>
-            <Route path="edit" element={<AddDocument/>}/>
+            <Route path="create" element={<AddDocument />} />
+            <Route path="edit" element={<AddDocument />} />
           </Route>
 
-          <Route path="chat-log" element={<ChatLogPage />} />
-          <Route path="manage-staff" element={<ManageStaffPage />} />
+          <Route path="chat-log">
+            <Route index element={<ChatLogPage />} />
+            <Route
+              path="detail/:conversationId"
+              element={<ChatLogDetailPage />}
+            />
+          </Route>
+
+          <Route path="manage-staff">
+            <Route index element={<ManageStaffPage />} />
+            <Route path="create" element={<AddStaffPage />} />
+            <Route path="edit" element={<AddStaffPage />} />
+          </Route>
           <Route path="company-profile" element={<CompanyProfilePage />} />
         </Route>
 

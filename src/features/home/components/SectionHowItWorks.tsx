@@ -14,7 +14,7 @@ const SectionHowItWorks = () => {
         bisa diakses melalui chatbot.
       </p>
 
-      <div className="flex items-center flex-wrap container gap-5 mt-15">
+      <div className="flex items-center flex-wrap md:flex-nowrap container gap-5 mt-15">
         <Card
           iconLayout="center"
           classname="outline-0 text-center"
