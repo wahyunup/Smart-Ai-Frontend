@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { getCookie } from "../../../../../shared/utils/Cookies";
-import { decodeJwt } from "../../../../../shared/utils/Decode";
 import { chatLogDetail } from "../../../services/ChatLog";
 import { useParams } from "react-router-dom";
 
@@ -16,20 +14,20 @@ const ChatLogDetail = () => {
     referenced_documents: [],
     username: "",
   });
-  const [userIsLogin, setUserIsLogin] = useState({
-    id: 0,
-  });
+  // const [userIsLogin, setUserIsLogin] = useState({
+  //   id: 0,
+  // });
 
-  useEffect(() => {
-    const getUserIsLogin = () => {
-      const cookie = getCookie("accesstoken");
-      if (cookie) {
-        const decode = decodeJwt(cookie);
-        setUserIsLogin(decode.company_id);
-      }
-    };
-    getUserIsLogin();
-  }, []);
+  // useEffect(() => {
+  //   const getUserIsLogin = () => {
+  //     const cookie = getCookie("accesstoken");
+  //     if (cookie) {
+  //       const decode = decodeJwt(cookie);
+  //       setUserIsLogin(decode.company_id);
+  //     }
+  //   };
+  //   getUserIsLogin();
+  // }, []);
 
   useEffect(() => {
     const fetchChatLogDetail = async () => {

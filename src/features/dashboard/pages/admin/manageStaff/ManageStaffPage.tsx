@@ -4,7 +4,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import Button from "../../../../../shared/components/ui/Button";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FilePlus, Search } from "lucide-react";
 import { deleteStaff, getStaff } from "../../../services/ManageStaff";
 
@@ -35,6 +35,7 @@ const ManageStaffPage = () => {
     try {
       const res = await getStaff();
       setData(res);
+      setTotalPage(1)
       console.log(res);
     } catch (error) {
       console.log(error);

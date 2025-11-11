@@ -4,7 +4,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useEffect, useState } from "react";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { createStaff } from "../../../services/ManageStaff";
+import { createStaff, editStaff } from "../../../services/ManageStaff";
 
 const AddStaf = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const AddStaf = () => {
     username: "",
     password: "",
     role: "",
-    division_name: "",
+    division: "",
   });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,12 +87,10 @@ const AddStaf = () => {
   useEffect(() => {
     if (location.pathname === "/admin/manage-staff/edit") {
       const userData = location.state.userData;
-      console.log(userData, "<------ userdata");
-
       setDataEdit({
         id: userData.id,
         profile_picture_file: userData.profile_picture_url,
-        division_name: userData.division,
+        division: userData.division,
         email: userData.email,
         name: userData.name,
         password: dataEdit.password,
@@ -102,6 +100,28 @@ const AddStaf = () => {
       setEditPreviewImage(userData.profile_picture_url);
     }
   }, [location.state]);
+
+  const handleEdit = async () => {
+    setIsLoading(true);
+    try {
+      const res = await editStaff(
+        dataEdit.id,
+        dataEdit.profile_picture_file ?? undefined,
+        dataEdit.name,
+        dataEdit.email,
+        dataEdit.username,
+        dataEdit.password,
+        dataEdit.role,
+        dataEdit.division
+      );
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
@@ -240,6 +260,8 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="username"
                 value={dataEdit.username}
+                onchange={handleOnChange}
+
                 classname="gap-17"
                 type="text"
                 labelLayout="inline"
@@ -249,6 +271,8 @@ const AddStaf = () => {
                 label="display name"
                 variant="secondary"
                 value={dataEdit.name}
+                onchange={handleOnChange}
+
                 placeholder="input teks"
                 name="name"
                 htmlFor="name"
@@ -260,6 +284,8 @@ const AddStaf = () => {
                 label="Email"
                 variant="secondary"
                 value={dataEdit.email}
+                onchange={handleOnChange}
+
                 placeholder="input teks"
                 name="email"
                 htmlFor="email"
@@ -269,6 +295,7 @@ const AddStaf = () => {
               />
               <Input
                 label="Password"
+                onchange={handleOnChange}
                 variant="secondary"
                 value={dataEdit.password}
                 placeholder="input teks"
@@ -281,6 +308,7 @@ const AddStaf = () => {
               <Input
                 label="role"
                 variant="secondary"
+                onchange={handleOnChange}
                 value={dataEdit.role}
                 placeholder="input teks"
                 name="role"
@@ -292,10 +320,11 @@ const AddStaf = () => {
               <Input
                 label="Divisi"
                 variant="secondary"
-                value={dataEdit.division_name}
+                onchange={handleOnChange}
+                value={dataEdit.division}
                 placeholder="input teks"
-                name="division_name"
-                htmlFor="division_name"
+                name="division"
+                htmlFor="division"
                 classname="gap-24"
                 type="text"
                 labelLayout="inline"
@@ -315,7 +344,10 @@ const AddStaf = () => {
               <Icon icon="line-md:loading-loop" width="24" height="24" />
             </Button>
           ) : location.pathname === "/admin/manage-staff/edit" ? (
-            <Button variant="secondary" classname="py-3 px-7 rounded-xl">
+            <Button
+              onclick={handleEdit}
+              variant="secondary"
+              classname="py-3 px-7 rounded-xl">
               Edit
             </Button>
           ) : (

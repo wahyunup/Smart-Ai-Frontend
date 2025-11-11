@@ -51,22 +51,22 @@ const createStaff = async (
 
 const editStaff = async (
   user_id: number,
-  profile_picture_file: File,
-  name : string,
-  email : string,
-  username : string,
-  password: string,
-  role: string,
-  division : string
+  profile_picture_file?: File,
+  name?: string,
+  email?: string,
+  username?: string,
+  password?: string,
+  role?: string,
+  division?: string
 ) => {
   const formData = new FormData();
-  formData.append("profile_picture_file", profile_picture_file);
-  formData.append("name", name);
-  formData.append("email", email);
-  formData.append("username", username);
-  formData.append("password", password);
-  formData.append("role", role);
-  formData.append("division", division);
+  if (profile_picture_file) formData.append("profile_picture_file", profile_picture_file);
+  if (name) formData.append("name", name);
+  if (email) formData.append("email", email);
+  if (username) formData.append("username", username);
+  if (password) formData.append("password", password);
+  if (role) formData.append("role", role);
+  if (division) formData.append("division", division);
   try {
     const res = await api.put(`/companies/employees/${user_id}`, formData, {
       headers: {

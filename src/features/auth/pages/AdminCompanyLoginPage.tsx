@@ -7,6 +7,7 @@ import { authLoginApi } from "../services/authApis";
 import React, { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { Icon } from "@iconify/react";
+import { decodeJwt } from "../../../shared/utils/Decode";
 
 const CompanyLoginPage = () => {
   const navigate = useNavigate();
@@ -44,11 +45,17 @@ const CompanyLoginPage = () => {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
     const token = getCookie("accesstoken")
     if (token) {
-      navigate("/admin/dashboard")
-    }
+      const decode = decodeJwt(token)
+      const role = decode.role
+      if (role === "employee") {
+        navigate("/chat")
+      } else if (role === "admin") {
+        navigate("/admin/dashboard")
+      }
+    } 
   },[])
   return (
     <AuthLayout>

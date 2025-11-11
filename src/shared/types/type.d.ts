@@ -27,8 +27,9 @@ export interface InputProps {
   value?: string | number;
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
   icon?: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "third";
   labelLayout?: "inline" | "block";
+  iconPosition?: "left" | "right";
 }
 
 export interface ButtonProps {

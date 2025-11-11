@@ -12,7 +12,8 @@ const Input = ({
   onchange,
   icon,
   variant,
-  labelLayout = "block"
+  labelLayout = "block",
+  iconPosition = "left"
 }: InputProps) => {
   return (
     <>
@@ -25,9 +26,10 @@ const Input = ({
           </label>
         ) : null}
         <div
-          className={clsx("flex 2xl:p-3 md:p-2 gap-3 bg-white w-full", {
-            "rounded-lg outline-[#3BC15254] outline-2": variant === "primary",
-            "rounded-2xl outline outline-gray-400": variant === "secondary",
+          className={clsx(`flex 2xl:p-3 md:p-2 gap-3  w-full ${iconPosition === "left" ? "" : iconPosition === "right" ?  "flex-row-reverse" : ""}`, {
+            "rounded-lg outline-[#3BC15254] outline-2 bg-white": variant === "primary",
+            "rounded-2xl outline outline-gray-400 bg-white": variant === "secondary",
+            "rounded-full bg-[#F2F2F2]": variant === "third",
           })}>
           {icon}
           <input

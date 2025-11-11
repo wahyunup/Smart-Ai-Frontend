@@ -4,7 +4,6 @@ import {
   AddDocument,
   AddStaffPage,
   AdminDashboardPage,
-  AiChatPage,
   ChatLogDetailPage,
   ChatLogPage,
   CompanyProfilePage,
@@ -19,6 +18,7 @@ import {
   VerifiedAccountPage,
 } from "./features/auth";
 import { HomePage } from "./features/home";
+import { AiChatPage, AiConversationPage } from "./features/aiChat";
 
 function App() {
   return (
@@ -64,7 +64,10 @@ function App() {
         </Route>
 
         <Route path="/" element={<HomePage />} />
-        <Route path="/chat" element={<AiChatPage />} />
+        <Route path="/chat">
+          <Route index element={<AiChatPage />} />
+          <Route path="conversation/:conversationId" element={<AiConversationPage />} />
+        </Route>
       </Routes>
     </div>
   );
