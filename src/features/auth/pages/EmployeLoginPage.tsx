@@ -29,6 +29,8 @@ const EmployeLoginPage = () => {
     setIsLoading(true)
     try {
       const res = await authLoginApi(form.username, form.password);
+      console.log(res);
+      
       const token = res.access_token;
       const expiresIn = res.expires_in;
       if (token) {
