@@ -6,6 +6,7 @@ import { CircleUser, Menu, PanelLeftClose } from "lucide-react";
 import useToggle from "../../store/isOpen";
 import { getCookie } from "../../utils/Cookies";
 import { decodeJwt } from "../../utils/Decode";
+import smartAiMascot from "../../../assets/icons/SmartAI 3.png";
 
 const Navbar = () => {
   const [me, setMe] = useState({
@@ -43,7 +44,7 @@ const Navbar = () => {
 
   return (
     <>
-      {!location.pathname.startsWith("/admin") ? (
+      {location.pathname === "/" ? (
         <>
           {/* desktop */}
           <div
@@ -81,7 +82,14 @@ const Navbar = () => {
             </button>
           </div>
         </>
-      ) : (
+      ) : location.pathname.startsWith("/chat/conversation/") ? (
+        <div className="flex gap-3 items-center bg-white p-5">
+          <img src={smartAiMascot} alt="" />
+          <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
+        </div>
+      ) : location.pathname.startsWith(
+          "/chat"
+        ) ? null : location.pathname.startsWith("/admin") ? (
         <>
           <div className="bg-[#E3F9E8] h-20 flex justify-between items-center px-10 ">
             <Button variant="link" onclick={setIsOpen}>
@@ -96,6 +104,8 @@ const Navbar = () => {
             </div>
           </div>
         </>
+      ) : (
+        ""
       )}
     </>
   );

@@ -1,9 +1,12 @@
 import {
+  ChevronDown,
   CircleUser,
+  EllipsisVertical,
   Files,
   House,
   LogOut,
   MessageCircleMore,
+  Trash2,
   UserCog,
 } from "lucide-react";
 import Button from "../ui/Button";
@@ -11,11 +14,32 @@ import useToggle from "../../store/isOpen";
 import logo from "../../../assets/icons/LOGO FIX.svg";
 import { getCookie, removeCookie } from "../../utils/Cookies";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { decodeJwt } from "../../utils/Decode";
+import {
+  deleteConversationApi,
+  fetchAllConversation,
+} from "../../../features/aiChat/services/aiChat";
+import { userIsLoginApi } from "../../../features/auth/services/authApis";
+import { Icon } from "@iconify/react";
 
 const Sidebar = () => {
   const { isOpen } = useToggle();
   const location = useLocation();
   const navigate = useNavigate();
+  const [visibleIcon, setVisibleIcon] = useState<boolean | string>(false);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [conversationList, setConversation] = useState([]);
+  const [isVisibleConversation, setIsVisibleConversation] = useState(true);
+  const [visibleAction, setVisibleAction] = useState(false);
+  const [role, setRole] = useState({
+    role: "",
+  });
+  const [loginUser, setLoginUser] = useState({
+    division: "",
+    username: "",
+    profile_picture_url: "",
+  });
 
   const navlist = [
     {
@@ -56,46 +80,234 @@ const Sidebar = () => {
       }
     }
   };
-  return (
-    <div
-      className={`bg-[#E3F9E8] ${
-        isOpen ? "2xl:w-[17%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
-      }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
-      <div className="flex items-center flex-col gap-8">
-        <img className="size-15" src={logo} alt="" />
-        <img className="size-15" src="/Logo.png" alt="" />
-        <div className="flex flex-col gap-10 font-inter">
-          {navlist.map((item,i) => (
-            <Button
-            key={i}
-              variant="link"
-              classname={`flex items-center gap-3 ${location.pathname.startsWith(item.link) ? " border-b-2" : ""}`}
-              onclick={() => navigate(item.link)}>
-              {item.icon}
-              <span
-                className={` font-medium
-          ${isOpen ? "" : "hidden"}
-            `}>
-                {item.lable}
-              </span>
-            </Button>
-          ))}
 
-          <Button
-            variant="link"
-            classname="flex items-center gap-3 text-red-500 "
-            onclick={logout}>
-            <LogOut size={27} />
-            <span
-              className={` font-medium
+  useEffect(() => {
+    const getToken = getCookie("accesstoken");
+    if (getToken) {
+      const decode = decodeJwt(getToken);
+      console.log(decode);
+
+      setRole({
+        role: decode.role,
+      });
+    }
+  }, []);
+
+  const handleHover = (id: boolean | string) => {
+    setVisibleIcon(id);
+    if (!isLoading) {
+      setVisibleAction(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserIsLogin = async () => {
+      try {
+        const res = await userIsLoginApi();
+        if (res) {
+          setLoginUser({
+            division: res.division,
+            profile_picture_url: res.profile_picture_url,
+            username: res.username,
+          });
+        }
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserIsLogin();
+  }, [role.role]);
+
+  useEffect(() => {
+    if (role.role === "employee") {
+      const fetchConversation = async () => {
+        try {
+          const res = await fetchAllConversation();
+          setConversation(res);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchConversation();
+    }
+  }, [role.role, conversationList]);
+
+  const handleDeleteConversation = async (id: string) => {
+    setVisibleAction(true);
+    setIsLoading(id);
+    try {
+      await deleteConversationApi(id);
+      alert("conversation berhasil di hapus");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
+  const handleConversation = (conversation_id: string) => {
+    navigate(`/chat/conversation/${conversation_id}`);
+  };
+  return (
+    <>
+      {role.role === "admin" || role.role === "superadmin" ? (
+        <div
+          className={`bg-[#F2F2F2] ${
+            isOpen ? "2xl:w-[17%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
+          }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
+          <div className="flex items-center flex-col gap-8">
+            <img className="size-15" src={logo} alt="" />
+            <img className="size-15" src="/Logo.png" alt="" />
+            <div className="flex flex-col items-start gap-10 font-inter">
+              {navlist.map((item, i) => (
+                <Button
+                  key={i}
+                  variant="link"
+                  classname={`flex items-center gap-3 transition-all duration-300 py-3 px-5 justify-start hover:bg-[#1D8A45] hover:text-white rounded-full underline- ${
+                    location.pathname.startsWith(item.link)
+                      ? " bg-[#1D8A45] text-white rounded-full"
+                      : ""
+                  }`}
+                  onclick={() => navigate(item.link)}>
+                  {item.icon}
+                  <span
+                    className={` font-medium
           ${isOpen ? "" : "hidden"}
             `}>
-              Keluar
-            </span>
-          </Button>
+                    {item.lable}
+                  </span>
+                </Button>
+              ))}
+
+              <Button
+                variant="link"
+                classname="flex items-center gap-3 text-red-500 py-3 px-5"
+                onclick={logout}>
+                <LogOut size={27} />
+                <span
+                  className={` font-medium
+          ${isOpen ? "" : "hidden"}
+            `}>
+                  Keluar
+                </span>
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <>
+          <div className="2xl:w-[17%] md:w-[25%] bg-[#F2F2F2] h-screen flex flex-col justify-between">
+            <div className="p-5 flex flex-col gap-4">
+              <img src={logo} className="w-13" alt="" />
+              <Button
+                variant="secondary"
+                onclick={() => navigate("/chat")}
+                classname="px-3 py-2 text-sm rounded-full">
+                Obrolan Baru
+              </Button>
+              <p>Cari Obrolan</p>
+              <div className="flex flex-col gap-2">
+                <Button
+                  classname="flex text-[#666666]"
+                  variant="link"
+                  onclick={() =>
+                    setIsVisibleConversation(!isVisibleConversation)
+                  }>
+                  Obrolan <ChevronDown />
+                </Button>
+
+                {isVisibleConversation && (
+                  <>
+                    <div className="flex flex-col gap-2  overflow-auto max-h-130">
+                      {conversationList.map(
+                        (conversation: { title: string; id: string }) => (
+                          <span
+                            className={`text-[#211719] text-sm cursor-pointer ${
+                              location.pathname.startsWith(
+                                `/chat/conversation/${conversation.id}`
+                              )
+                                ? "bg-[#3BC15240]"
+                                : ""
+                            }  hover:bg-[#3BC15240] py-2 px-4 rounded-full flex items-center justify-between relative`}
+                            onClick={() => handleConversation(conversation.id)}
+                            onMouseEnter={() => handleHover(conversation.id)}
+                            onMouseLeave={() => handleHover(!visibleIcon)}>
+                            {conversation.title}
+                            {visibleIcon === conversation.id && (
+                              <>
+                                <EllipsisVertical
+                                  onClick={() => setVisibleAction(true)}
+                                  className="absolute right-0 "
+                                  color="#1D8A45"
+                                />
+                                {visibleAction && (
+                                  <div className="bg-[#f7f7f7] p-1.5 absolute top-[37px] right-2 z-20 rounded-xl outline outline-gray-300">
+                                    {isLoading ? (
+                                      <div className="p-3 bg-red-100 rounded-xl">
+                                        <Icon
+                                          icon="line-md:loading-loop"
+                                          width="20"
+                                          height="20"
+                                          color="#DB3726"
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="flex items-center gap-2 hover:bg-red-100 p-3 rounded-lg"
+                                        onClick={() =>
+                                          handleDeleteConversation(
+                                            conversation.id
+                                          )
+                                        }>
+                                        <Trash2 size={17} color="#DB3726" />
+                                        <button>Delete</button>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="text-[#666666] text-sm">Dukungan</p>
+                <span className="flex text-black px-3 py-2 hover:bg-gray-200 rounded-full text-sm">
+                  Bantuan & FAQ
+                </span>
+              </div>
+            </div>
+
+            <div className="flex gap-3 items-center p-3 m-3 rounded-xl">
+              {!loginUser.profile_picture_url ? (
+                <div className="w-12 h-12 overflow-hidden flex justify-center rounded-full items-center bg-red-400">
+                  <p className="text-white mb-1 uppercase">
+                    {loginUser.username.slice(0, 1)}
+                  </p>
+                </div>
+              ) : (
+                <div className="w-12 h-12 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
+                  <img
+                    className="w-12"
+                    src={loginUser.profile_picture_url}
+                    alt="profile-picture"
+                  />
+                </div>
+              )}
+              <div>
+                <span>{loginUser.username}</span>
+                <p className="text-sm text-[#666666]">{loginUser.division}</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ import { authLoginApi } from "../services/authApis";
 import { Icon } from "@iconify/react";
 import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
+import { decodeJwt } from "../../../shared/utils/Decode";
 
 const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,12 +44,18 @@ const AdminLoginPage = () => {
     }
   };
 
-  useEffect(() => {
-    const token = getCookie("accesstoken");
+useEffect(() => {
+    const token = getCookie("accesstoken")
     if (token) {
-      navigate("/admin/dashboard");
+      const decode = decodeJwt(token)
+      const role = decode.role
+      if (role === "employee") {
+        navigate("/chat")
+      } else if (role === "admin") {
+        navigate("/admin/dashboard")
+      }
     }
-  }, []);
+  },[])
 
   return (
     <AuthLayout>

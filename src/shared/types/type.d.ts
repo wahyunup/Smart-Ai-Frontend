@@ -27,8 +27,9 @@ export interface InputProps {
   value?: string | number;
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
   icon?: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "third";
   labelLayout?: "inline" | "block";
+  iconPosition?: "left" | "right";
 }
 
 export interface ButtonProps {
@@ -77,4 +78,16 @@ export interface TableBodyProps {
   nextPage?: () => void;
   prevPage?: () => void;
   page? : number
+  totalPage? : number
+  canEdit? : boolean
+  isLoading? : number
 }
+
+export interface ChatLogProps {
+  id: number;
+  conversation_id: string;
+  username: string;
+  question: string;
+  answer: string;
+  created_at: string;
+};  
