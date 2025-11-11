@@ -20,6 +20,7 @@ import {
 } from "./features/auth";
 import { HomePage } from "./features/home";
 import { AiChatPage, AiConversationPage } from "./features/aiChat";
+import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
 
 function App() {
   return (
@@ -77,6 +78,7 @@ function App() {
             element={<AiConversationPage />}
           />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
