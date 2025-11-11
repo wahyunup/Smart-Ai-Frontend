@@ -35,7 +35,7 @@ const AdminLoginPage = () => {
       if(accessToken) {
         setCookie("accesstoken", accessToken, expiresIn);
         alert("login berhasil");
-        window.location.reload()
+        navigate("/superadmin/dashboard")
       }
     } catch (error: any) {
       alert(error.response.data.detail[0].msg);
@@ -51,8 +51,8 @@ useEffect(() => {
       const role = decode.role
       if (role === "employee") {
         navigate("/chat")
-      } else if (role === "admin") {
-        navigate("/admin/dashboard")
+      } else if (role === "super_admin") {
+        navigate("/superadmin/dashboard")
       }
     }
   },[])

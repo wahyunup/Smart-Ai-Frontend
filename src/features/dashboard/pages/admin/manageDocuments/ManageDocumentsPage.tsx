@@ -6,7 +6,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteDocument, getDocuments } from "../../../services/ManageDocuments";
+import { deleteDocument, getDocuments } from "../../../services/admin/ManageDocuments";
 
 const ManageDocuments = () => {
   const [value, setValue] = useState("");
