@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { chatLogDetail } from "../../../services/ChatLog";
+import { chatLogDetail } from "../../../services/admin/ChatLog";
 import { useParams } from "react-router-dom";
 
 const ChatLogDetail = () => {

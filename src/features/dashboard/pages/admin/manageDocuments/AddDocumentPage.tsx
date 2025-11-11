@@ -4,7 +4,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { editDocument, uploadDocuments } from "../../../services/ManageDocuments";
+import { editDocument, uploadDocuments } from "../../../services/admin/ManageDocuments";
 import { Icon } from "@iconify/react";
 
 const AddDocumentPage = () => {

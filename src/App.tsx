@@ -9,6 +9,7 @@ import {
   CompanyProfilePage,
   ManageDocumentsPage,
   ManageStaffPage,
+  SuperAdminDashboardPage,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -63,10 +64,18 @@ function App() {
           <Route path="company-profile" element={<CompanyProfilePage />} />
         </Route>
 
+        <Route path="/superadmin">
+          <Route path="dashboard" element={<SuperAdminDashboardPage />} />
+        </Route>
+
         <Route path="/" element={<HomePage />} />
+
         <Route path="/chat">
           <Route index element={<AiChatPage />} />
-          <Route path="conversation/:conversationId" element={<AiConversationPage />} />
+          <Route
+            path="conversation/:conversationId"
+            element={<AiConversationPage />}
+          />
         </Route>
       </Routes>
     </div>

@@ -1,4 +1,4 @@
-import api from "../../../shared/lib/Axios";
+import api from "../../../../shared/lib/Axios";
 
 const chatApi = async (content: string) => {
   try {

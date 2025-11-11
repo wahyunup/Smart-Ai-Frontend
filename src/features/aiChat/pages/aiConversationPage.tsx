@@ -27,6 +27,7 @@ const aiConversationPage = () => {
   useEffect(() => {
     scrollToBottom();
   }, []);
+  
   useEffect(() => {
     const fetchConversation = async () => {
       setIsLoading(true);

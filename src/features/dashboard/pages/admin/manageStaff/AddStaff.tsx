@@ -4,7 +4,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useEffect, useState } from "react";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { createStaff, editStaff } from "../../../services/ManageStaff";
+import { createStaff, editStaff } from "../../../services/admin/ManageStaff";
 
 const AddStaf = () => {
   const navigate = useNavigate();
@@ -261,7 +261,6 @@ const AddStaf = () => {
                 name="username"
                 value={dataEdit.username}
                 onchange={handleOnChange}
-
                 classname="gap-17"
                 type="text"
                 labelLayout="inline"
@@ -272,7 +271,6 @@ const AddStaf = () => {
                 variant="secondary"
                 value={dataEdit.name}
                 onchange={handleOnChange}
-
                 placeholder="input teks"
                 name="name"
                 htmlFor="name"
@@ -285,7 +283,6 @@ const AddStaf = () => {
                 variant="secondary"
                 value={dataEdit.email}
                 onchange={handleOnChange}
-
                 placeholder="input teks"
                 name="email"
                 htmlFor="email"

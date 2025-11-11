@@ -6,7 +6,7 @@ import { Download, Search } from "lucide-react";
 import Button from "../../../../../shared/components/ui/Button";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
-import { chatLog, downloadCsv } from "../../../services/ChatLog";
+import { chatLog, downloadCsv } from "../../../services/admin/ChatLog";
 import { Icon } from "@iconify/react";
 import type { ChatLogProps } from "../../../../../shared/types/type";
 

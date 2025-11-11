@@ -6,7 +6,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useNavigate } from "react-router-dom";
 import { FilePlus, Search } from "lucide-react";
-import { deleteStaff, getStaff } from "../../../services/ManageStaff";
+import { deleteStaff, getStaff } from "../../../services/admin/ManageStaff";
 
 const ManageStaffPage = () => {
   const [value, setValue] = useState("");

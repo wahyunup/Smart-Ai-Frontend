@@ -104,6 +104,12 @@ const Navbar = () => {
             </div>
           </div>
         </>
+      ) : location.pathname.startsWith("/superadmin") ? (
+        <div className="p-10 border-b-1 border-gray-300">
+          <Button variant="link" onclick={setIsOpen}>
+            <PanelLeftClose size={27} />
+          </Button>
+        </div>
       ) : (
         ""
       )}
