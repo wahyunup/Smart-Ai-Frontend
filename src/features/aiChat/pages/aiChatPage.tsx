@@ -80,8 +80,8 @@ const aiChatPage = () => {
       <div className="flex justify-center items-center h-full">
         <form
           onSubmit={handleSumbit}
-          className="w-250 flex flex-col gap-10 justify-center items-center">
-          <h1 className="text-4xl font-semibold">
+          className="2xl:w-250 md:w-200 flex flex-col gap-10 justify-center items-center">
+          <h1 className="2xl:text-4xl md:text-3xl font-semibold">
             Apa yang sedang anda pikirkan hari ini?
           </h1>
           <Input
@@ -99,11 +99,11 @@ const aiChatPage = () => {
               )
             }
             placeholder="Tanyakan apa saja terkait perusahaan"
-            classname="rounded-full text-sm"
+            classname="rounded-full 2xl:text-sm md:text-xs"
             iconPosition="right"
           />
           <div className="flex flex-col items-center gap-4">
-            <p className="text-sm text-[#666666]">
+            <p className="2xl:text-sm md:text-xs text-[#666666]">
               Topik Cepat Sesuai Peran Anda:
             </p>
             <div className="flex gap-3 w-160 flex-wrap justify-center">
@@ -119,7 +119,7 @@ const aiChatPage = () => {
                     onClick={() => {
                       handleSubmitDefaultValue(message.message, i);
                     }}
-                    className="bg-[#F2F2F2] px-5 py-3 rounded-full text-sm cursor-pointer text-[#666666]">
+                    className="bg-[#F2F2F2] px-5 py-3 rounded-full 2xl:text-sm md:text-xs cursor-pointer text-[#666666]">
                     {message.message}
                   </button>
                 )

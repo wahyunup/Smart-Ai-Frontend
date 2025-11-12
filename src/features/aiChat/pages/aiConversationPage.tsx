@@ -153,11 +153,11 @@ const aiConversationPage = () => {
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col justify-between h-full px-20">
-        <div className="flex flex-col gap-3 overflow-auto h-176">
+        <div className="flex flex-col gap-3 overflow-auto 2xl:h-176 md:h-110 2xl:text-base md:text-sm">
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex flex-col gap-3">
+                <div key={i} className="flex flex-col gap-3 ">
                   <div className="flex justify-end">
                     <div className="bg-green-100 h-11 w-150 rounded-3xl rounded-br-none animate-pulse"></div>
                   </div>
@@ -185,7 +185,7 @@ const aiConversationPage = () => {
             ))
           )}
         </div>
-        <div className="bg-white py-10">
+        <div className="bg-white 2xl:py-10 md:py-5">
           <Input
             icon={
               isLoadingSubmit ? (
