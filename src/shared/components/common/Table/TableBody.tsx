@@ -21,51 +21,59 @@ const TableBody = ({
   totalPage,
   canEdit = true,
   isLoading,
+  canAction = true,
 }: TableBodyProps) => {
   return (
     <>
       <div>
-        {data?.map((item: any) => (
+        {data?.map((item: any, i) => (
           <div
             key={item.id}
             className={`grid ${classname} justify-between px-10 border-t border-[#B2B2B2] py-6 items-center justify-items-center-safe hover:bg-gray-50 transition-all duration-300 hover:scale-[1.005] active:scale-[1]  ${
               userIsLogin === "admin" ? "cursor-pointer" : ""
             }`}>
-            {renderItem?.(item)}
-            <div className="flex gap-5 ">
-              <>
-                {canEdit ? (
-                  <>
-                    <button
-                      onClick={() => onclickEdit?.(item?.id)}
-                      className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
-                      <SquarePen size={24} />
+            {renderItem?.(item, i)}
+
+            {canAction && (
+              <div className="flex gap-5 ">
+                <>
+                  {canEdit ? (
+                    <>
+                      <button
+                        onClick={() => onclickEdit?.(item?.id)}
+                        className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
+                        <SquarePen size={24} />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => onclickEdit?.(item?.id)}
+                        className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
+                        <View size={24} />
+                      </button>
+                    </>
+                  )}
+
+                  <span className="border-r-1 border-[#F0F0F0]"></span>
+                  {isLoading === item.id ? (
+                    <button className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1]">
+                      <Icon
+                        icon="line-md:loading-loop"
+                        width="24"
+                        height="24"
+                      />
                     </button>
-                  </>
-                ) : (
-                  <>
+                  ) : (
                     <button
-                      onClick={() => onclickEdit?.(item?.id)}
-                      className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
-                      <View size={24} />
+                      onClick={() => onclickDelete?.(item?.id)}
+                      className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1]">
+                      <Trash2 size={24} />
                     </button>
-                  </>
-                )}
-                <span className="border-r-1 border-[#F0F0F0]"></span>
-                {isLoading === item.id ? (
-                  <button
-                    className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1]">
-                    <Icon icon="line-md:loading-loop" width="24" height="24" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => onclickDelete?.(item?.id)}
-                    className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1]">
-                    <Trash2 size={24} />
-                  </button>
-                )}
-              </>
-            </div>
+                  )}
+                </>
+              </div>
+            )}
           </div>
         ))}
         <div className="bg-gray-100 py-3 px-7 flex items-center gap-3 justify-end">

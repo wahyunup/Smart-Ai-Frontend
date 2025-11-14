@@ -7,3 +7,7 @@ export { default as AddDocument } from "./pages/admin/manageDocuments/AddDocumen
 export { default as ChatLogDetailPage } from "./pages/admin/chatLog/ChatLogDetail";
 export { default as AddStaffPage } from "./pages/admin/manageStaff/AddStaff";
 export { default as SuperAdminDashboardPage } from "./pages/superadmin/dashboard/DashboardPage";
+export { default as SuperAdminLogAuditPage } from "./pages/superadmin/logAudit/LogAuditPage";
+export { default as SuperAdminManageCompanyPage } from "./pages/superadmin/manageCompany/ManageCompanyPage";
+export { default as SuperAdminManageAdminCompanyPage } from "./pages/superadmin/manageAdminCompany/ManageAdminCompanyPage";
+export { default as SuperAdminSettingsPage } from "./pages/superadmin/settings/SettingsPage";

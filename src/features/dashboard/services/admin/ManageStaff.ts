@@ -1,8 +1,8 @@
 import api from "../../../../shared/lib/Axios";
 
-const getStaff = async () => {
+const getStaff = async (page:number, limit:number) => {
   try {
-    const res = await api.get("/companies/users");
+    const res = await api.get(`/companies/users?page=${page}&limit=${limit}`);
     return res.data;
   } catch (error) {
     throw error;

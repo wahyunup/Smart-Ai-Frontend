@@ -77,6 +77,7 @@ const AddStaf = () => {
       );
       console.log(res);
       alert("staff berhasil dibuat");
+      navigate("/admin/manage-staff")
     } catch (error) {
       console.log(error);
     } finally {

@@ -72,7 +72,7 @@ export interface TableBodyProps {
   data?: EmployedProps[] | CustomerProps[];
   onclickEdit?: (id: number) => void;
   onclickDelete?: (id: number) => void;
-  renderItem?: (item: any) => ReactNode;
+  renderItem?: (item: any, i:number) => ReactNode;
   classname?: string;
   userIsLogin?: string;
   nextPage?: () => void;
@@ -81,6 +81,7 @@ export interface TableBodyProps {
   totalPage? : number
   canEdit? : boolean
   isLoading? : number
+  canAction? : boolean
 }
 
 export interface ChatLogProps {

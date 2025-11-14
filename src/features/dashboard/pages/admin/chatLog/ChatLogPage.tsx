@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../../../../shared/components/ui/Input";
 import { Download, Search } from "lucide-react";
 import Button from "../../../../../shared/components/ui/Button";
@@ -11,19 +11,31 @@ import { Icon } from "@iconify/react";
 import type { ChatLogProps } from "../../../../../shared/types/type";
 
 const ChatLogPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initParams = Number(searchParams.get("page")) || 1;
+
   const [value, setValue] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState<ChatLogProps[]>([]);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDoc, setIsLoadingDoc] = useState(false)
+  const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
+
 
   useEffect(() => {
     const fetchChatLog = async () => {
-      const res = await chatLog(page, 4);
-      console.log(res);
-      setData(res.chatlogs);
-      setTotalPage(res.total_pages);
+      setIsLoadingDoc(true);
+      try {
+        const res = await chatLog(page, 4);
+        setData(res.chatlogs);
+        setTotalPage(res.total_pages);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoadingDoc(false);
+      }
     };
     fetchChatLog();
   }, [page]);
@@ -33,12 +45,14 @@ const ChatLogPage = () => {
   );
 
   const handleNextPage = () => {
+    if (isLoadingDoc) return;
     if (page < totalPage) {
       setPage(page + 1);
     }
   };
 
   const handlePrevPage = () => {
+    if (isLoadingDoc) return;
     if (page > 1) {
       setPage(page - 1);
     }
@@ -66,10 +80,14 @@ const ChatLogPage = () => {
     const getChatLogId = fillterChatLogs.find((chat: any) => chat.id === id);
 
     if (getChatLogId) {
-      const conversation_id = getChatLogId.conversation_id
+      const conversation_id = getChatLogId.conversation_id;
       navigate(`/admin/chat-log/detail/${conversation_id}`);
     }
   };
+
+  useEffect(() => {
+    setSearchParams({ page: String(page) });
+  }, [page, setSearchParams]);
 
   const handleDeleteChatLog = () => {};
   return (
@@ -127,7 +145,7 @@ const ChatLogPage = () => {
               classname="grid grid-cols-6"
               page={page}
               totalPage={totalPage}
-              renderItem={(item) => {
+              renderItem={(item, i) => {
                 const uploadedAt = new Date(item.created_at);
                 const formattedDate = uploadedAt.toLocaleString("id-ID", {
                   timeZone: "Asia/Jakarta",
@@ -139,12 +157,22 @@ const ChatLogPage = () => {
                     <span className="text-center">{item.id}</span>
                     <span className="text-center">{formattedDate}</span>
                     <span className="text-center">{item.username}</span>
-                    {item.question.length > 60 ? (
-                      <span className="text-center">
-                        {item.question.slice(0, 60)} ...{" "}
-                      </span>
+                  {item.question.length > 50 ? (
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setHoverEffect(i)}
+                        onMouseLeave={() => setHoverEffect(false)}>
+                        {hoverEffect === i && (
+                          <div className="transition-all duration-300 fixed 2xl:left-200 md:left-100 top-15 -translate-x-1/2 bg-orange-100 rounded-xl p-3 z-50 outline outline-orange-400 md:text-sm 2xl:text-base text-center">
+                            {item?.question}
+                          </div>
+                        )}
+                        <span className="text-center">
+                          {item?.question.slice(0, 60)}...
+                        </span>
+                      </div>
                     ) : (
-                      <span className="text-center">{item.question}</span>
+                      <span className="text-center">{item?.question}</span>
                     )}
                     {item.answer.length > 60 ? (
                       <span className="text-center">

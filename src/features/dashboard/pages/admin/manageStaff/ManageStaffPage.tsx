@@ -4,19 +4,24 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import Button from "../../../../../shared/components/ui/Button";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FilePlus, Search } from "lucide-react";
 import { deleteStaff, getStaff } from "../../../services/admin/ManageStaff";
 
 const ManageStaffPage = () => {
   const [value, setValue] = useState("");
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initParams = Number(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(0);
+  const [isLoadingStaff, setIsLoadingStaff] = useState(false);
   const [statusSelected, setStatusSelected] = useState("");
   const [roleSelected, setRoleSelected] = useState("");
+  const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
+
   const getRandomColor = () => {
     const colors = [
       "#E57373",
@@ -32,13 +37,16 @@ const ManageStaffPage = () => {
   };
 
   const fetchStaff = async () => {
+    setIsLoadingStaff(true);
     try {
-      const res = await getStaff();
-      setData(res);
-      setTotalPage(1)
+      const res = await getStaff(page, 4);
+      setData(res.users);
+      setTotalPage(res.total_pages);
       console.log(res);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoadingStaff(false);
     }
   };
 
@@ -46,17 +54,22 @@ const ManageStaffPage = () => {
     fetchStaff();
   }, [page]);
 
-  const fillterStaff = data.filter((chatLog: any) =>
-    chatLog.username.toLowerCase().includes(value)
+  const fillterStaff = data.filter((staff: any) =>
+    staff.name.toLowerCase().includes(value)
   );
 
   const handleNextPage = () => {
+    if (isLoadingStaff) return;
     if (page < totalPage) {
       setPage(page + 1);
     }
   };
-
+  useEffect(() => {
+    setSearchParams({ page: String(page) });
+  }, [page, setSearchParams]);
+  
   const handlePrevPage = () => {
+    if (isLoadingStaff) return;
     if (page > 1) {
       setPage(page - 1);
     }
@@ -70,17 +83,17 @@ const ManageStaffPage = () => {
         const res = await deleteStaff(id);
         alert("staff berhasil dihapus");
         console.log(res);
-        fetchStaff();
       }
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(0);
+      fetchStaff();
     }
   };
-  const handleEdit = (id:number) => {
-    const userData = data.find((data:{id:number}) => data.id === id)
-    navigate("/admin/manage-staff/edit", { state: { userData:  userData} });
+  const handleEdit = (id: number) => {
+    const userData = data.find((data: { id: number }) => data.id === id);
+    navigate("/admin/manage-staff/edit", { state: { userData: userData } });
   };
   return (
     <MainLayout>
@@ -155,7 +168,7 @@ const ManageStaffPage = () => {
               classname="grid grid-cols-7"
               page={page}
               totalPage={totalPage}
-              renderItem={(item) => {
+              renderItem={(item, i) => {
                 const bgColor = getRandomColor();
                 return (
                   <>
@@ -175,8 +188,28 @@ const ManageStaffPage = () => {
                       <span className="text-center">{item.id}</span>
                     </div>
                     <span className="text-center">{item.name}</span>
-                    <span className="text-center">{item.email}</span>
-                    <span className="text-center">{item.division_id}</span>
+                    {item.email.length > 10 ? (
+                      <div
+                        className="relative"
+                        onMouseEnter={() => setHoverEffect(i)}
+                        onMouseLeave={() => setHoverEffect(false)}>
+                        {hoverEffect === i && (
+                          <div className="transition-all duration-300 fixed 2xl:left-160 md:left-100 top-15 -translate-x-1/2 bg-orange-100 rounded-xl p-3 z-50 outline outline-orange-400 md:text-sm 2xl:text-base">
+                            {item?.email}
+                          </div>
+                        )}
+                        <span className="z-10">
+                          {item?.email.slice(0, 10)}...
+                        </span>
+                      </div>
+                    ) : (
+                      <span>{item?.email}</span>
+                    )}
+                    {item.division === null ? (
+                      <span className="text-center">Tidak ada</span>
+                    ) : (
+                      <span className="text-center">{item.division}</span>
+                    )}
                     <span className="text-center">{item.role}</span>
                     {item.is_active ? (
                       <span className="text-center">Aktif</span>

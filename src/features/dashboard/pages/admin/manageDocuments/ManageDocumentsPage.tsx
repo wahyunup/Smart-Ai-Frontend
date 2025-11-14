@@ -5,29 +5,40 @@ import Button from "../../../../../shared/components/ui/Button";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { deleteDocument, getDocuments } from "../../../services/admin/ManageDocuments";
 
 const ManageDocuments = () => {
   const [value, setValue] = useState("");
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initParams = Number(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const fetchDocument = async () => {
+    setIsLoading(true)
     try {
       const res = await getDocuments(page, 4);
       setData(res.documents);
       setTotalPage(res.total_pages);
     } catch (error) {
       console.log(Response.error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
   useEffect(() => {
     fetchDocument();
   }, [page]);
+
+  useEffect(() => {
+      setSearchParams({ page: String(page) });
+    }, [page, setSearchParams]);
 
   const fillterDatas = data.filter((item: any) =>
     item.title.toLowerCase().includes(value)
@@ -46,12 +57,14 @@ const ManageDocuments = () => {
   };
 
   const handleNextPage = () => {
+    if(isLoading) return
     if(page < totalPage) {
       setPage(page + 1);
     }
   };
 
   const handlePrevPage = () => {
+    if (isLoading) return
     if (page > 1) {
       setPage(page - 1);
     }

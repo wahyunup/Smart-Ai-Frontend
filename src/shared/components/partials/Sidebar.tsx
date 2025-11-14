@@ -1,7 +1,9 @@
 import {
+  Building2,
   ChevronDown,
   ChevronRight,
   CircleUser,
+  ClipboardClock,
   EllipsisVertical,
   Files,
   House,
@@ -9,6 +11,7 @@ import {
   MessageCircleMore,
   Trash2,
   UserCog,
+  UserPen,
 } from "lucide-react";
 import Button from "../ui/Button";
 import useToggle from "../../store/isOpen";
@@ -80,25 +83,25 @@ const Sidebar = () => {
       category: "Manajemen Klien",
     },
     {
-      icon: <Files size={27} />,
+      icon: <Building2  size={27} />,
       lable: "Kelola Perusahaan",
       link: "/superadmin/manage-company",
       category: "Manajemen Klien",
     },
     {
-      icon: <MessageCircleMore size={27} />,
+      icon: <UserPen size={27} />,
       lable: "Kelola Admin Perusahaan",
-      link: "/superadmin/manage-company-admin",
+      link: "/superadmin/manage-admin-company",
       category: "Manajemen Klien",
     },
     {
-      icon: <UserCog size={27} />,
+      icon: <ClipboardClock size={27} />,
       lable: "Audit Log & Aktivitas",
       link: "/superadmin/log-audit",
       category: "Sistem & Keamanan",
     },
     {
-      icon: <CircleUser size={27} />,
+      icon: <UserCog size={27} />,
       lable: "Pengaturan Sistem Dasar",
       link: "/superadmin/settings",
       category: "Sistem & Keamanan",

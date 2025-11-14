@@ -7,9 +7,13 @@ import {
   ChatLogDetailPage,
   ChatLogPage,
   CompanyProfilePage,
+  SuperAdminLogAuditPage,
   ManageDocumentsPage,
   ManageStaffPage,
   SuperAdminDashboardPage,
+  SuperAdminManageCompanyPage,
+  SuperAdminManageAdminCompanyPage,
+  SuperAdminSettingsPage,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -67,6 +71,10 @@ function App() {
 
         <Route path="/superadmin">
           <Route path="dashboard" element={<SuperAdminDashboardPage />} />
+          <Route path="log-audit" element={<SuperAdminLogAuditPage />} />
+          <Route path="manage-company" element={<SuperAdminManageCompanyPage />} />
+          <Route path="manage-admin-company" element={<SuperAdminManageAdminCompanyPage />} />
+          <Route path="settings" element={<SuperAdminSettingsPage />} />
         </Route>
 
         <Route path="/" element={<HomePage />} />
