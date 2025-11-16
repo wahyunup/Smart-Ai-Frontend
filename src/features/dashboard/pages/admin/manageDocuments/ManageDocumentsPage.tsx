@@ -125,6 +125,7 @@ const ManageDocuments = () => {
               <span>Tanggal Unggah</span>
             </TableHeaderList>
             <TableBody
+            isLoadingFetch={isLoading}
               onclickDelete={handleDelete}
               nextPage={handleNextPage}
               prevPage={handlePrevPage}

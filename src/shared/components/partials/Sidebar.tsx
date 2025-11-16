@@ -83,7 +83,7 @@ const Sidebar = () => {
       category: "Manajemen Klien",
     },
     {
-      icon: <Building2  size={27} />,
+      icon: <Building2 size={27} />,
       lable: "Kelola Perusahaan",
       link: "/superadmin/manage-company",
       category: "Manajemen Klien",
@@ -187,8 +187,6 @@ const Sidebar = () => {
   const handleConversation = (conversation_id: string) => {
     navigate(`/chat/conversation/${conversation_id}`);
   };
-
-  console.log(isLogin, "<--- islogin");
 
   if (isLogin === null || undefined) {
     window.location.reload();
@@ -309,7 +307,7 @@ const Sidebar = () => {
           </div>
         </div>
       ) : isLogin === "employee" ? (
-        <div className="2xl:w-[17%] md:w-[25%] bg-[#F2F2F2] h-screen flex flex-col justify-between">
+        <div className="2xl:w-[17%] md:w-70 bg-[#F2F2F2] h-full flex flex-col relative justify-between">
           <div className="p-5 flex flex-col gap-4">
             <img src={logo} className="2xl:w-13 md:w-10" alt="" />
             <Button
@@ -333,26 +331,26 @@ const Sidebar = () => {
 
               {isVisibleConversation && (
                 <>
-                  <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-130 md:max-h-50">
+                  <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
                     {conversationList.map(
                       (conversation: { title: string; id: string }) => (
-                        <span
-                          className={`text-[#211719] py-2 2xl:text-sm md:text-xs cursor-pointer ${
+                        <div
+                          className={`text-[#211719] py-2 2xl:text-sm md:text-xs cursor-pointer  ${
                             location.pathname.startsWith(
                               `/chat/conversation/${conversation.id}`
                             )
                               ? "bg-[#3BC15240]"
                               : ""
-                          }  hover:bg-[#3BC15240]  px-3 rounded-full flex items-center justify-between relative`}
+                          }  hover:bg-[#3BC15240] px-3 rounded-full flex items-center justify-between relative`}
                           onClick={() => handleConversation(conversation.id)}
                           onMouseEnter={() => handleHover(conversation.id)}
                           onMouseLeave={() => handleHover(!visibleIcon)}>
-                          {conversation.title}
+                          <span className="w-70">{conversation.title}</span>
                           {visibleIcon === conversation.id && (
                             <>
                               <EllipsisVertical
                                 onClick={() => setVisibleAction(true)}
-                                className="2xl:size-5 md:size-4"
+                                className="2xl:size-8 md:size-6"
                                 color="#1D8A45"
                               />
                               {visibleAction && (
@@ -389,7 +387,7 @@ const Sidebar = () => {
                               )}
                             </>
                           )}
-                        </span>
+                        </div>
                       )
                     )}
                   </div>
@@ -404,29 +402,32 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <div className="flex w-full flex-col p-3 gap-3">
+          <div className="p-3 absolute md:bottom-18 w-full">
             {visibleActionProfile && (
               <div
                 onMouseLeave={() =>
                   setVisibleActionProfile(!visibleActionProfile)
                 }
-                className="md:p-1 bg-white 2xl:p-3 flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200 2xl:static md:absolute md:bottom-21 md:w-62">
-                <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-base">
+                className="md:p-1 bg-white flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200  ">
+                <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
                   Pusat bantuan & FAQ <ChevronRight size={15} />
                 </button>
                 <button
                   onClick={logout}
-                  className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-base hover:text-red-500">
+                  className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">
                   <LogOut size={15} />
                   Keluar
                 </button>
               </div>
             )}
+          </div>
+
+          <div className="flex w-full flex-col p-3 gap-3">
             <div
               onClick={() => setVisibleActionProfile(!visibleActionProfile)}
               className="flex gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full">
               {!loginUser.profile_picture_url ? (
-                <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-red-400">
+                <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-100">
                   <p className="text-white mb-1 uppercase">
                     {loginUser.username.slice(0, 1)}
                   </p>

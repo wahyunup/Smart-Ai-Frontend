@@ -4,6 +4,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import {
   companyListAuditApi,
   logAuditApi,
+  typeActivityApi,
 } from "../../../services/superadmin/LogAudit";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
@@ -15,6 +16,7 @@ const LogAuditPage = () => {
   const initParams = Number(searchParams.get("page")) || 1;
   const [dataLogs, setDataLogs] = useState([]);
   const [companyList, setCompanyList] = useState([]);
+  const [type, setType] = useState([]);
   const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(initParams);
@@ -49,6 +51,16 @@ const LogAuditPage = () => {
     }
   };
 
+  const fetchTypeActivity = async () => {
+    try {
+      const res = await typeActivityApi();
+      setType(res.categories);
+      console.log(res.categories);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleNextPage = () => {
     if (isLoading) return;
     if (page < totalPage) {
@@ -72,6 +84,7 @@ const LogAuditPage = () => {
 
   useEffect(() => {
     fetchCompanyLogAudit();
+    fetchTypeActivity();
   }, []);
 
   const handleOnChange = (
@@ -82,6 +95,12 @@ const LogAuditPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleFilter = async () => {
+    const companyId = Number(filter.company);
+    
+    await logAuditApi(page, 4, 1, filter.type, filter.date);
   };
 
   return (
@@ -140,12 +159,19 @@ const LogAuditPage = () => {
               value={filter.type}
               onChange={handleOnChange}
               className="outline w-full p-3 rounded-xl outline-gray-400">
-              <option value={filter.type}>Semua Tipe</option>
-              <option value={filter.type}>test</option>
+              <option value="">Semua Tipe</option>
+              {type.map((item) => (
+                <>
+                  <option value={item}>{item}</option>
+                </>
+              ))}
             </select>
           </div>
 
-          <Button variant="secondary" classname="px-7 rounded-xl ">
+          <Button
+            onclick={handleFilter}
+            variant="secondary"
+            classname="px-7 rounded-xl ">
             Terapkan Filter
           </Button>
         </div>
@@ -159,6 +185,7 @@ const LogAuditPage = () => {
             <span>Tipe</span>
           </TableHeaderList>
           <TableBody
+          isLoadingFetch={isLoading}
             classname="grid-cols-5"
             nextPage={handleNextPage}
             prevPage={handlePrevPage}

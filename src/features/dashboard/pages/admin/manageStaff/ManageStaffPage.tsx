@@ -159,6 +159,7 @@ const ManageStaffPage = () => {
               <span>Aksi</span>
             </TableHeaderList>
             <TableBody
+            isLoadingFetch={isLoadingStaff}
               isLoading={isLoading}
               data={fillterStaff}
               onclickDelete={handleDelete}

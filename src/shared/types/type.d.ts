@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type React from "react";
 
 export interface MainLayoutProps {
@@ -72,16 +73,18 @@ export interface TableBodyProps {
   data?: EmployedProps[] | CustomerProps[];
   onclickEdit?: (id: number) => void;
   onclickDelete?: (id: number) => void;
-  renderItem?: (item: any, i:number) => ReactNode;
+  renderItem?: (item: any, i: number) => ReactNode;
+  tooltipe?: (item: any, i: number) => ReactNode;
   classname?: string;
   userIsLogin?: string;
   nextPage?: () => void;
   prevPage?: () => void;
-  page? : number
-  totalPage? : number
-  canEdit? : boolean
-  isLoading? : number
-  canAction? : boolean
+  page?: number;
+  totalPage?: number;
+  canEdit?: boolean;
+  isLoading?: number;
+  canAction?: boolean;
+  isLoadingFetch?: boolean;
 }
 
 export interface ChatLogProps {
@@ -91,4 +94,4 @@ export interface ChatLogProps {
   question: string;
   answer: string;
   created_at: string;
-};  
+}

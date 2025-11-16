@@ -4,9 +4,9 @@ import type { MainLayoutProps } from "../types/type";
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="flex bg-white">
+    <div className="flex bg-white h-screen">
       <Sidebar />
-      <div className="flex flex-col w-screen">
+      <div className="flex flex-col w-screen h-screen">
         <Navbar />
         {children}
       </div>

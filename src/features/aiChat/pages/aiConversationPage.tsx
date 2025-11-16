@@ -152,8 +152,8 @@ const aiConversationPage = () => {
     <MainLayout>
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className="flex flex-col justify-between h-full px-20">
-        <div className="flex flex-col gap-3 overflow-auto 2xl:h-176 md:h-110 2xl:text-base md:text-sm">
+        className="flex flex-col h-full overflow-hidden px-20">
+        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm">
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -184,8 +184,9 @@ const aiConversationPage = () => {
               </>
             ))
           )}
+
         </div>
-        <div className="bg-white 2xl:py-10 md:py-5">
+        <div className="bg-white sticky bottom-0 w-full 2xl:py-10 md:py-5">
           <Input
             icon={
               isLoadingSubmit ? (

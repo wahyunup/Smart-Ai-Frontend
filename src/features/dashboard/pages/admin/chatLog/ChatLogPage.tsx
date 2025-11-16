@@ -20,9 +20,11 @@ const ChatLogPage = () => {
   const [data, setData] = useState<ChatLogProps[]>([]);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingDoc, setIsLoadingDoc] = useState(false)
+  const [isLoadingDoc, setIsLoadingDoc] = useState(false);
   const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
-
+  const [hoverType, setHoverType] = useState<"question" | "answer" | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchChatLog = async () => {
@@ -136,6 +138,7 @@ const ChatLogPage = () => {
               <span>Jawaban Chat Bot</span>
             </TableHeaderList>
             <TableBody
+              isLoadingFetch={isLoadingDoc}
               onclickDelete={handleDeleteChatLog}
               onclickEdit={handleEditChatLog}
               canEdit={false}
@@ -144,6 +147,18 @@ const ChatLogPage = () => {
               prevPage={handlePrevPage}
               classname="grid grid-cols-6"
               page={page}
+              tooltipe={(item, i) =>
+                hoverEffect === i &&
+                (hoverType === "question"
+                  ? item.question.length > 40
+                  : item.answer.length > 40) && (
+                  <div className="transition-all duration-300 fixed 2xl:left-[50vw] w-[20vw] md:left-100 2xl:top-80 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5]">
+                    {hoverType === "question"
+                      ? item.question.slice(0, 400)
+                      : item.answer.slice(0, 400)}
+                  </div>
+                )
+              }
               totalPage={totalPage}
               renderItem={(item, i) => {
                 const uploadedAt = new Date(item.created_at);
@@ -157,30 +172,33 @@ const ChatLogPage = () => {
                     <span className="text-center">{item.id}</span>
                     <span className="text-center">{formattedDate}</span>
                     <span className="text-center">{item.username}</span>
-                  {item.question.length > 50 ? (
-                      <div
-                        className="relative"
-                        onMouseEnter={() => setHoverEffect(i)}
-                        onMouseLeave={() => setHoverEffect(false)}>
-                        {hoverEffect === i && (
-                          <div className="transition-all duration-300 fixed 2xl:left-200 md:left-100 top-15 -translate-x-1/2 bg-orange-100 rounded-xl p-3 z-50 outline outline-orange-400 md:text-sm 2xl:text-base text-center">
-                            {item?.question}
-                          </div>
-                        )}
-                        <span className="text-center">
-                          {item?.question.slice(0, 60)}...
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-center">{item?.question}</span>
-                    )}
-                    {item.answer.length > 60 ? (
-                      <span className="text-center">
-                        {item.answer.slice(0, 60)} ...{" "}
+
+                    <div
+                      className="relative text-center"
+                      onMouseEnter={() => {
+                        setHoverEffect(i);
+                        setHoverType("question");
+                      }}
+                      onMouseLeave={() => setHoverEffect(false)}>
+                      <span className="z-[2]">
+                        {item.question.length > 40
+                          ? item?.question.slice(0, 40) + "..."
+                          : item?.question}
                       </span>
-                    ) : (
-                      <span className="text-center">{item.answer}</span>
-                    )}
+                    </div>
+                    <div
+                      className="relative text-center"
+                      onMouseEnter={() => {
+                        setHoverEffect(i);
+                        setHoverType("answer");
+                      }}
+                      onMouseLeave={() => setHoverEffect(false)}>
+                      <span className="z-[2]">
+                        {item.answer.length > 50
+                          ? item?.answer.slice(0, 50) + "..."
+                          : item?.answer}
+                      </span>
+                    </div>
                   </>
                 );
               }}
