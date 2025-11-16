@@ -30,7 +30,7 @@ const TableBody = ({
       {data?.map((item, i) => tooltipe?.(item, i))}
       <div>
         {isLoadingFetch
-          ? Array.from({ length: 4 }).map((_, i) => (
+          ? Array.from({ length: 4 }).map((_) => (
               <div className="justify-between px-10 border-t border-[#B2B2B2] py-10 items-center justify-items-center-safe flex bg-gray-50">
                 <div className="h-3 bg-gray-200 rounded-full w-40 animate-pulse"></div>
                 <div className="h-3 bg-gray-200 rounded-full w-40 animate-pulse"></div>

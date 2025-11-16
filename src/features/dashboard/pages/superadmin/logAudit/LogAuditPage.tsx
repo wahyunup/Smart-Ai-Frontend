@@ -98,7 +98,7 @@ const LogAuditPage = () => {
   };
 
   const handleFilter = async () => {
-    const companyId = Number(filter.company);
+    // const companyId = Number(filter.company);
     
     await logAuditApi(page, 4, 1, filter.type, filter.date);
   };
