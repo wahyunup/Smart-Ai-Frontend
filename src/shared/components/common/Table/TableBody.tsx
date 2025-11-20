@@ -89,19 +89,21 @@ const TableBody = ({
                 )}
               </div>
             ))}
-        <div className="bg-gray-100 py-3 px-7 flex items-center gap-3 justify-end">
-          <p>Halaman</p>
-          <button onClick={prevPage} className="cursor-pointer">
-            <ChevronLeft />
-          </button>
+        {page && (
+          <div className="bg-gray-100 py-3 px-7 flex items-center gap-3 justify-end">
+            <p>Halaman</p>
+            <button onClick={prevPage} className="cursor-pointer">
+              <ChevronLeft />
+            </button>
 
-          <span>
-            {page} sampai {totalPage}
-          </span>
-          <button onClick={nextPage} className="cursor-pointer">
-            <ChevronRight />
-          </button>
-        </div>
+            <span>
+              {page} sampai {totalPage}
+            </span>
+            <button onClick={nextPage} className="cursor-pointer">
+              <ChevronRight />
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

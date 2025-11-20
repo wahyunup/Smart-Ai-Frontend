@@ -95,6 +95,8 @@ const ManageStaffPage = () => {
     const userData = data.find((data: { id: number }) => data.id === id);
     navigate("/admin/manage-staff/edit", { state: { userData: userData } });
   };
+
+  
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
@@ -160,10 +162,10 @@ const ManageStaffPage = () => {
             </TableHeaderList>
             <TableBody
             isLoadingFetch={isLoadingStaff}
-              isLoading={isLoading}
-              data={fillterStaff}
-              onclickDelete={handleDelete}
-              nextPage={handleNextPage}
+            isLoading={isLoading}
+            data={fillterStaff}
+            onclickDelete={handleDelete}
+            nextPage={handleNextPage}
               prevPage={handlePrevPage}
               onclickEdit={handleEdit}
               classname="grid grid-cols-7"
@@ -183,7 +185,7 @@ const ManageStaffPage = () => {
                             {item.name.slice(0, 1)}
                           </div>
                         ) : (
-                          <img src={item.profile_picture_url} alt="" />
+                          <img src={`https://145.79.15.190${item.profile_picture_url}`} alt="" />
                         )}
                       </div>
                       <span className="text-center">{item.id}</span>

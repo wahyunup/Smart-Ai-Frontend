@@ -5,18 +5,28 @@ const logAuditApi = async (
   limit: number,
   company_id?: number,
   category_activity?: string,
-  date?: number
+  startDate?: string,
+  endDate?: string
 ) => {
   try {
-    const res = await api.get(
-      `/admin/activity-logs?page=${page}&limit=${limit}&company_id=${company_id}&activity_type_category=${category_activity}&start_date=${date}&end_date=2026-12-31`
-    );
+    const params: any = {
+      page,
+      limit,
+    };
+
+    if (company_id) params.company_id = company_id;
+    if (category_activity) params.activity_type_category = category_activity;
+    if (startDate) params.start_date = startDate;
+    if (startDate) params.end_date = endDate;
+
+    const res = await api.get("/admin/activity-logs", { params });
     return res.data;
   } catch (error) {
     throw error;
   }
 };
 
+// Companies
 const companyListAuditApi = async () => {
   try {
     const res = await api.get("/admin/companies");
@@ -26,13 +36,42 @@ const companyListAuditApi = async () => {
   }
 };
 
+// Activity Types
 const typeActivityApi = async () => {
   try {
     const res = await api.get("/admin/activity-logs/type");
     return res.data;
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
-export { logAuditApi, companyListAuditApi,typeActivityApi };
+const DownloadCsvLog = async (
+  page?: number,
+  limit?: number,
+  company_id?: number,
+  category_activity?: string,
+  startDate?: string,
+  endDate?: string
+) => {
+  try {
+    const params: any = {
+      page,
+      limit,
+    };
+
+    if (company_id) params.company_id = company_id;
+    if (category_activity) params.activity_type_category = category_activity;
+    if (startDate) params.start_date = startDate;
+    if (startDate) params.end_date = endDate;
+
+    const res = await api.get(
+      `/admin/export-logs`
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { logAuditApi, companyListAuditApi, typeActivityApi, DownloadCsvLog };

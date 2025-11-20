@@ -116,7 +116,10 @@ const AddStaf = () => {
         dataEdit.division
       );
 
-      console.log(res);
+      if(res) {
+        console.log(res);
+        navigate("/admin/manage-staff")
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -139,9 +142,9 @@ const AddStaf = () => {
                 </span>
                 <label
                   htmlFor="profile_picture_file"
-                  className="border-1 border-gray-300 p-10 rounded-2xl border-dashed flex items-center justify-center text-gray-500 cursor-pointer flex-col gap-5 w-full">
+                  className="border-1 border-gray-300 p-10 rounded-2xl border-dashed flex items-center justify-center text-gray-500 cursor-pointer flex-col gap-5 w-full h-41">
                   {previewImage ? (
-                    <img src={previewImage} alt="preview-image" />
+                    <img src={previewImage} className="h-full" alt="preview-image" />
                   ) : (
                     "Klik untuk mengunggah"
                   )}
@@ -236,11 +239,11 @@ const AddStaf = () => {
                 </span>
                 <label
                   htmlFor="profile_picture_file"
-                  className="border-1 border-gray-300 p-10 rounded-2xl border-dashed flex items-center justify-center text-gray-500 cursor-pointer flex-col gap-5 w-full">
+                  className="border-1 border-gray-300 p-10 rounded-2xl border-dashed flex items-center justify-center text-gray-500 cursor-pointer flex-col gap-5 w-full h-41">
                   {editPreviewImage ? (
                     <img
-                      className="w-50"
-                      src={editPreviewImage}
+                      className="h-full"
+                      src={`https://145.79.15.190${editPreviewImage}`}
                       alt="preview-image"
                     />
                   ) : (

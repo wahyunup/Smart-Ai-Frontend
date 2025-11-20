@@ -3,6 +3,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import {
   companyListAuditApi,
+  DownloadCsvLog,
   logAuditApi,
   typeActivityApi,
 } from "../../../services/superadmin/LogAudit";
@@ -22,8 +23,9 @@ const LogAuditPage = () => {
   const [page, setPage] = useState(initParams);
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
-    date: 0,
-    company: "",
+    dateStart: "",
+    dateEnd: "",
+    company: 0,
     type: "",
   });
 
@@ -34,7 +36,28 @@ const LogAuditPage = () => {
       setDataLogs(res.logs);
       setTotalPage(res.total_pages);
       setPage(res.current_page);
-      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchLogAuditFilter = async () => {
+    const companyId = Number(filter.company);
+    setIsLoading(true);
+    try {
+      const res = await logAuditApi(
+        page,
+        4,
+        companyId,
+        filter.type,
+        filter.dateStart,
+        filter.dateEnd
+      );
+      setDataLogs(res.logs);
+      setTotalPage(res.total_pages);
+      setPage(res.current_page);
     } catch (error) {
       console.log(error);
     } finally {
@@ -55,7 +78,6 @@ const LogAuditPage = () => {
     try {
       const res = await typeActivityApi();
       setType(res.categories);
-      console.log(res.categories);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +101,11 @@ const LogAuditPage = () => {
   }, [page, setSearchParams]);
 
   useEffect(() => {
-    fetchLogAudit();
+    if (filter) {
+      fetchLogAuditFilter();
+    } else {
+      fetchLogAudit();
+    }
   }, [page]);
 
   useEffect(() => {
@@ -98,33 +124,102 @@ const LogAuditPage = () => {
   };
 
   const handleFilter = async () => {
-    // const companyId = Number(filter.company);
-    
-    await logAuditApi(page, 4, 1, filter.type, filter.date);
+    setPage(1);
+    const companyId = Number(filter.company);
+    try {
+      const res = await logAuditApi(
+        page,
+        4,
+        companyId,
+        filter.type,
+        filter.dateStart,
+        filter.dateEnd
+      );
+      setDataLogs(res.logs);
+      setTotalPage(res.total_pages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exportCsv = async () => {
+    setIsLoading(true);
+    const companyId = Number(filter.company);
+    try {
+      if (filter) {
+        const res = await DownloadCsvLog(
+          page,
+          4,
+          companyId,
+          filter.type,
+          filter.dateStart,
+          filter.dateEnd
+        );
+        const blob = new Blob([res], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Audit Log & Aktivitas.csv";
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        const res = await DownloadCsvLog(page, 4);
+        const blob = new Blob([res], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Audit Log & Aktivitas.csv";
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <MainLayout>
       <div className="p-10">
-        <div className="flex gap-2 flex-col">
-          <h1 className="text-4xl font-semibold">Audit Log & Aktivitas</h1>
-          <p className="text-xl">
-            Melacak semua aktivitas penting sistem, transaksi data, dan
-            kegagalan
-          </p>
+        <div className="flex justify-between items-end">
+          <div className="flex gap-2 flex-col">
+            <h1 className="text-4xl font-semibold">Audit Log & Aktivitas</h1>
+            <p className="text-xl">
+              Melacak semua aktivitas penting sistem, transaksi data, dan
+              kegagalan
+            </p>
+          </div>
+          <Button
+            onclick={exportCsv}
+            variant="secondary"
+            classname="px-10 py-4 bg-blue-500 rounded-xl h-fit">
+            Export CSV
+          </Button>
         </div>
 
         <div className="mt-10 flex gap-10 items-center">
           <Input
             type="date"
             onchange={handleOnChange}
-            value={filter.date}
+            value={filter.dateStart}
             variant="secondary"
             iconPosition="left"
-            label="Filter Tanggal"
+            label="Filter Tanggal Awal"
             labelLayout="inline"
-            htmlFor="date"
-            name="date"
+            htmlFor="dateStart"
+            name="dateStart"
+          />
+          <Input
+            type="date"
+            onchange={handleOnChange}
+            value={filter.dateEnd}
+            variant="secondary"
+            iconPosition="left"
+            label="Filter Tanggal Akhir"
+            labelLayout="inline"
+            htmlFor="dateEnd"
+            name="dateEnd"
           />
           <div className="flex items-center h-full w-full">
             <label
@@ -140,7 +235,7 @@ const LogAuditPage = () => {
               className="outline w-full p-3 rounded-xl outline-gray-400 h-full">
               <option value="">Semua perusahaan</option>
               {companyList.map((item: { name: string; id: number }) => (
-                <option key={item.id} value={item.name}>
+                <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
               ))}
@@ -151,7 +246,7 @@ const LogAuditPage = () => {
             <label
               htmlFor="filtercompany"
               className="font-semibold 2xl:text-md md:text-sm">
-              Filter Tipe Aktivitas:
+              Filter Tipe Aktivitas
             </label>
             <select
               name="type"
@@ -178,14 +273,14 @@ const LogAuditPage = () => {
 
         <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden mt-10">
           <TableHeaderList classname="grid-cols-5 bg-[#E3F9E8]">
-            <span>waktu</span>
+            <span>Waktu</span>
             <span>ID Aktor</span>
             <span>Aktivitas & Detail</span>
             <span>Perusahaan</span>
             <span>Tipe</span>
           </TableHeaderList>
           <TableBody
-          isLoadingFetch={isLoading}
+            isLoadingFetch={isLoading}
             classname="grid-cols-5"
             nextPage={handleNextPage}
             prevPage={handlePrevPage}
@@ -196,7 +291,6 @@ const LogAuditPage = () => {
             canAction={false}
             renderItem={(item, i) => {
               const firstText = item.activity_type_category.split("/")[0];
-              console.log(firstText);
               return (
                 <>
                   <span>{item?.timestamp}</span>

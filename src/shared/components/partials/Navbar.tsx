@@ -91,7 +91,7 @@ const Navbar = () => {
           "/chat"
         ) ? null : location.pathname.startsWith("/admin") ? (
         <>
-          <div className="bg-[#E3F9E8] h-20 flex justify-between items-center px-10 ">
+          <div className="bg-[#E3F9E8] 2xl:h-30 md:h-55 flex justify-between items-center px-10 ">
             <Button variant="link" onclick={setIsOpen}>
               <PanelLeftClose size={27} />
             </Button>
@@ -105,7 +105,7 @@ const Navbar = () => {
           </div>
         </>
       ) : location.pathname.startsWith("/superadmin") ? (
-        <div className="p-10 border-b-1 border-gray-300">
+        <div className="px-10 h-30 flex items-center border-b-1 border-gray-300">
           <Button variant="link" onclick={setIsOpen}>
             <PanelLeftClose size={27} />
           </Button>

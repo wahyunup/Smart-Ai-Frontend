@@ -95,3 +95,24 @@ export interface ChatLogProps {
   answer: string;
   created_at: string;
 }
+
+export interface TableCompanyProfilePageProps {
+  label?: string;
+  value?: string | React.ReactNode;
+  image?: string;
+  icon?: React.ReactNode;
+}
+
+export interface BreakDownCardProps {
+  title?: string
+  count?: number
+  icon?: React.ReactNode
+  statCount?: React.ReactNode
+}
+
+export interface BasicAreaProps {
+  heading? : string
+  datas? : number[]
+  days? : string[]
+  color? : string
+}
