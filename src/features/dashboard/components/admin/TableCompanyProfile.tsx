@@ -4,7 +4,7 @@ const TableCompanyProfile = ({
   label,
   value,
   icon,
-  image,
+  // image,
 }: TableCompanyProfilePageProps) => {
   return (
     <>

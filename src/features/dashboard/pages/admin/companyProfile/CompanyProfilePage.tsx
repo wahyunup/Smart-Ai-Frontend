@@ -1,12 +1,14 @@
 import { Eye, EyeOff, SquarePen } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CompanyProfilePage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("asdadsasdsad");
-
+  const [password, setPassword] = useState("");
+  useEffect(() => {
+    setPassword("asdadsasdsad");
+  }, []);
   return (
     <MainLayout>
       <div className="p-10">
@@ -50,7 +52,11 @@ const CompanyProfilePage = () => {
                 value={
                   <div className="flex items-center gap-3">
                     {showPassword ? password : "*".repeat(password.length)}
-                    <button className="cursor-pointer" onClick={()=> setShowPassword(!showPassword)}>{showPassword ? <Eye size={15}/> : <EyeOff size={15} />}</button>
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <Eye size={15} /> : <EyeOff size={15} />}
+                    </button>
                   </div>
                 }
                 icon={<SquarePen color="#0B5C37" size={22} />}
