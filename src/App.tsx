@@ -14,6 +14,7 @@ import {
   SuperAdminManageCompanyPage,
   SuperAdminManageAdminCompanyPage,
   SuperAdminSettingsPage,
+  SubscriptionPage,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -25,6 +26,7 @@ import {
 import { HomePage } from "./features/home";
 import { AiChatPage, AiConversationPage } from "./features/aiChat";
 import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
+import SelectSubcriptionPage from "./features/dashboard/pages/admin/subscription/SelectSubcriptionPage";
 
 function App() {
   return (
@@ -67,13 +69,23 @@ function App() {
             <Route path="edit" element={<AddStaffPage />} />
           </Route>
           <Route path="company-profile" element={<CompanyProfilePage />} />
+          <Route path="subcription">
+            <Route index element={<SubscriptionPage />} />
+            <Route path="select-sub" element={<SelectSubcriptionPage />} />
+          </Route>
         </Route>
 
         <Route path="/superadmin">
           <Route path="dashboard" element={<SuperAdminDashboardPage />} />
           <Route path="log-audit" element={<SuperAdminLogAuditPage />} />
-          <Route path="manage-company" element={<SuperAdminManageCompanyPage />} />
-          <Route path="manage-admin-company" element={<SuperAdminManageAdminCompanyPage />} />
+          <Route
+            path="manage-company"
+            element={<SuperAdminManageCompanyPage />}
+          />
+          <Route
+            path="manage-admin-company"
+            element={<SuperAdminManageAdminCompanyPage />}
+          />
           <Route path="settings" element={<SuperAdminSettingsPage />} />
         </Route>
 

@@ -243,7 +243,7 @@ const AddStaf = () => {
                   {editPreviewImage ? (
                     <img
                       className="h-full"
-                      src={`https://145.79.15.190${editPreviewImage}`}
+                      src={editPreviewImage}
                       alt="preview-image"
                     />
                   ) : (

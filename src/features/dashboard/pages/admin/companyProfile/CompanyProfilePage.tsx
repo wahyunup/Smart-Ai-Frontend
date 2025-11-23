@@ -1,13 +1,91 @@
-import { Eye, EyeOff, SquarePen } from "lucide-react";
+import { SquarePen, X } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
 import { useEffect, useState } from "react";
+import Input from "../../../../../shared/components/ui/Input";
+import Button from "../../../../../shared/components/ui/Button";
+import {
+  CompanyInformationApi,
+  EditCompanyInformationApi,
+} from "../../../services/admin/CompanyProfile";
 
 const CompanyProfilePage = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [editPassword, setEditPassword] = useState<boolean>(false);
+  const [editNamaAdmin, setEditNamaAdmin] = useState<boolean>(false);
+  const [editEmailCompany, setEditEmailCompany] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [editPreviewImage, setEditPreviewImage] = useState<string | null>(null);
+  const [datas, setDatas] = useState({
+    address: "",
+    admin_email: "",
+    admin_name: "",
+    company_email: "",
+    name: "",
+  });
+  const [value, setValue] = useState({
+    adminName: "",
+    companyAddress: "",
+    password: "",
+    imageProfile: null as File | null,
+  });
+
+  const handleEditProfile = async () => {
+    try {
+      const res = await EditCompanyInformationApi(
+        value.adminName,
+        value.companyAddress,
+        value.imageProfile,
+        value.password
+      );
+      alert("profile berhasil diedit")
+      setEditEmailCompany(false)
+      setEditNamaAdmin(false)
+      setEditPassword(false)
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name, files } = e.target;
+    if (name === "imageProfile" && files) {
+      setValue((prev) => ({
+        ...prev,
+        imageProfile: files[0],
+      }));
+      setEditPreviewImage(URL.createObjectURL(files[0]));
+    } else {
+      setValue((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
   useEffect(() => {
-    setPassword("asdadsasdsad");
+    const fetchInformationCompany = async () => {
+      try {
+        const res = await CompanyInformationApi();
+        setDatas({
+          address: res.address,
+          admin_email: res.admin_email,
+          admin_name: res.admin_name,
+          company_email: res.company_email,
+          name: res.name,
+        });
+        setPreviewImage(res.logo_s3_path);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchInformationCompany();
+  }, [editPassword, editEmailCompany, editNamaAdmin, value.imageProfile]);
+
+  useEffect(() => {
+    setPassword("kepo yaa");
   }, []);
   return (
     <MainLayout>
@@ -26,40 +104,127 @@ const CompanyProfilePage = () => {
             </div>
             <div className="flex flex-col border-t border-r border-l border-gray-300">
               <TableCompanyProfile
-                icon={<SquarePen color="#0B5C37" size={22} />}
+                icon={
+                  editNamaAdmin ? (
+                    <div className="flex items-center gap-3">
+                      <Button onclick={handleEditProfile} classname="px-5 py-2">
+                        submit
+                      </Button>
+                      <X
+                        className="text-red-700"
+                        onClick={() => setEditNamaAdmin(false)}
+                        size={22}
+                      />
+                    </div>
+                  ) : (
+                    <SquarePen
+                      onClick={() => setEditNamaAdmin(!editNamaAdmin)}
+                      color="#0B5C37"
+                      size={22}
+                    />
+                  )
+                }
                 label="Nama Admin"
-                value="Jhondoe"
+                value={
+                  editNamaAdmin ? (
+                    <Input
+                      name="adminName"
+                      onchange={handleOnChange}
+                      value={value.adminName}
+                      placeholder="input nama admin"
+                      classname="border rounded-xl px-2"
+                    />
+                  ) : (
+                    datas.admin_name
+                  )
+                }
               />
               <TableCompanyProfile
                 label="Email Admin"
-                value="Jhon.d@cemerlang.com"
+                value={datas.admin_email}
               />
-              <TableCompanyProfile
-                label="Nama Perusahaan"
-                value="PT Cemerlang Jaya"
-              />
-              <TableCompanyProfile label="Email" value="info@cemerlang.com" />
+              <TableCompanyProfile label="Nama Perusahaan" value={datas.name} />
+              <TableCompanyProfile label="Email" value={datas.company_email} />
               <TableCompanyProfile
                 label="Alamat Perusahaan"
-                value="Jalan Cendrawasih No. 25, RT 03/RW 05, Kelurahan Mulyorejo, Kecamatan Sukomanunggal, Kota Surabaya, Jawa Timur, 60112"
-                icon={<SquarePen color="#0B5C37" size={22} />}
+                value={
+                  editEmailCompany ? (
+                    <Input
+                      onchange={handleOnChange}
+                      name="companyAddress"
+                      value={value.companyAddress}
+                      placeholder="input alamat"
+                      classname="border rounded-xl px-2"
+                    />
+                  ) : (
+                    datas.address
+                  )
+                }
+                icon={
+                  editEmailCompany ? (
+                    <div className="flex items-center gap-3">
+                      <Button onclick={handleEditProfile} classname="px-5 py-2">
+                        submit
+                      </Button>
+                      <X
+                        className="text-red-700"
+                        onClick={() => setEditEmailCompany(false)}
+                        size={22}
+                      />
+                    </div>
+                  ) : (
+                    <SquarePen
+                      onClick={() => setEditEmailCompany(!editEmailCompany)}
+                      color="#0B5C37"
+                      size={22}
+                    />
+                  )
+                }
               />
-              <TableCompanyProfile label="Logo Perusahaan" />
+              <TableCompanyProfile
+                name="imageProfile"
+                previewImage={previewImage}
+                editPreviewImage={editPreviewImage}
+                onchange={handleOnChange}
+                label="Logo Perusahaan"
+              />
             </div>
             <div className="border-t border-r border-l border-gray-300">
               <TableCompanyProfile
                 label="Password"
                 value={
-                  <div className="flex items-center gap-3">
-                    {showPassword ? password : "*".repeat(password.length)}
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword ? <Eye size={15} /> : <EyeOff size={15} />}
-                    </button>
-                  </div>
+                  editPassword ? (
+                    <Input
+                      name="password"
+                      value={value.password}
+                      onchange={handleOnChange}
+                      placeholder="ubah password"
+                      classname="border rounded-xl px-2"
+                    />
+                  ) : (
+                    "*".repeat(password.length)
+                  )
                 }
-                icon={<SquarePen color="#0B5C37" size={22} />}
+                icon={
+                  editPassword ? (
+                    <div className="flex items-center gap-3">
+                      <Button onclick={handleEditProfile} classname="px-5 py-2">
+                        submit
+                      </Button>
+                      <X
+                        className="text-red-700"
+                        onClick={() => setEditPassword(false)}
+                        size={22}
+                      />
+                    </div>
+                  ) : (
+                    <SquarePen
+                      onClick={() => setEditPassword(true)}
+                      color="#0B5C37"
+                      size={22}
+                    />
+                  )
+                }
               />
             </div>
           </div>

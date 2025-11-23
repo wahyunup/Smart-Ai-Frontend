@@ -16,13 +16,13 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [documentSummary, setDocumentSummary] = useState({
     completed_documents: 0,
     failed_documents: 0,
     processing_documents: 0,
     total_documents: 0,
-    document_uploads_this_month : 0
+    document_uploads_this_month: 0,
   });
   const [chatActivity, setChatActivity] = useState();
   const [chatBotActivity, setChatBotActivity] = useState();
@@ -41,7 +41,8 @@ const AdminDashboard = () => {
             res.dashboard_breakdown.document_summary.processing_documents,
           total_documents:
             res.dashboard_breakdown.document_summary.total_documents,
-            document_uploads_this_month : res.dashboard_breakdown.document_uploads_this_month
+          document_uploads_this_month:
+            res.dashboard_breakdown.document_uploads_this_month,
         });
         console.log(res.dashboard_breakdown);
         setRecentDocuments(res.dashboard_breakdown.recent_documents);
@@ -55,7 +56,13 @@ const AdminDashboard = () => {
   }, []);
 
   const dataChartWeekly = Object.values(chatBotActivity || {});
-  const day = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"];
+  const tanggal = Object.keys(chatBotActivity || {});
+  const days = tanggal.map((t) => {
+    const date = new Date(t);
+    const namaHari = date.toLocaleDateString("id-ID", { weekday: "long" });
+    return namaHari;
+  });
+
   const dataChartMonthly = Object.values(chatActivity || {});
   const month = Object.keys(chatActivity || {}).map(
     (date) => date.split("-")[2]
@@ -80,7 +87,8 @@ const AdminDashboard = () => {
             statCount={
               <>
                 <span className="text-green-600 flex items-center gap-2">
-                  <TrendingUp size={15} />{documentSummary.document_uploads_this_month}
+                  <TrendingUp size={15} />
+                  {documentSummary.document_uploads_this_month}
                 </span>
                 <span className="text-[#606060]">Unggahan Bulan Ini</span>
               </>
@@ -134,7 +142,7 @@ const AdminDashboard = () => {
           <BasicArea
             color="#22c55e"
             datas={dataChartWeekly.map(Number)}
-            days={day}
+            days={days.map(String)}
             heading="Pola Penggunaan Chatbot (Mingguan)"
           />
           <BasicArea
@@ -177,7 +185,9 @@ const AdminDashboard = () => {
             />
           </div>
           <div className="flex justify-end">
-            <button onClick={() => navigate("/admin/manage-documents")} className="flex items-center gap-2 hover:gap-4 transition-all duration-300 cursor-pointer font-semibold text-[#126F3D]">
+            <button
+              onClick={() => navigate("/admin/manage-documents")}
+              className="flex items-center gap-2 hover:gap-4 transition-all duration-300 cursor-pointer font-semibold text-[#126F3D]">
               Lihat Semua Log & Aktivitas <CircleArrowRight />
             </button>
           </div>

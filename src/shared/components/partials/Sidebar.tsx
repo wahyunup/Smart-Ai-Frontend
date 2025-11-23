@@ -2,6 +2,7 @@ import {
   Building2,
   ChevronDown,
   ChevronRight,
+  CircleDollarSign,
   CircleUser,
   ClipboardClock,
   EllipsisVertical,
@@ -72,6 +73,11 @@ const Sidebar = () => {
       icon: <CircleUser className="2xl:size-[27px] md:size-[24px]" />,
       lable: "Profil Perusahaan",
       link: "/admin/company-profile",
+    },
+    {
+      icon: <CircleDollarSign className="2xl:size-[27px] md:size-[24px]" />,
+      lable: "Subcription",
+      link: "/admin/subcription",
     },
   ];
 
@@ -202,12 +208,12 @@ const Sidebar = () => {
           <div className="flex items-center flex-col gap-8">
             <img className="2xl:size-15 md:size-10" src={logo} alt="" />
             <img className="2xl:size-15 md:size-10" src="/Logo.png" alt="" />
-            <div className="flex flex-col items-start 2xl:gap-10 md:gap-5 font-inter">
+            <div className="flex flex-col items-start gap-5 font-inter">
               {navlist.map((item, i) => (
                 <Button
                   key={i}
                   variant="link"
-                  classname={`flex items-center gap-3 transition-all duration-300 py-3 px-5 justify-start hover:bg-[#1D8A45] hover:text-white rounded-full underline- ${
+                  classname={`flex items-center gap-3 transition-all duration-300 py-3 px-5 justify-start hover:bg-[#1D8A45] w-full hover:text-white rounded-full underline- ${
                     location.pathname.startsWith(item.link)
                       ? " bg-[#1D8A45] text-white rounded-full"
                       : ""
@@ -436,7 +442,7 @@ const Sidebar = () => {
                 <div className="w-12 h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
                   <img
                     className="w-12"
-                    src={loginUser.profile_picture_url}
+                    src={`https://145.79.15.190${loginUser.profile_picture_url}`}
                     alt="profile-picture"
                   />
                 </div>

@@ -6,6 +6,8 @@ export { default as CompanyProfilePage } from "./pages/admin/companyProfile/Comp
 export { default as AddDocument } from "./pages/admin/manageDocuments/AddDocumentPage";
 export { default as ChatLogDetailPage } from "./pages/admin/chatLog/ChatLogDetail";
 export { default as AddStaffPage } from "./pages/admin/manageStaff/AddStaff";
+export { default as SubscriptionPage } from "./pages/admin/subscription/SubscriptionPage";
+export { default as SelectSubscriptionPage } from "./pages/admin/subscription/SelectSubcriptionPage"
 export { default as SuperAdminDashboardPage } from "./pages/superadmin/dashboard/DashboardPage";
 export { default as SuperAdminLogAuditPage } from "./pages/superadmin/logAudit/LogAuditPage";
 export { default as SuperAdminManageCompanyPage } from "./pages/superadmin/manageCompany/ManageCompanyPage";

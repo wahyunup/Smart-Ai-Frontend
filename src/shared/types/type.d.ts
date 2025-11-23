@@ -99,20 +99,23 @@ export interface ChatLogProps {
 export interface TableCompanyProfilePageProps {
   label?: string;
   value?: string | React.ReactNode;
-  image?: string;
+  editPreviewImage?: string | null;
+  previewImage?: string | null;
   icon?: React.ReactNode;
+  name?: string;
+  onchange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface BreakDownCardProps {
-  title?: string
-  count?: number
-  icon?: React.ReactNode
-  statCount?: React.ReactNode
+  title?: string;
+  count?: number;
+  icon?: React.ReactNode;
+  statCount?: React.ReactNode;
 }
 
 export interface BasicAreaProps {
-  heading? : string
-  datas? : number[]
-  days? : string[]
-  color? : string
+  heading?: string;
+  datas?: number[];
+  days?: string[];
+  color?: string;
 }

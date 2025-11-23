@@ -91,7 +91,7 @@ const Navbar = () => {
           "/chat"
         ) ? null : location.pathname.startsWith("/admin") ? (
         <>
-          <div className="bg-[#E3F9E8] 2xl:h-30 md:h-55 flex justify-between items-center px-10 ">
+          <div className={`bg-[#E3F9E8] ${location.pathname.startsWith("/admin/dashboard") ? "2xl:h-36" : ""} 2xl:h-25 md:h-55 flex justify-between items-center px-10 `}>
             <Button variant="link" onclick={setIsOpen}>
               <PanelLeftClose size={27} />
             </Button>

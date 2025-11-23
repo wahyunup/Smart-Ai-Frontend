@@ -151,7 +151,7 @@ const ManageStaffPage = () => {
           </div>
 
           <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
-            <TableHeaderList classname="grid bg-[#E3F9E8] grid-cols-7">
+            <TableHeaderList classname="bg-[#E3F9E8] grid-cols-7">
               <span>ID</span>
               <span>Username</span>
               <span>Email</span>
