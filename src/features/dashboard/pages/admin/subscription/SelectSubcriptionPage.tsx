@@ -13,7 +13,7 @@ const SelectSubcriptionPage = () => {
   const [currentPlan, setCurrentPlan] = useState();
   const [isLoading, setIsLoading] = useState<string | boolean>(false);
 
-  // const isLocalhost = window.location.hostname === "localhost";
+  const isLocalhost = window.location.hostname === "localhost";
 
   useEffect(() => {
     const fetchSubPlan = async () => {
@@ -32,13 +32,19 @@ const SelectSubcriptionPage = () => {
 
   const handlePayment = async (id: number, package_type?: string) => {
     console.log(id, "index");
-    
+
     const loadId = package_type ? `topup-${id}` : `plan-${id}`;
     setIsLoading(loadId);
-    const successRoute =
-      "http://localhost:5173/admin/subcription/payment-success";
-    const failedRoute =
-      "http://localhost:5173/admin/subcription/payment-failed";
+    const successRoute = isLocalhost
+      ? "http://localhost:5173/admin/subcription/payment-success"
+      : `${
+          import.meta.env.VITE_VERCEL_URL
+        }/admin/subcription/payment-success` ||
+        `${import.meta.env.VITE_VPS_URL}/admin/subcription/payment-success`;
+    const failedRoute = isLocalhost
+      ? "http://localhost:5173/admin/subcription/payment-failed"
+      : `${import.meta.env.VITE_VERCEL_URL}/admin/subcription/payment-failed` ||
+        `${import.meta.env.VITE_VPS_URL}/admin/subcription/payment-failed`;
     try {
       if (!package_type) {
         const res = await myPaymentApi(id, successRoute, failedRoute, "");
@@ -49,7 +55,12 @@ const SelectSubcriptionPage = () => {
         if (!package_type) {
           return;
         }
-        const res = await myPaymentApi(0, successRoute, failedRoute, package_type);
+        const res = await myPaymentApi(
+          0,
+          successRoute,
+          failedRoute,
+          package_type
+        );
         if (res) {
           window.open(res.payment_url, "_blank");
         }
@@ -150,7 +161,7 @@ const SelectSubcriptionPage = () => {
             </div>
 
             <div className="flex gap-3 mt-5 mb-5">
-              {optionPlan.map((item: any, i:number) => (
+              {optionPlan.map((item: any, i: number) => (
                 <div className="flex flex-col justify-between gap-3 border border-gray-200 bg-[#0DB57526] px-3 py-5 h-50 rounded-2xl w-60">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-[#009C61] text-3xl font-semibold">
