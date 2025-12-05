@@ -31,20 +31,14 @@ const SelectSubcriptionPage = () => {
   }, [isLoading]);
 
   const handlePayment = async (id: number, package_type?: string) => {
-    console.log(id, "index");
-
     const loadId = package_type ? `topup-${id}` : `plan-${id}`;
     setIsLoading(loadId);
-    const successRoute = isLocalhost
-      ? "http://localhost:5173/admin/subcription/payment-success"
-      : `${
-          import.meta.env.VITE_VERCEL_URL
-        }/admin/subcription/payment-success` ||
-        `${import.meta.env.VITE_VPS_URL}/admin/subcription/payment-success`;
-    const failedRoute = isLocalhost
-      ? "http://localhost:5173/admin/subcription/payment-failed"
-      : `${import.meta.env.VITE_VERCEL_URL}/admin/subcription/payment-failed` ||
-        `${import.meta.env.VITE_VPS_URL}/admin/subcription/payment-failed`;
+    const baseURL = !isLocalhost
+      ? import.meta.env.VITE_VERCEL_URL ?? import.meta.env.VITE_VPS_URL
+      : "http://localhost:5173";
+    const successRoute = `${baseURL}/admin/subcription/payment-success`;
+    const failedRoute = `${baseURL}/admin/subcription/payment-failed`;
+
     try {
       if (!package_type) {
         const res = await myPaymentApi(id, successRoute, failedRoute, "");
