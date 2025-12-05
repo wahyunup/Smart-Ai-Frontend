@@ -6,7 +6,11 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { deleteDocument, getDocuments } from "../../../services/admin/ManageDocuments";
+import {
+  deleteDocument,
+  getDocuments,
+} from "../../../services/admin/ManageDocuments";
+import Swal from "sweetalert2";
 
 const ManageDocuments = () => {
   const [value, setValue] = useState("");
@@ -16,11 +20,10 @@ const ManageDocuments = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchDocument = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await getDocuments(page, 4);
       setData(res.documents);
@@ -28,7 +31,7 @@ const ManageDocuments = () => {
     } catch (error) {
       console.log(Response.error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -37,8 +40,8 @@ const ManageDocuments = () => {
   }, [page]);
 
   useEffect(() => {
-      setSearchParams({ page: String(page) });
-    }, [page, setSearchParams]);
+    setSearchParams({ page: String(page) });
+  }, [page, setSearchParams]);
 
   const fillterDatas = data.filter((item: any) =>
     item.title.toLowerCase().includes(value)
@@ -57,14 +60,14 @@ const ManageDocuments = () => {
   };
 
   const handleNextPage = () => {
-    if(isLoading) return
-    if(page < totalPage) {
+    if (isLoading) return;
+    if (page < totalPage) {
       setPage(page + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (isLoading) return
+    if (isLoading) return;
     if (page > 1) {
       setPage(page - 1);
     }
@@ -75,11 +78,22 @@ const ManageDocuments = () => {
       const confirmation = confirm("yakin menghapus dokumen?");
       if (confirmation) {
         await deleteDocument(id);
-        alert("dokumen terhapus")
-        fetchDocument()
+        Swal.fire({
+          text: "dokument berhasil dihapus",
+          icon: "warning",
+          confirmButtonText: "oke",
+        }).then((response) => {
+          if (response.isConfirmed) {
+            fetchDocument();
+          }
+        });
       }
-    } catch (error) {
-      alert(`data gagal dihapus ${error}`);
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     }
   };
 
@@ -125,7 +139,7 @@ const ManageDocuments = () => {
               <span>Tanggal Unggah</span>
             </TableHeaderList>
             <TableBody
-            isLoadingFetch={isLoading}
+              isLoadingFetch={isLoading}
               onclickDelete={handleDelete}
               nextPage={handleNextPage}
               prevPage={handlePrevPage}

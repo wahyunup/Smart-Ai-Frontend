@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
 import { decodeJwt } from "../../../shared/utils/Decode";
+import Swal from "sweetalert2";
 
 const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,30 +33,41 @@ const AdminLoginPage = () => {
       const res = await authLoginApi(form.username, form.password);
       const accessToken = res.access_token;
       const expiresIn = res.expires_in;
-      if(accessToken) {
-        setCookie("accesstoken", accessToken, expiresIn);
-        alert("login berhasil");
-        navigate("/superadmin/dashboard")
+      if (accessToken) {
+        Swal.fire({
+          text: "login berhasil",
+          icon: "success",
+          confirmButtonText: "oke",
+        }).then((response) => {
+          if (response.isConfirmed) {
+            setCookie("accesstoken", accessToken, expiresIn);
+            navigate("/superadmin/dashboard");
+          }
+        });
       }
     } catch (error: any) {
-      alert(error.response.data.detail[0].msg);
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-useEffect(() => {
-    const token = getCookie("accesstoken")
+  useEffect(() => {
+    const token = getCookie("accesstoken");
     if (token) {
-      const decode = decodeJwt(token)
-      const role = decode.role
+      const decode = decodeJwt(token);
+      const role = decode.role;
       if (role === "employee") {
-        navigate("/chat")
+        navigate("/chat");
       } else if (role === "super_admin") {
-        navigate("/superadmin/dashboard")
+        navigate("/superadmin/dashboard");
       }
     }
-  },[])
+  }, []);
 
   return (
     <AuthLayout>
@@ -66,7 +78,7 @@ useEffect(() => {
         formContent={
           <div className="flex flex-col gap-2 w-100">
             <Input
-            variant="primary"
+              variant="primary"
               onchange={handleOnChange}
               value={form.username}
               name="username"
@@ -76,7 +88,7 @@ useEffect(() => {
               label="Username"
             />
             <Input
-            variant="primary"
+              variant="primary"
               onchange={handleOnChange}
               value={form.password}
               name="password"

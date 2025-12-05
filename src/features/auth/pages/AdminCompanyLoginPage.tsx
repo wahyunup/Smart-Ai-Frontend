@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { Icon } from "@iconify/react";
 import { decodeJwt } from "../../../shared/utils/Decode";
-
+import Swal from "sweetalert2";
 const CompanyLoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,33 +30,45 @@ const CompanyLoginPage = () => {
     try {
       const res = await authLoginApi(form.email, form.password);
       const token = res?.access_token;
+      console.log(res);
 
       if (!token) {
         throw new Error("access tokennya kosong");
       }
 
-      setCookie("accesstoken", token, 3600);
-      alert("login sukses");
-      window.location.reload()
-    } catch (error:any) {
-      alert(error.response.data.detail[0].msg)
+      Swal.fire({
+        text: "login berhasil",
+        icon: "success",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          setCookie("accesstoken", token, 3600);
+          window.location.reload();
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-useEffect(() => {
-    const token = getCookie("accesstoken")
+  useEffect(() => {
+    const token = getCookie("accesstoken");
     if (token) {
-      const decode = decodeJwt(token)
-      const role = decode.role
+      const decode = decodeJwt(token);
+      const role = decode.role;
       if (role === "employee") {
-        navigate("/chat")
+        navigate("/chat");
       } else if (role === "admin") {
-        navigate("/admin/dashboard")
+        navigate("/admin/dashboard");
       }
-    } 
-  },[])
+    }
+  }, []);
   return (
     <AuthLayout>
       <AuthSection
@@ -66,7 +78,7 @@ useEffect(() => {
         formContent={
           <div className="w-100 flex flex-col gap-2">
             <Input
-            variant="primary"
+              variant="primary"
               label="Email Perusahaan"
               name="email"
               type="email"
@@ -77,7 +89,7 @@ useEffect(() => {
             />
             <div>
               <Input
-              variant="primary"
+                variant="primary"
                 label="Kata Sandi"
                 name="password"
                 placeholder="Masukan kata sandi"

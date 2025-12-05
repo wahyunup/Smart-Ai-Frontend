@@ -2,68 +2,109 @@ import { useEffect, useState } from "react";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { mySubcriptionApi } from "../../../services/admin/Subcription";
+import {
+  mySubcriptionApi,
+  myTransactionApi,
+} from "../../../services/admin/Subcription";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SubcriptionPage = () => {
-  const navigate = useNavigate()
-  const [datas, setDatas] = useState<any>();
+  const navigate = useNavigate();
+  const [transaction, setTransaction] = useState<any>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initParams = Number(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(initParams);
+  const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [mySub, setMySub] = useState({
-    plan_name: "",
-    status: "",
-    start_date: "",
+    current_documents: 0,
+    current_users: 0,
+    days_until_renewal: 0,
+    document_quota: 0,
     end_date: "",
-    question_quota: 0,
-    questions_used: 0,
-    top_up_quota: 0,
-    remaining_questions: 0,
     max_users: 0,
+    monthly_quota: 0,
+    plan_name: "",
+    remaining_documents: 0,
+    remaining_documents_percentage: 0,
+    remaining_quota: 0,
+    remaining_quota_percentage: 0,
+    remaining_users: 0,
+    remaining_users_percentage: 0,
+    top_up_quota: 0,
+    total_quota: 0,
   });
-  const transactionLog = [
-    {
-      id_transaksi: "INV-2025-11-001",
-      deskripsi: "Langganan Basic Plan (Nov 2025)",
-      total_tagihan: 149.0,
-      tanggal_pengajuan: "21 Nov 2025",
-      status: "lunas",
-    },
-    {
-      id_transaksi: "INV-2025-11-002",
-      deskripsi: "Pengajuan Top Up Kuota (+5.000)",
-      total_tagihan: 200.0,
-      tanggal_pengajuan: "21 Nov 2025",
-      status: "menunggu pembayaran",
-    },
-  ];
 
   useEffect(() => {
-    const fetchMySub = async () => {
-      try {
-        const res = await mySubcriptionApi();
-        setMySub({
-          end_date: res.end_date,
-          max_users: res.max_users,
-          plan_name: res.plan_name,
-          question_quota: res.question_quota,
-          questions_used: res.questions_used,
-          remaining_questions: res.remaining_questions,
-          start_date: res.start_date,
-          status: res.status,
-          top_up_quota: res.top_up_quota,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    setSearchParams({ page: String(page) });
+  }, [page]);
+
+  const fetchMySub = async () => {
+    try {
+      const res = await mySubcriptionApi();
+      setMySub({
+        end_date: res.end_date,
+        current_documents: res.current_documents,
+        current_users: res.current_users,
+        days_until_renewal: res.days_until_renewal,
+        document_quota: res.document_quota,
+        max_users: res.max_users,
+        monthly_quota: res.monthly_quota,
+        plan_name: res.plan_name,
+        remaining_documents: res.remaining_documents,
+        remaining_documents_percentage: res.remaining_documents_percentage,
+        remaining_quota: res.remaining_quota,
+        remaining_quota_percentage: res.remaining_quota_percentage,
+        remaining_users: res.remaining_users,
+        remaining_users_percentage: res.remaining_users_percentage,
+        top_up_quota: res.top_up_quota,
+        total_quota: res.total_quota,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTransaction = async () => {
+    setIsLoading(true);
+    try {
+      const res = await myTransactionApi(page, 2);
+      console.log(res);
+      setTotalPage(res.total_pages);
+      setTransaction(res.items);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchMySub();
-  }, []);
+    fetchTransaction();
+  }, [page]);
 
-  useEffect(() => {
-    setDatas(transactionLog);
-  }, []);
+  const handleNextPage = () => {
+    if (isLoading) return;
+    if (page < totalPage) {
+      setPage(page + 1);
+    }
+  };
 
-  const convertDate = formatDate(mySub.end_date)
+  const handlePrevPage = () => {
+    if (isLoading) return;
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const convertDate = new Date(mySub.end_date).toLocaleString("id-ID", {
+    day : "numeric",
+    month : "long",
+    year : "numeric"
+  });
+
   return (
     <MainLayout>
       <div className="p-10">
@@ -80,11 +121,14 @@ const SubcriptionPage = () => {
               </p>
               <div>
                 <h1 className="text-3xl font-semibold text-[#1D8A45] font-inter">
-                  Basic Plan
+                  {mySub.plan_name}
                 </h1>
-                <p className="text-sm text-[#008846]">{mySub.question_quota} Pertanyaan / Bulan</p>
+                <p className="text-sm text-[#008846]">
+                  {mySub.monthly_quota} Pertanyaan / Bulan
+                </p>
                 <p className="text-sm text-[#DB3726]">
-                  Sisa Kuota: {mySub.questions_used} / {mySub.question_quota} Pertanyaan
+                  Sisa Kuota: {mySub.remaining_quota} / {mySub.total_quota}{" "}
+                  Pertanyaan
                 </p>
               </div>
             </div>
@@ -107,16 +151,19 @@ const SubcriptionPage = () => {
               </p>
               <div>
                 <h1 className="text-3xl font-semibold text-[#1D8A45] font-inter">
-                {mySub.remaining_questions}
+                  {mySub.remaining_quota}
                 </h1>
                 <p className="text-sm text-[#DB3726]">
-                  Tersisa 24% dari {mySub.question_quota} kuota
+                  Tersisa {mySub.remaining_quota_percentage}% dari{" "}
+                  {mySub.total_quota} kuota
                 </p>
               </div>
             </div>
             <div className="border-l border-[#E5E5E5]"></div>
             <div className="flex flex-col justify-center ">
-              <button onClick={() => navigate("select-sub")} className="p-2 rounded-lg cursor-pointer border-[#2BA54B] border text-sm">
+              <button
+                onClick={() => navigate("select-sub")}
+                className="p-2 rounded-lg cursor-pointer border-[#2BA54B] border text-sm">
                 Upgrade Plan / Top Up kuota
               </button>
             </div>
@@ -136,23 +183,47 @@ const SubcriptionPage = () => {
               <TableBody
                 classname="grid-cols-6"
                 canAction={false}
-                data={datas}
+                nextPage={handleNextPage}
+                prevPage={handlePrevPage}
+                isLoadingFetch={isLoading}
+                totalPage={totalPage}
+                page={page}
+                data={transaction}
                 renderItem={(item) => {
+                  const date = formatDate(item.paid_at);
+                  const amountIdn = item?.amount?.toLocaleString("id-ID");
                   return (
                     <>
-                      <span>{item.id_transaksi}</span>
-                      <span>{item.deskripsi}</span>
-                      <span>{item.total_tagihan}</span>
-                      <span>{item.tanggal_pengajuan}</span>
+                      {item.payment_reference === null ? (
+                        <span className="text-center">id tidak di temukan</span>
+                      ) : (
+                        <span className="text-center">
+                          {item.payment_reference}
+                        </span>
+                      )}
+                      <span>{item.type}</span>
+                      <span>Rp.{amountIdn}</span>
+                      <span>{date}</span>
                       <span
                         className={`${
-                          item.status === "lunas"
+                          item.status === "paid"
                             ? "bg-[#00AA58] px-3 text-white py-1 rounded-full"
-                            : item.status === "menunggu pembayaran"
+                            : item.status === "pending_payment"
                             ? "bg-[#DBBE03] text-white px-3 py-1 rounded-full"
+                            : item.status === "pending_review"
+                            ? "bg-[#1069C9] text-white px-3 py-1 rounded-full"
+                            : item.status === "expired" 
+                            ? "bg-red-600 text-white px-3 py-1 rounded-full"
                             : ""
                         }`}>
                         {item.status}
+                      </span>
+                      <span className="text-sm text-[#2BA54B] underline">
+                        {item.status === "pending_payment" ? (
+                          <a href={item.payment_url} target="_blank">Lanjutkan Pembayaran</a>
+                        ) : item.status === "paid" ? (
+                          <a href={`/admin/subcription/invoice?trx-id=${item.payment_reference}`}>Lihat/unduh bukti</a>
+                        ) : ""}
                       </span>
                     </>
                   );

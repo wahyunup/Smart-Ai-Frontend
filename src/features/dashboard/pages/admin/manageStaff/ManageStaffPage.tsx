@@ -7,6 +7,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FilePlus, Search } from "lucide-react";
 import { deleteStaff, getStaff } from "../../../services/admin/ManageStaff";
+import Swal from "sweetalert2";
 
 const ManageStaffPage = () => {
   const [value, setValue] = useState("");
@@ -67,7 +68,7 @@ const ManageStaffPage = () => {
   useEffect(() => {
     setSearchParams({ page: String(page) });
   }, [page, setSearchParams]);
-  
+
   const handlePrevPage = () => {
     if (isLoadingStaff) return;
     if (page > 1) {
@@ -80,12 +81,20 @@ const ManageStaffPage = () => {
     try {
       const confirmation = confirm("yakin ingin menghapus staff");
       if (confirmation) {
-        const res = await deleteStaff(id);
-        alert("staff berhasil dihapus");
-        console.log(res);
+        await deleteStaff(id);
+        Swal.fire({
+          text: "Staff berhasil dihapus",
+          icon: "success",
+          confirmButtonText: "oke",
+        })
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+       Swal.fire({
+        text: error.response.data.message,
+        icon: "warning",
+        confirmButtonText: "oke",
+      })
+      
     } finally {
       setIsLoading(0);
       fetchStaff();
@@ -96,7 +105,6 @@ const ManageStaffPage = () => {
     navigate("/admin/manage-staff/edit", { state: { userData: userData } });
   };
 
-  
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
@@ -161,11 +169,11 @@ const ManageStaffPage = () => {
               <span>Aksi</span>
             </TableHeaderList>
             <TableBody
-            isLoadingFetch={isLoadingStaff}
-            isLoading={isLoading}
-            data={fillterStaff}
-            onclickDelete={handleDelete}
-            nextPage={handleNextPage}
+              isLoadingFetch={isLoadingStaff}
+              isLoading={isLoading}
+              data={fillterStaff}
+              onclickDelete={handleDelete}
+              nextPage={handleNextPage}
               prevPage={handlePrevPage}
               onclickEdit={handleEdit}
               classname="grid grid-cols-7"
@@ -185,7 +193,10 @@ const ManageStaffPage = () => {
                             {item.name.slice(0, 1)}
                           </div>
                         ) : (
-                          <img src={`https://145.79.15.190${item.profile_picture_url}`} alt="" />
+                          <img
+                            src={`https://145.79.15.190${item.profile_picture_url}`}
+                            alt=""
+                          />
                         )}
                       </div>
                       <span className="text-center">{item.id}</span>

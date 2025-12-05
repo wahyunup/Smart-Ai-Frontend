@@ -4,8 +4,12 @@ import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { editDocument, uploadDocuments } from "../../../services/admin/ManageDocuments";
+import {
+  editDocument,
+  uploadDocuments,
+} from "../../../services/admin/ManageDocuments";
 import { Icon } from "@iconify/react";
+import Swal from "sweetalert2";
 
 const AddDocumentPage = () => {
   const [form, setForm] = useState({
@@ -41,18 +45,43 @@ const AddDocumentPage = () => {
 
   const handleSubmit = async () => {
     if (!form.file || !form.name || !form.tag) {
-      alert("Semua field wajib diisi!");
-      return;
+      Swal.fire({
+        text: "semua field wajib diisi!",
+        icon: "warning",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          return;
+        }
+      });
     }
     setIsLoading(true);
 
     try {
-      const res = await uploadDocuments(form.file, form.name, form.tag);
-      console.log(res, "<---- response submit");
-      alert("Dokumen berhasil diupload!");
-      navigate("/admin/manage-documents");
-    } catch (error) {
-      alert(`Gagal mengupload dokumen! ${error}`);
+      if (!form.file) {
+        Swal.fire({
+          text: "semua field wajib diisi!",
+          icon: "warning",
+          confirmButtonText: "oke",
+        });
+        return;
+      }
+      await uploadDocuments(form.file, form.name, form.tag);
+      Swal.fire({
+        text: "upload dokument berhasil",
+        icon: "warning",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          navigate("/admin/manage-documents");
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "warning",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -60,8 +89,15 @@ const AddDocumentPage = () => {
 
   const handleEdit = async () => {
     if (!dataEdit.extracted_text || !dataEdit.title || !dataEdit.tags) {
-      alert("Semua field wajib diisi!");
-      return;
+      Swal.fire({
+        text: "Semua field wajib diisi!",
+        icon: "warning",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          return;
+        }
+      });
     }
     setIsLoading(true);
     try {
@@ -71,10 +107,21 @@ const AddDocumentPage = () => {
         dataEdit.title,
         dataEdit.tags
       );
-      alert("edit dokumen berhasil");
-      navigate("/admin/manage-documents");
-    } catch (error) {
-      alert(`gagal upload ${error}`);
+      Swal.fire({
+        text: "edit dokument berhasil",
+        icon: "success",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          navigate("/admin/manage-documents");
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(false);
     }

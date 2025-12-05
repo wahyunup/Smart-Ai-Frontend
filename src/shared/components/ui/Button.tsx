@@ -18,7 +18,10 @@ const Button = ({
               variant === "primary",
             "bg-[#1D8A45] text-white hover:bg-white hover:text-[#09976F] border hover:border-[#09976F]":
               variant === "secondary",
+            "bg-white text-red-500 hover:bg-red-50 hover:text-red-500 border hover:border-red-500":
+              variant === "cancel",
             "text-[#09976F] 2xl:text-base md:text-sm hover:underline ": variant === "link",
+
           },
           classname
         )}>

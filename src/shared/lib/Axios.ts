@@ -23,8 +23,15 @@ api.interceptors.response.use(
   (Response) => {
     return Response;
   },
+
   async (error) => {
-    if (error.response && [401].includes(error.response.status)) {
+    const status = error.response?.status;
+    const url = error.config?.url || "";
+    const isLoginEndpoint =
+      url.includes("/auth/user/token") ||
+      url.includes("/auth/user/token")
+
+    if (!isLoginEndpoint && status === 401) {
       console.error("accessToken Expired");
       redirectToLogin();
     }

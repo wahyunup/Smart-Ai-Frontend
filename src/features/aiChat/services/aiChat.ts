@@ -9,6 +9,14 @@ const fetchAllConversation = async () => {
     throw error;
   }
 };
+const planStatusApi = async () => {
+  try {
+    const res = await api.get("/subscriptions/my-status");
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const deleteConversationApi = async (conversation_id:string) => {
   try {
@@ -80,4 +88,4 @@ const createConversationApi = async (
   }
 };
 
-export { fetchAllConversation, createConversationApi, fetchConversationApi, createConversationAxApi, deleteConversationApi };
+export { fetchAllConversation, createConversationApi, fetchConversationApi, createConversationAxApi, deleteConversationApi, planStatusApi };

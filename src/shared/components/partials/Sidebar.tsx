@@ -10,6 +10,9 @@ import {
   House,
   LogOut,
   MessageCircleMore,
+  PanelLeftClose,
+  Search,
+  SquarePen,
   Trash2,
   UserCog,
   UserPen,
@@ -28,9 +31,10 @@ import {
 import { userIsLoginApi } from "../../../features/auth/services/authApis";
 import { Icon } from "@iconify/react";
 import { useAuthStore } from "../../store/useCookieAuth";
+import Swal from "sweetalert2";
 
 const Sidebar = () => {
-  const { isOpen } = useToggle();
+  const { isOpen, setIsOpen } = useToggle();
   const location = useLocation();
   const navigate = useNavigate();
   const [visibleIcon, setVisibleIcon] = useState<boolean | string>(false);
@@ -39,6 +43,7 @@ const Sidebar = () => {
   const [isVisibleConversation, setIsVisibleConversation] = useState(true);
   const [visibleAction, setVisibleAction] = useState(false);
   const [visibleActionProfile, setVisibleActionProfile] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const { decoded } = useAuthStore();
   const isLogin = decoded.role;
   const initAuth = useAuthStore((state) => state.initAuth);
@@ -118,11 +123,19 @@ const Sidebar = () => {
     const token = getCookie("accesstoken");
 
     if (token) {
-      const confirmation = confirm("yakin ingin keluar?");
-      if (confirmation) {
-        removeCookie("accesstoken");
-        navigate("/");
-      }
+      Swal.fire({
+        text: "yakin ingin keluar?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          removeCookie("accesstoken");
+          navigate("/");
+        }
+      });
     }
   };
 
@@ -177,9 +190,17 @@ const Sidebar = () => {
     setIsLoading(id);
     try {
       await deleteConversationApi(id);
-      alert("conversation berhasil di hapus");
-    } catch (error) {
-      console.log(error);
+      Swal.fire({
+        text: "conversation berhasil di hapus",
+        icon: "success",
+        confirmButtonText: "oke",
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(null);
       setVisibleAction(false);
@@ -313,99 +334,152 @@ const Sidebar = () => {
           </div>
         </div>
       ) : isLogin === "employee" ? (
-        <div className="2xl:w-[17%] md:w-70 bg-[#F2F2F2] h-full flex flex-col relative justify-between">
-          <div className="p-5 flex flex-col gap-4">
-            <img src={logo} className="2xl:w-13 md:w-10" alt="" />
-            <Button
-              variant="secondary"
-              onclick={() => navigate("/chat")}
-              classname="2xl:px-3 2xl:py-2 md:py-1.5 rounded-full">
-              Obrolan Baru
-            </Button>
-            <button className="text-start 2xl:text-base md:text-sm">
-              Cari Obrolan
-            </button>
-            <div className="flex flex-col gap-2">
-              <Button
-                classname="flex text-[#666666]"
-                variant="link"
-                onclick={() =>
-                  setIsVisibleConversation(!isVisibleConversation)
-                }>
-                Obrolan <ChevronDown />
-              </Button>
-
-              {isVisibleConversation && (
+        <div
+          className={`${
+            isOpen ? "2xl:w-[19%] md:w-70" : " w-[5%]"
+          } bg-[#F2F2F2] h-full flex flex-col relative justify-between`}>
+          <div
+            className={`p-5 flex flex-col ${
+              isOpen ? "" : "items-center"
+            } gap-4`}>
+            <div className="flex items-center justify-between">
+              {isOpen ? (
+                <img src={logo} className="2xl:w-13 md:w-10" alt="" />
+              ) : (
                 <>
-                  <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
-                    {conversationList.map(
-                      (conversation: { title: string; id: string }) => (
-                        <div
-                          className={`text-[#211719] py-2 2xl:text-sm md:text-xs cursor-pointer  ${
-                            location.pathname.startsWith(
-                              `/chat/conversation/${conversation.id}`
-                            )
-                              ? "bg-[#3BC15240]"
-                              : ""
-                          }  hover:bg-[#3BC15240] px-3 rounded-full flex items-center justify-between relative`}
-                          onClick={() => handleConversation(conversation.id)}
-                          onMouseEnter={() => handleHover(conversation.id)}
-                          onMouseLeave={() => handleHover(!visibleIcon)}>
-                          <span className="w-70">{conversation.title}</span>
-                          {visibleIcon === conversation.id && (
-                            <>
-                              <EllipsisVertical
-                                onClick={() => setVisibleAction(true)}
-                                className="2xl:size-8 md:size-6"
-                                color="#1D8A45"
-                              />
-                              {visibleAction && (
-                                <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
-                                  <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
-                                    {isLoading ? (
-                                      <div className="p-3 bg-red-100 rounded-xl flex justify-center">
-                                        <Icon
-                                          icon="line-md:loading-loop"
-                                          width="20"
-                                          height="20"
-                                          color="#DB3726"
-                                        />
-                                      </div>
-                                    ) : (
-                                      <button
-                                        className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
-                                        onClick={() =>
-                                          handleDeleteConversation(
-                                            conversation.id
-                                          )
-                                        }>
-                                        <Trash2 size={17} color="#DB3726" />
-                                        <p>Delete</p>
-                                      </button>
-                                    )}
-                                    <button
-                                      className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
-                                      onClick={() => setVisibleAction(false)}>
-                                      Cancel
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )
-                    )}
-                  </div>
+                  <img
+                    src={logo}
+                    onMouseEnter={() => setIsHidden(true)}
+                    onMouseLeave={() => setIsHidden(false)}
+                    className={`2xl:w-13 md:w-10  ${isHidden ? "hidden" : ""}`}
+                    alt=""
+                  />
+                  <button
+                    onClick={() => setIsOpen()}
+                    onMouseEnter={() => setIsHidden(true)}
+                    onMouseLeave={() => setIsHidden(false)}
+                    className={`cursor-pointer transition-all duration-700  ${
+                      isHidden ? "" : "hidden"
+                    }`}>
+                    <PanelLeftClose color="#126F3D" className="size-8 w-13" />
+                  </button>
                 </>
               )}
+              {isOpen && (
+                <button onClick={() => setIsOpen()} className="cursor-pointer">
+                  <PanelLeftClose color="#126F3D" size={28} />
+                </button>
+              )}
             </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-[#666666] text-sm">Dukungan</p>
-              <span className="flex text-black px-3 py-2 hover:bg-gray-200 rounded-full 2xl:text-sm md:text-xs">
-                Bantuan & FAQ
-              </span>
-            </div>
+            {isOpen ? (
+              <>
+                <Button
+                  variant="secondary"
+                  onclick={() => navigate("/chat")}
+                  classname="2xl:px-3 2xl:py-2 md:py-1.5 rounded-full">
+                  Obrolan Baru
+                </Button>
+                <button className="text-start 2xl:text-base md:text-sm">
+                  Cari Obrolan
+                </button>
+                <div className="flex flex-col gap-2">
+                  <Button
+                    classname="flex text-[#666666]"
+                    variant="link"
+                    onclick={() =>
+                      setIsVisibleConversation(!isVisibleConversation)
+                    }>
+                    Obrolan <ChevronDown />
+                  </Button>
+
+                  {isVisibleConversation && (
+                    <>
+                      <div className="flex flex-col gap-1 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
+                        {conversationList.map(
+                          (conversation: { title: string; id: string }) => (
+                            <div
+                              className={`text-[#211719] 2xl:text-sm md:text-xs cursor-pointer  ${
+                                location.pathname.startsWith(
+                                  `/chat/conversation/${conversation.id}`
+                                )
+                                  ? "bg-[#3BC15240] "
+                                  : ""
+                              }  hover:bg-[#3BC15240] px-5 py-2 rounded-full flex items-center justify-between`}
+                              onClick={() =>
+                                handleConversation(conversation.id)
+                              }
+                              onMouseEnter={() => handleHover(conversation.id)}
+                              onMouseLeave={() => handleHover(!visibleIcon)}>
+                              <span className="w-full overflow-auto">
+                                {conversation.title}
+                              </span>
+                              {visibleIcon === conversation.id && (
+                                <>
+                                  <EllipsisVertical
+                                    onClick={() => setVisibleAction(true)}
+                                    className="2xl:size-8 md:size-6"
+                                    color="#1D8A45"
+                                  />
+                                  {visibleAction && (
+                                    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
+                                      <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
+                                        {isLoading ? (
+                                          <div className="p-3 bg-red-100 rounded-xl flex justify-center">
+                                            <Icon
+                                              icon="line-md:loading-loop"
+                                              width="20"
+                                              height="20"
+                                              color="#DB3726"
+                                            />
+                                          </div>
+                                        ) : (
+                                          <button
+                                            className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
+                                            onClick={() =>
+                                              handleDeleteConversation(
+                                                conversation.id
+                                              )
+                                            }>
+                                            <Trash2 size={17} color="#DB3726" />
+                                            <p>Delete</p>
+                                          </button>
+                                        )}
+                                        <button
+                                          className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
+                                          onClick={() =>
+                                            setVisibleAction(false)
+                                          }>
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <p className="text-[#666666] text-sm">Dukungan</p>
+                  <span className="flex text-black px-3 py-2 hover:bg-gray-200 rounded-full 2xl:text-sm md:text-xs">
+                    Bantuan & FAQ
+                  </span>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col gap-10 mt-5">
+                <button>
+                  <SquarePen color="#126F3D" />
+                </button>
+                <button>
+                  <Search color="#126F3D" />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="p-3 absolute md:bottom-18 w-full">
@@ -447,7 +521,7 @@ const Sidebar = () => {
                   />
                 </div>
               )}
-              <div>
+              <div className={`${isOpen ? "" : "hidden"}`}>
                 <span className="md:text-sm 2xl:text-base">
                   {loginUser.username}
                 </span>

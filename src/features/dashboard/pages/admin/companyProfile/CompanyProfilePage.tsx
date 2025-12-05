@@ -8,6 +8,7 @@ import {
   CompanyInformationApi,
   EditCompanyInformationApi,
 } from "../../../services/admin/CompanyProfile";
+import Swal from "sweetalert2";
 
 const CompanyProfilePage = () => {
   const [password, setPassword] = useState("");
@@ -32,19 +33,29 @@ const CompanyProfilePage = () => {
 
   const handleEditProfile = async () => {
     try {
-      const res = await EditCompanyInformationApi(
+      await EditCompanyInformationApi(
         value.adminName,
         value.companyAddress,
         value.imageProfile,
         value.password
       );
-      alert("profile berhasil diedit")
-      setEditEmailCompany(false)
-      setEditNamaAdmin(false)
-      setEditPassword(false)
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+      Swal.fire({
+        text: "profile berhasil diedit",
+        icon: "success",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          setEditEmailCompany(false);
+          setEditNamaAdmin(false);
+          setEditPassword(false);
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     }
   };
 

@@ -1,41 +1,65 @@
 import { Check } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useEffect, useState } from "react";
-import { planSubcriptionApi } from "../../../services/admin/Subcription";
+import {
+  myPaymentApi,
+  planSubcriptionApi,
+} from "../../../services/admin/Subcription";
+import { Icon } from "@iconify/react";
 
 const SelectSubcriptionPage = () => {
   const [data, setData] = useState([]);
   const [optionPlan, setOptionPlan] = useState<any | []>([]);
+  const [currentPlan, setCurrentPlan] = useState();
+  const [isLoading, setIsLoading] = useState<string | boolean>(false);
 
-  const dataPlan = [
-    {
-      planHeading: "Top Up kecil",
-      question: 1000,
-      price: 50000,
-    },
-    {
-      planHeading: "Top Up Besar",
-      question: 5000,
-      price: 200000,
-    },
-  ];
-
-  useEffect(() => {
-    setOptionPlan(dataPlan);
-  }, []);
+  // const isLocalhost = window.location.hostname === "localhost";
 
   useEffect(() => {
     const fetchSubPlan = async () => {
       try {
         const res = await planSubcriptionApi();
+        setCurrentPlan(res.current_subscription.plan_name);
         console.log(res, "<-----plans");
-        setData(res);
+        setData(res.plans);
+        setOptionPlan(res.top_up_packages);
       } catch (error) {
         console.log(error);
       }
     };
     fetchSubPlan();
-  }, []);
+  }, [isLoading]);
+
+  const handlePayment = async (id: number, package_type?: string) => {
+    console.log(id, "index");
+    
+    const loadId = package_type ? `topup-${id}` : `plan-${id}`;
+    setIsLoading(loadId);
+    const successRoute =
+      "http://localhost:5173/admin/subcription/payment-success";
+    const failedRoute =
+      "http://localhost:5173/admin/subcription/payment-failed";
+    try {
+      if (!package_type) {
+        const res = await myPaymentApi(id, successRoute, failedRoute, "");
+        if (res) {
+          window.open(res.payment_url, "_blank");
+        }
+      } else {
+        if (!package_type) {
+          return;
+        }
+        const res = await myPaymentApi(0, successRoute, failedRoute, package_type);
+        if (res) {
+          window.open(res.payment_url, "_blank");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <MainLayout>
@@ -53,39 +77,61 @@ const SelectSubcriptionPage = () => {
 
           <div className="flex gap-3 justify-center mt-10">
             {data.map((item: any) => (
-              <div className="py-9 px-7 w-80 flex flex-col gap-3 border hover:border-gray-200 even:border-gray-50 rounded-2xl shadow-2xl/6 odd:bg-gray-50">
+              <div
+                key={item.id}
+                className={` py-9 px-7 w-80 flex flex-col gap-3   ${
+                  item.name === currentPlan
+                    ? "border-gray-200 bg-gray-50 border"
+                    : "bg-white border border-transparent hover:border hover:border-gray-200"
+                }  rounded-2xl shadow-2xl/6 `}>
                 <div className="flex flex-col gap-1">
                   <h1 className="text-[#2BA54B] font-semibold text-4xl">
                     {item.name}
                   </h1>
-                  <p className="text-sm">UMKM / Startup Kecil</p>
+                  <p className="text-sm">{item.recomended_for}</p>
                 </div>
                 <p className="text-sm text-gray-500">
                   <span className="text-2xl text-black">
-                    Rp {item.price.toLocaleString("id-ID")}
+                    {item.price.toLocaleString("id-ID")}
                   </span>
                   /bulan
                 </p>
-                <button className="w-full px-10 py-2 rounded-full text-sm bg-[#88888888] text-[#272727]">
-                  Paket Aktif Saat Ini
-                </button>
+                {item.name === currentPlan ? (
+                  <button className="w-full px-10 py-2 rounded-full text-sm bg-[#88888888] text-[#272727]">
+                    Paket Aktif Saat Ini
+                  </button>
+                ) : isLoading === `plan-${item.id}` ? (
+                  <button className=" w-full cursor-pointer px-10 py-2 rounded-full text-sm border-[#2BA54B] text-[#2BA54B] border flex items-center justify-center">
+                    <Icon icon="line-md:loading-loop" width="24" height="24" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handlePayment(item.id)}
+                    className="w-full cursor-pointer px-10 py-2 rounded-full text-sm bg-[#2BA54B] text-white">
+                    Upgrade ke {item.name}
+                  </button>
+                )}
 
                 <div className="text-xs flex flex-col gap-2">
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />
-                    <span>{item.question_quota} pertanyaan / bulan</span>
+                    <span>{item.question_quota.toLocaleString("id-ID")}</span>
                   </p>
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />
-                    <span> Hanya bisa digunakan {item.max_users} user</span>
+                    <span> Hanya bisa digunakan {item.max_users}</span>
                   </p>
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />
-                    <span>Tidak ada custom prompt</span>
+                    <span>{item.api_access}</span>
                   </p>
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />
-                    <span>Akses fitur dasar chat + admin</span>
+                    <span>{item.allow_custom_prompts}</span>
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <Check color="#13D376" size={15} />
+                    <span>{item.document_quota}</span>
                   </p>
                 </div>
               </div>
@@ -103,24 +149,37 @@ const SelectSubcriptionPage = () => {
               </p>
             </div>
 
-            <div className="flex gap-3 mt-10">
-              {optionPlan.map((item: any) => (
-                <div className="flex flex-col gap-3 border border-gray-200 bg-[#0DB57526] px-3 py-10 rounded-2xl w-60">
-                  <div>
-                    <h1 className="text-[#009C61] text-2xl font-semibold">
-                      {item.planHeading}
+            <div className="flex gap-3 mt-5 mb-5">
+              {optionPlan.map((item: any, i:number) => (
+                <div className="flex flex-col justify-between gap-3 border border-gray-200 bg-[#0DB57526] px-3 py-5 h-50 rounded-2xl w-60">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-[#009C61] text-3xl font-semibold">
+                      Top Up{" "}
+                      <span className="capitalize">{item.package_type}</span>
                     </h1>
                     <p className="text-sm">
-                      + {item.question.toLocaleString("id-ID")} pertanyaan
+                      + {item.questions.toLocaleString("id-ID")} pertanyaan
                     </p>
                   </div>
 
-                  <p className="text-xl">
+                  <p className="text-2xl">
                     Rp {item.price.toLocaleString("id-ID")},-
                   </p>
-                  <button className="border border-[#0DB575] text-[#0DB575] font-medium bg-[#F2F2F2] px-4 text-sm py-1 rounded-lg">
-                    Tambah Kuota
-                  </button>
+                  {isLoading === `topup-${i}` ? (
+                    <button className=" w-full cursor-pointer px-10 py-2 rounded-full text-sm border-[#2BA54B] text-[#2BA54B] border flex items-center justify-center bg-white">
+                      <Icon
+                        icon="line-md:loading-loop"
+                        width="24"
+                        height="24"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handlePayment(i, item.package_type)}
+                      className="border border-[#0DB575] text-[#0DB575] font-medium bg-white px-4 text-sm py-2 rounded-full cursor-pointer">
+                      Tambah Kuota
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

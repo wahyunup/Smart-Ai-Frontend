@@ -28,7 +28,7 @@ export interface InputProps {
   value?: string | number;
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
   icon?: React.ReactNode;
-  variant?: "primary" | "secondary" | "third";
+  variant?: "primary" | "secondary" | "third" | "disable";
   labelLayout?: "inline" | "block";
   iconPosition?: "left" | "right";
 }
@@ -37,7 +37,7 @@ export interface ButtonProps {
   onclick?: () => void;
   children: React.ReactNode;
   classname?: string;
-  variant?: "primary" | "secondary" | "link";
+  variant?: "primary" | "secondary" | "link" | "cancel";
 }
 
 export interface CardProps {
@@ -118,4 +118,12 @@ export interface BasicAreaProps {
   datas?: number[];
   days?: string[];
   color?: string;
+}
+
+export interface notificationProps {
+  heading?: string;
+  type?: string
+  subheading?: string;
+  onClose?: boolean;
+  setOnClose?: React.Dispatch<React.SetStateAction<boolean>>;
 }

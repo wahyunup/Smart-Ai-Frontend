@@ -14,6 +14,7 @@ import BasicArea from "../../../../../shared/components/common/Chart/LineChart";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../../../../shared/store/useCookieAuth";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const AdminDashboard = () => {
   const [chatActivity, setChatActivity] = useState();
   const [chatBotActivity, setChatBotActivity] = useState();
   const [recentDocuments, setRecentDocuments] = useState([]);
+  const {decoded} = useAuthStore()
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -44,7 +46,6 @@ const AdminDashboard = () => {
           document_uploads_this_month:
             res.dashboard_breakdown.document_uploads_this_month,
         });
-        console.log(res.dashboard_breakdown);
         setRecentDocuments(res.dashboard_breakdown.recent_documents);
         setChatBotActivity(res.dashboard_breakdown.chat_activity_7d);
         setChatActivity(res.dashboard_breakdown.chat_activity_30d);
@@ -68,11 +69,13 @@ const AdminDashboard = () => {
     (date) => date.split("-")[2]
   );
 
+  
+
   return (
     <MainLayout>
-      <div className="p-10 overflow-auto">
+      <div className="p-10">
         <p className="text-xl">
-          Selamat Datang John Doe, Admin PT. Cemerlang Jaya!
+          Selamat Datang {decoded.name}, Admin {decoded.company}!
         </p>
         {/* breakdown */}
         <div className="mt-10 flex w-full gap-5">

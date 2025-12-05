@@ -27,7 +27,7 @@ const aiConversationPage = () => {
   useEffect(() => {
     scrollToBottom();
   }, []);
-  
+
   useEffect(() => {
     const fetchConversation = async () => {
       setIsLoading(true);
@@ -54,42 +54,6 @@ const aiConversationPage = () => {
     fetchConversation();
   }, [conversationId]);
 
-  //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     setIsLoadingSubmit(true);
-  //     try {
-  //       if (conversationId) {
-  //         // const res = await createConversationApi(value, conversationId);
-  //         // console.log(res);
-
-  //     const response = await createConversationApi(value, conversationId)
-  //       const reader = response.body.getReader();
-  //       const decoder = new TextDecoder();
-  //       let fullAnswer = "";
-
-  //       while (true) {
-  //         const { done, value } = await reader.read();
-  //         if (done) break;
-
-  //         const chunk = decoder.decode(value, { stream: true });
-  //         fullAnswer += chunk;
-
-  //         setChats((prev) => {
-  //           const updated = [...prev];
-  //           updated[currentIndex].answer = fullAnswer;
-  //           return updated;
-  //         });
-  //       }
-  //         alert("kekirim");
-  //         setValue("");
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setIsLoadingSubmit(false);
-  //     }
-  //   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setValue("");
@@ -109,34 +73,38 @@ const aiConversationPage = () => {
           const reader = response.body.getReader();
           const decoder = new TextDecoder();
           let fullAnswer = "";
+          try {
+            while (true) {
+              const { done, value: chunkValue } = await reader.read();
+              if (done) break;
+              let chunk = decoder.decode(chunkValue, { stream: true });
 
-          while (true) {
-            const { done, value: chunkValue } = await reader.read();
-            if (done) break;
-            let chunk = decoder.decode(chunkValue, { stream: true });
+              chunk = chunk
+                .split("\n") // pecah per baris
+                .filter(
+                  (line) =>
+                    line.startsWith("data:") && line.trim() !== "data: {}"
+                ) // ambil baris data
+                .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
+                .join("\n");
 
-            chunk = chunk
-              .split("\n") // pecah per baris
-              .filter(
-                (line) => line.startsWith("data:") && line.trim() !== "data: {}"
-              ) // ambil baris data
-              .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
-              .join("\n");
+              chunk = chunk.replace(
+                /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
+                "<strong>$1</strong>"
+              );
 
-            chunk = chunk.replace(
-              /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
-              "<strong>$1</strong>"
-            );
+              fullAnswer += chunk;
 
-            fullAnswer += chunk;
-
-            // Update chat terakhir secara live
-            setChats((prev) => {
-              const updated = [...prev];
-              updated[currentIndex].answer = fullAnswer;
-              return updated;
-            });
-            scrollToBottom();
+              // Update chat terakhir secara live
+              setChats((prev) => {
+                const updated = [...prev];
+                updated[currentIndex].answer = fullAnswer;
+                return updated;
+              });
+              scrollToBottom();
+            }
+          } catch (error) {
+            console.log("stream error", error);
           }
         }
       }
@@ -184,7 +152,7 @@ const aiConversationPage = () => {
               </>
             ))
           )}
-
+         
         </div>
         <div className="bg-white sticky bottom-0 w-full 2xl:py-10 md:py-5">
           <Input
@@ -192,7 +160,9 @@ const aiConversationPage = () => {
               isLoadingSubmit ? (
                 <Icon icon="line-md:loading-loop" width="24" height="24" />
               ) : (
+                <button className="cursor-pointer" type="submit">
                 <CircleArrowUp color="#666666" />
+                </button>
               )
             }
             onchange={(e: React.ChangeEvent<HTMLInputElement>) =>

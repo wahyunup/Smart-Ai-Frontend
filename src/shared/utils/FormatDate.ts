@@ -1,10 +1,11 @@
 const formatDate = (rawDate: string) => {
-  const date = new Date(rawDate);
-  const day = date.getDay();
-  const month = date.toLocaleDateString("id-ID", {month:"long"});
-  const year = date.getFullYear();
+  const date = new Date(rawDate).toLocaleString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
-  return `${day} ${month} ${year}`;
+  return date;
 };
 
 export { formatDate };

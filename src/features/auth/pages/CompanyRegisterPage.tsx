@@ -6,6 +6,7 @@ import Button from "../../../shared/components/ui/Button";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { authCompanyRegisterApi } from "../services/authApis";
+import Swal from "sweetalert2";
 
 const CompanyRegisterPage = () => {
   const navigate = useNavigate();
@@ -23,18 +24,28 @@ const CompanyRegisterPage = () => {
   const handleRegister = async () => {
     setIsLoading(true);
     try {
-      const res = await authCompanyRegisterApi(
+      await authCompanyRegisterApi(
         form.picName,
         form.companyEmail,
         form.password,
         form.companyName,
         form.picNo
       );
-      alert("akun berhasil didaftarkan");
-      console.log("regis sukses", res);
-      setStep(3);
+      Swal.fire({
+        text: "register berhasil",
+        icon: "success",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          setStep(3);
+        }
+      });
     } catch (error: any) {
-      alert(error.response.data.detail[0].msg)
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +70,7 @@ const CompanyRegisterPage = () => {
             <>
               <div className="flex flex-col items-start w-100">
                 <Input
-                variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.companyName}
                   name="companyName"
@@ -74,7 +85,7 @@ const CompanyRegisterPage = () => {
               </div>
               <div className="flex flex-col items-start w-100">
                 <Input
-                variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.companyEmail}
                   name="companyEmail"
@@ -117,7 +128,7 @@ const CompanyRegisterPage = () => {
             <>
               <div className="w-100">
                 <Input
-                variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.picName}
                   name="picName"
@@ -129,7 +140,7 @@ const CompanyRegisterPage = () => {
               </div>
               <div className="w-100">
                 <Input
-                variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.picNo}
                   name="picNo"
@@ -144,7 +155,7 @@ const CompanyRegisterPage = () => {
               </div>
               <div className="w-100">
                 <Input
-                 variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.password}
                   name="password"
@@ -156,7 +167,7 @@ const CompanyRegisterPage = () => {
               </div>
               <div className="w-100">
                 <Input
-                variant="primary"
+                  variant="primary"
                   onchange={handleOnChange}
                   value={form.confirmPassword}
                   name="confirmPassword"

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { createStaff, editStaff } from "../../../services/admin/ManageStaff";
+import Swal from "sweetalert2";
 
 const AddStaf = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const AddStaf = () => {
   const handleCreate = async () => {
     setIsLoading(true);
     try {
-      const res = await createStaff(
+      await createStaff(
         form.profile_picture_file,
         form.name,
         form.email,
@@ -75,11 +76,21 @@ const AddStaf = () => {
         form.role,
         form.division_name
       );
-      console.log(res);
-      alert("staff berhasil dibuat");
-      navigate("/admin/manage-staff")
-    } catch (error) {
-      console.log(error);
+       Swal.fire({
+        text: "Staff berhasil dibuat",
+        icon: "success",
+        confirmButtonText: "oke",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          navigate("/admin/manage-staff")
+        }
+      });
+    } catch (error:any) {
+       Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+      })
     } finally {
       setIsLoading(false);
     }
@@ -243,7 +254,7 @@ const AddStaf = () => {
                   {editPreviewImage ? (
                     <img
                       className="h-full"
-                      src={editPreviewImage}
+                      src={`https://145.79.15.190${editPreviewImage}`}
                       alt="preview-image"
                     />
                   ) : (

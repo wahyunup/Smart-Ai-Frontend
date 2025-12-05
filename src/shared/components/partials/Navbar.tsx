@@ -83,15 +83,19 @@ const Navbar = () => {
           </div>
         </>
       ) : location.pathname.startsWith("/chat/conversation/") ? (
-        <div className="flex gap-3 items-center bg-white p-5">
-          <img src={smartAiMascot} alt="" />
-          <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
+        <div className="grid grid-cols-3 bg-white p-5">
+          <div className="flex gap-3 items-center">
+            <img src={smartAiMascot} alt="" />
+            <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
+          </div>
+          <p>asdads</p>
         </div>
       ) : location.pathname.startsWith(
           "/chat"
         ) ? null : location.pathname.startsWith("/admin") ? (
         <>
-          <div className={`bg-[#E3F9E8] ${location.pathname.startsWith("/admin/dashboard") ? "2xl:h-36" : ""} 2xl:h-25 md:h-55 flex justify-between items-center px-10 `}>
+          <div
+            className={`bg-[#E3F9E8] 2xl:h-30 md:h-55 flex justify-between items-center px-10 `}>
             <Button variant="link" onclick={setIsOpen}>
               <PanelLeftClose size={27} />
             </Button>

@@ -8,6 +8,7 @@ import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { decodeJwt } from "../../../shared/utils/Decode";
+import Swal from "sweetalert2";
 
 const EmployeLoginPage = () => {
   const navigate = useNavigate();
@@ -26,37 +27,46 @@ const EmployeLoginPage = () => {
   };
 
   const handleLogin = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await authLoginApi(form.username, form.password);
-      console.log(res);
-      
       const token = res.access_token;
       const expiresIn = res.expires_in;
       if (token) {
-        setCookie("accesstoken", token, expiresIn);
-        alert("login berhasil");
-        window.location.reload()
+        Swal.fire({
+          text: "login berhasil",
+          icon: "success",
+          confirmButtonText: "oke",
+        }).then((response) => {
+          if (response.isConfirmed) {
+            setCookie("accesstoken", token, expiresIn);
+            window.location.reload();
+          }
+        });
       }
-    } catch (error:any) {
-      alert(error.response.data.detail[0].msg)
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon : "error",
+        confirmButtonText : "oke"
+      })
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
-useEffect(() => {
-    const token = getCookie("accesstoken")
+  useEffect(() => {
+    const token = getCookie("accesstoken");
     if (token) {
-      const decode = decodeJwt(token)
-      const role = decode.role
+      const decode = decodeJwt(token);
+      const role = decode.role;
       if (role === "employee") {
-        navigate("/chat")
+        navigate("/chat");
       } else if (role === "admin") {
-        navigate("/admin/dashboard")
+        navigate("/admin/dashboard");
       }
-    } 
-  },[])
+    }
+  }, []);
   return (
     <AuthLayout>
       <AuthSection
@@ -67,7 +77,7 @@ useEffect(() => {
         formContent={
           <div className="flex flex-col gap-4 w-100">
             <Input
-            variant="primary"
+              variant="primary"
               onchange={handleOnChange}
               value={form.username}
               htmlFor={form.username}
@@ -78,7 +88,7 @@ useEffect(() => {
             />
             <div>
               <Input
-              variant="primary"
+                variant="primary"
                 onchange={handleOnChange}
                 value={form.password}
                 name="password"
@@ -96,7 +106,9 @@ useEffect(() => {
         footerContent={
           <div className="w-80">
             {isLoading ? (
-              <Button classname="py-3 w-full flex items-center justify-center" variant="primary">
+              <Button
+                classname="py-3 w-full flex items-center justify-center"
+                variant="primary">
                 <Icon icon="line-md:loading-loop" width="24" height="24" />
               </Button>
             ) : (
