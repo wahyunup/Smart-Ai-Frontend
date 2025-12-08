@@ -10,9 +10,10 @@ import { deleteStaff, getStaff } from "../../../services/admin/ManageStaff";
 import Swal from "sweetalert2";
 
 const ManageStaffPage = () => {
-  const [value, setValue] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const initParams = Number(searchParams.get("page")) || 1;
+  const initFilterParams = searchParams.get("filter") ?? "";
+  const [value, setValue] = useState(initFilterParams);
   const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -40,10 +41,9 @@ const ManageStaffPage = () => {
   const fetchStaff = async () => {
     setIsLoadingStaff(true);
     try {
-      const res = await getStaff(page, 4);
+      const res = await getStaff(page, 4, value);
       setData(res.users);
       setTotalPage(res.total_pages);
-      console.log(res);
     } catch (error) {
       console.log(error);
     } finally {
@@ -53,11 +53,7 @@ const ManageStaffPage = () => {
 
   useEffect(() => {
     fetchStaff();
-  }, [page]);
-
-  const fillterStaff = data.filter((staff: any) =>
-    staff.name.toLowerCase().includes(value)
-  );
+  }, [page, value]);
 
   const handleNextPage = () => {
     if (isLoadingStaff) return;
@@ -66,8 +62,8 @@ const ManageStaffPage = () => {
     }
   };
   useEffect(() => {
-    setSearchParams({ page: String(page) });
-  }, [page, setSearchParams]);
+    setSearchParams({ page: String(page), filter: String(value) });
+  }, [page, value]);
 
   const handlePrevPage = () => {
     if (isLoadingStaff) return;
@@ -79,22 +75,25 @@ const ManageStaffPage = () => {
   const handleDelete = async (id: number) => {
     setIsLoading(id);
     try {
-      const confirmation = confirm("yakin ingin menghapus staff");
-      if (confirmation) {
-        await deleteStaff(id);
-        Swal.fire({
-          text: "Staff berhasil dihapus",
-          icon: "success",
-          confirmButtonText: "oke",
-        })
-      }
-    } catch (error:any) {
-       Swal.fire({
+      Swal.fire({
+        text: "yakin ingin menghapus staff?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (response) => {
+        if (response.isConfirmed) {
+          await deleteStaff(id);
+          fetchStaff();
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
         text: error.response.data.message,
         icon: "warning",
         confirmButtonText: "oke",
-      })
-      
+      });
     } finally {
       setIsLoading(0);
       fetchStaff();
@@ -123,6 +122,7 @@ const ManageStaffPage = () => {
             </div>
             <div className="flex items-center">
               <Input
+                value={value}
                 onchange={(e) => setValue(e.target.value)}
                 variant="secondary"
                 placeholder="Masukan nama dokumen atau kata kunci"
@@ -171,7 +171,7 @@ const ManageStaffPage = () => {
             <TableBody
               isLoadingFetch={isLoadingStaff}
               isLoading={isLoading}
-              data={fillterStaff}
+              data={data}
               onclickDelete={handleDelete}
               nextPage={handleNextPage}
               prevPage={handlePrevPage}

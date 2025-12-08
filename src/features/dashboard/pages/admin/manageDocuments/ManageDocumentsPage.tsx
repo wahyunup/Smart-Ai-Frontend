@@ -13,9 +13,10 @@ import {
 import Swal from "sweetalert2";
 
 const ManageDocuments = () => {
-  const [value, setValue] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const initParams = Number(searchParams.get("page")) || 1;
+  const initFilterParams = searchParams.get("filter") ?? "";
+  const [value, setValue] = useState(initFilterParams);
   const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -25,7 +26,7 @@ const ManageDocuments = () => {
   const fetchDocument = async () => {
     setIsLoading(true);
     try {
-      const res = await getDocuments(page, 4);
+      const res = await getDocuments(page, 4, value);
       setData(res.documents);
       setTotalPage(res.total_pages);
     } catch (error) {
@@ -37,18 +38,14 @@ const ManageDocuments = () => {
 
   useEffect(() => {
     fetchDocument();
-  }, [page]);
+  }, [page, value]);
 
   useEffect(() => {
-    setSearchParams({ page: String(page) });
-  }, [page, setSearchParams]);
-
-  const fillterDatas = data.filter((item: any) =>
-    item.title.toLowerCase().includes(value)
-  );
+    setSearchParams({ page: String(page), filter: String(value) });
+  }, [page, value]);
 
   const handleEdit = (data_id: number) => {
-    const selectedData = fillterDatas.find(
+    const selectedData = data.find(
       (data: { id: number }) => data.id === data_id
     );
 
@@ -107,6 +104,7 @@ const ManageDocuments = () => {
             <h3 className="text-xl">Daftar Dokumen</h3>
             <div className="flex gap-5 items-center">
               <Input
+                value={value}
                 onchange={(e) => setValue(e.target.value)}
                 variant="secondary"
                 placeholder="Masukan nama dokumen atau kata kunci"
@@ -145,7 +143,7 @@ const ManageDocuments = () => {
               prevPage={handlePrevPage}
               onclickEdit={handleEdit}
               classname="grid grid-cols-5"
-              data={fillterDatas}
+              data={data}
               page={page}
               totalPage={totalPage}
               renderItem={(item) => {

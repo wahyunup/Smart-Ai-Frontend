@@ -11,7 +11,7 @@ const Carosel = ({ logos }: CaroselProps) => {
             className="flex-shrink-0 flex justify-center items-center">
             <img
               src={item.src}
-              className="h-fit 2xl:max-w-45 md:max-w-35 grayscale hover:grayscale-0 transition-all"
+              className="h-fit 2xl:max-w-45 md:max-w-35 max-w-20 grayscale hover:grayscale-0 transition-all"
             />
           </div>
         ))}

@@ -11,26 +11,24 @@ const paymentSuccessPage = () => {
   const trx_id = Number(searchParams.get("trx_id")) || 0;
   const [status, setStatus] = useState({
     plan_name: "",
-    active_start: "",
+    active_end: "",
     subscription_status: "",
   });
   useEffect(() => {
     const fetchPaymentStatus = async () => {
       try {
         const res = await paymentStatus(trx_id);
-        console.log(res);
-        const date = formatDate(res.active_start);
+        const date = formatDate(res.active_end);
 
         setStatus({
-          active_start: date,
+          active_end: date,
           plan_name: res.plan_name,
           subscription_status: res.subscription_status,
         });
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        console.log(error.response.data.message);
       }
     };
-
     fetchPaymentStatus();
   }, []);
 
@@ -47,7 +45,7 @@ const paymentSuccessPage = () => {
             </div>
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-semibold">Masa Aktif</h2>
-              <p className="text-xs text-[#2F2F2F]">{status.active_start}</p>
+              <p className="text-xs text-[#2F2F2F]">{status.active_end}</p>
             </div>
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-semibold">Status</h2>

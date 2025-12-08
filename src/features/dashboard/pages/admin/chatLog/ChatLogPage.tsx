@@ -13,8 +13,9 @@ import type { ChatLogProps } from "../../../../../shared/types/type";
 const ChatLogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initParams = Number(searchParams.get("page")) || 1;
+  const initFilterParams = searchParams.get("filter") ?? "";
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initFilterParams);
   const [page, setPage] = useState(initParams);
   const navigate = useNavigate();
   const [data, setData] = useState<ChatLogProps[]>([]);
@@ -30,7 +31,7 @@ const ChatLogPage = () => {
     const fetchChatLog = async () => {
       setIsLoadingDoc(true);
       try {
-        const res = await chatLog(page, 4);
+        const res = await chatLog(page, 4, value);
         setData(res.chatlogs);
         setTotalPage(res.total_pages);
       } catch (error) {
@@ -40,11 +41,7 @@ const ChatLogPage = () => {
       }
     };
     fetchChatLog();
-  }, [page]);
-
-  const fillterChatLogs = data.filter((chatLog: any) =>
-    chatLog.username.toLowerCase().includes(value)
-  );
+  }, [page, value]);
 
   const handleNextPage = () => {
     if (isLoadingDoc) return;
@@ -79,7 +76,7 @@ const ChatLogPage = () => {
   };
 
   const handleEditChatLog = (id: number) => {
-    const getChatLogId = fillterChatLogs.find((chat: any) => chat.id === id);
+    const getChatLogId = data.find((chat: any) => chat.id === id);
 
     if (getChatLogId) {
       const conversation_id = getChatLogId.conversation_id;
@@ -88,8 +85,8 @@ const ChatLogPage = () => {
   };
 
   useEffect(() => {
-    setSearchParams({ page: String(page) });
-  }, [page, setSearchParams]);
+    setSearchParams({ page: String(page), filter : String(value) });
+  }, [page, value]);
 
   const handleDeleteChatLog = () => {};
   return (
@@ -102,6 +99,7 @@ const ChatLogPage = () => {
             <h3 className="text-xl">Log Chat Perusahaan</h3>
             <div className="flex gap-5 items-center">
               <Input
+              value={value}
                 onchange={(e) => setValue(e.target.value)}
                 variant="secondary"
                 placeholder="Cari (User ID/Keyword)"
@@ -142,7 +140,7 @@ const ChatLogPage = () => {
               onclickDelete={handleDeleteChatLog}
               onclickEdit={handleEditChatLog}
               canEdit={false}
-              data={fillterChatLogs}
+              data={data}
               nextPage={handleNextPage}
               prevPage={handlePrevPage}
               classname="grid grid-cols-6"
@@ -152,7 +150,7 @@ const ChatLogPage = () => {
                 (hoverType === "question"
                   ? item.question.length > 40
                   : item.answer.length > 40) && (
-                  <div className="transition-all duration-300 fixed 2xl:left-[50vw] w-[20vw] md:left-100 2xl:top-80 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5]">
+                  <div className="transition-all duration-300 fixed 2xl:left-[50vw] wrap-anywhere w-[20vw] md:left-100 2xl:top-80 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5] ">
                     {hoverType === "question"
                       ? item.question.slice(0, 400)
                       : item.answer.slice(0, 400)}
@@ -193,7 +191,7 @@ const ChatLogPage = () => {
                         setHoverType("answer");
                       }}
                       onMouseLeave={() => setHoverEffect(false)}>
-                      <span className="z-[2]">
+                      <span className="z-[2] wrap-anywhere">
                         {item.answer.length > 50
                           ? item?.answer.slice(0, 50) + "..."
                           : item?.answer}

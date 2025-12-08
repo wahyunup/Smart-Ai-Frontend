@@ -4,14 +4,14 @@ import { Icon } from "@iconify/react";
 const SectionWhoWeAre = () => {
   return (
     <div
-      className="bg-white py-50 flex flex-col items-center gap-10 rounded-4xl"
+      className="bg-white md:py-50 py-20 flex flex-col items-center md:gap-10 gap-4 rounded-4xl px-7"
       id="whoweare">
-      <h1 className="2xl:text-6xl md:text-5xl text-xl font-semibold font-manrope">Alasan Terbaik Memilih SmartAI</h1>
-      <p className="2xl:text-xl md:text-base text-[15px] text-center text-[#5A5A5A] font-inter">
+      <h1 className="2xl:text-6xl md:text-5xl text-2xl md:font-semibold font-bold text-center font-manrope">Alasan Terbaik Memilih SmartAI</h1>
+      <p className="2xl:text-xl md:text-base text-sm text-[15px] text-center text-[#5A5A5A] font-inter">
         Solusi Chatbot cerdas yang dirancang khusus untuk menjaga rahasia
         dokumen setiap perusahaan.
       </p>
-      <div className="container md:grid flex flex-col items-center justify-center md:grid-cols-3 wrap-break-word md:gap-20 px-2 gap-10">
+      <div className="container md:grid flex flex-col items-center justify-center md:grid-cols-3 wrap-break-word md:gap-20 px-2 gap-10 mt-15">
         <Card
           iconLayout="center"
           heading="Data Perusahaan Dijamin Aman"

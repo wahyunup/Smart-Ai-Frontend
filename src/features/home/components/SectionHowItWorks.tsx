@@ -4,17 +4,17 @@ import { Icon } from "@iconify/react";
 const SectionHowItWorks = () => {
   return (
     <div
-      className="bg-white py-50 flex flex-col items-center gap-10 rounded-4xl  "
+      className="bg-white md:py-50 py-24 flex flex-col items-center md:gap-10 gap-5 rounded-4xl  px-7"
       id="howitworks">
-      <h1 className="2xl:text-6xl text-xl md:text-5xl font-semibold font-manrope">
+      <h1 className="2xl:text-6xl text-2xl md:text-5xl font-semibold font-manrope">
         Bagaimana SmartAI Bekerja
       </h1>
-      <p className="2xl:text-xl md:text-base text-[15px] text-center text-[#5A5A5A] font-inter">
+      <p className="2xl:text-xl md:text-base text-sm text-[15px] text-center text-[#5A5A5A] font-inter">
         SmartAI mengubah dokumen perusahaan Anda menjadi pengetahuan cerdas yang
         bisa diakses melalui chatbot.
       </p>
 
-      <div className="flex items-center flex-wrap md:flex-nowrap container gap-5 mt-15">
+      <div className="flex items-center flex-wrap md:flex-nowrap container md:gap-5 gap-10 mt-15">
         <Card
           iconLayout="center"
           classname="outline-0 text-center"

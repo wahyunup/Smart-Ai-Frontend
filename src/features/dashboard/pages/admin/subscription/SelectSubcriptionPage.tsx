@@ -38,7 +38,7 @@ const SelectSubcriptionPage = () => {
       : "http://localhost:5173";
     const successRoute = `${baseURL}/admin/subcription/payment-success`;
     const failedRoute = `${baseURL}/admin/subcription/payment-failed`;
-
+    
     try {
       if (!package_type) {
         const res = await myPaymentApi(id, successRoute, failedRoute, "");

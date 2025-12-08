@@ -68,7 +68,9 @@ const LogAuditPage = () => {
   const fetchCompanyLogAudit = async () => {
     try {
       const res = await companyListAuditApi();
-      setCompanyList(res);
+      console.log(res);
+      
+      setCompanyList(res.companies);
     } catch (error) {
       console.log(error);
     }

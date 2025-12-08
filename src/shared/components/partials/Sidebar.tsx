@@ -155,6 +155,7 @@ const Sidebar = () => {
       const fetchUserIsLogin = async () => {
         try {
           const res = await userIsLoginApi();
+          
           if (res) {
             setLoginUser({
               division: res.division,

@@ -5,7 +5,11 @@ import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
 import { authLoginApi } from "../services/authApis";
 import { Icon } from "@iconify/react";
-import { getCookie, setCookie } from "../../../shared/utils/Cookies";
+import {
+  getCookie,
+  removeCookie,
+  setCookie,
+} from "../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
 import { decodeJwt } from "../../../shared/utils/Decode";
 import Swal from "sweetalert2";
@@ -31,9 +35,18 @@ const AdminLoginPage = () => {
     setIsLoading(true);
     try {
       const res = await authLoginApi(form.username, form.password);
+
       const accessToken = res.access_token;
       const expiresIn = res.expires_in;
-      if (accessToken) {
+console.log(res);
+
+      if (res.user.role !== "super_admin") {
+        removeCookie("accesstoken");
+        navigate("/");
+        return;
+      }
+
+      if (accessToken && res.user.role === "super_admin") {
         Swal.fire({
           text: "login berhasil",
           icon: "success",

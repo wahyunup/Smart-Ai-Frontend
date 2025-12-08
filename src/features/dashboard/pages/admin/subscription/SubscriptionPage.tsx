@@ -43,8 +43,12 @@ const SubcriptionPage = () => {
   const fetchMySub = async () => {
     try {
       const res = await mySubcriptionApi();
+
+      const roundedPrecentace = Math.floor(res.remaining_quota_percentage);
+      const convertDate = formatDate(res.end_date);
+
       setMySub({
-        end_date: res.end_date,
+        end_date: convertDate,
         current_documents: res.current_documents,
         current_users: res.current_users,
         days_until_renewal: res.days_until_renewal,
@@ -55,7 +59,7 @@ const SubcriptionPage = () => {
         remaining_documents: res.remaining_documents,
         remaining_documents_percentage: res.remaining_documents_percentage,
         remaining_quota: res.remaining_quota,
-        remaining_quota_percentage: res.remaining_quota_percentage,
+        remaining_quota_percentage: roundedPrecentace,
         remaining_users: res.remaining_users,
         remaining_users_percentage: res.remaining_users_percentage,
         top_up_quota: res.top_up_quota,
@@ -99,11 +103,6 @@ const SubcriptionPage = () => {
     }
   };
 
-  const convertDate = new Date(mySub.end_date).toLocaleString("id-ID", {
-    day : "numeric",
-    month : "long",
-    year : "numeric"
-  });
 
   return (
     <MainLayout>
@@ -137,7 +136,7 @@ const SubcriptionPage = () => {
               <p className="font-manrope text-[#666666]">Masa Aktif Berakhir</p>
               <div>
                 <h1 className="text-3xl font-semibold text-[#1D8A45] font-inter">
-                  {convertDate}
+                  {mySub.end_date}
                 </h1>
                 <p className="text-sm text-[#887600]">
                   Perlu perpanjangan dalam 30 hari
@@ -212,7 +211,7 @@ const SubcriptionPage = () => {
                             ? "bg-[#DBBE03] text-white px-3 py-1 rounded-full"
                             : item.status === "pending_review"
                             ? "bg-[#1069C9] text-white px-3 py-1 rounded-full"
-                            : item.status === "expired" 
+                            : item.status === "expired"
                             ? "bg-red-600 text-white px-3 py-1 rounded-full"
                             : ""
                         }`}>
@@ -220,10 +219,17 @@ const SubcriptionPage = () => {
                       </span>
                       <span className="text-sm text-[#2BA54B] underline">
                         {item.status === "pending_payment" ? (
-                          <a href={item.payment_url} target="_blank">Lanjutkan Pembayaran</a>
+                          <a href={item.payment_url} target="_blank">
+                            Lanjutkan Pembayaran
+                          </a>
                         ) : item.status === "paid" ? (
-                          <a href={`/admin/subcription/invoice?trx-id=${item.payment_reference}`}>Lihat/unduh bukti</a>
-                        ) : ""}
+                          <a
+                            href={`/admin/subcription/invoice?trx-id=${item.payment_reference}`}>
+                            Lihat/unduh bukti
+                          </a>
+                        ) : (
+                          ""
+                        )}
                       </span>
                     </>
                   );

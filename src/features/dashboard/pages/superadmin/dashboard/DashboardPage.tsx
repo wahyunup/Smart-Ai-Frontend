@@ -49,6 +49,13 @@ const DashboardPage = () => {
     const fetchSummary = async () => {
       try {
         const res = await summaryApi();
+        const roundPercent = {
+          chatPercentase: Math.floor(res.dashboard_summary.chat_mom_change_pct),
+          totalUserPercentase: Math.floor(
+            res.dashboard_summary.user_wow_change_pct
+          ),
+        };
+
         console.log(res, "<------- response");
 
         setBreakDown({
@@ -58,7 +65,7 @@ const DashboardPage = () => {
               res.dashboard_summary.active_companies_this_month,
           },
           chatMonthly: {
-            chat_mom_change_pct: res.dashboard_summary.chat_mom_change_pct,
+            chat_mom_change_pct: roundPercent.chatPercentase,
             chat_mom_change_pct_status:
               res.dashboard_summary.chat_mom_change_pct_status,
             chats_this_month: res.dashboard_summary.chats_this_month,
@@ -72,7 +79,7 @@ const DashboardPage = () => {
           },
           totalUser: {
             total_users: res.dashboard_summary.total_users,
-            user_wow_change_pct: res.dashboard_summary.user_wow_change_pct,
+            user_wow_change_pct: roundPercent.totalUserPercentase,
             user_wow_change_pct_status:
               res.dashboard_summary.user_wow_change_pct_status,
           },
@@ -148,7 +155,15 @@ const DashboardPage = () => {
                     {breakdown.totalUser.user_wow_change_pct}%
                   </span>
                 ) : null}
-                Naik dari minggu lalu
+                {breakdown.totalUser.user_wow_change_pct_status === "up" ? (
+                  <p> Naik dari minggu lalu</p>
+                ) : breakdown.totalUser.user_wow_change_pct_status ===
+                  "down" ? (
+                  <p> Turun dari minggu lalu</p>
+                ) : breakdown.totalUser.user_wow_change_pct_status ===
+                  "flat" ? (
+                  <p> belum ada perubahan</p>
+                ) : null}
               </>
             }
             title="Total Pengguna"
@@ -261,43 +276,42 @@ const DashboardPage = () => {
               data={dataTable}
               canAction={false}
               renderItem={(item) => {
-                const typeText = item.activity_type_category.split("/")[0]
+                const typeText = item.activity_type_category.split("/")[0];
                 return (
-                <>
-                  <span className="text-center">{item.timestamp}</span>
-                  {item.user_id == null ? (
-                    <span className="text-center">user tidak diketahui</span>
-                  ) : (
-                    <span className="text-center">{item.user_id}</span>
-                  )}
-                  <span className="text-center">
-                    {item.activity_description}
-                  </span>
-                  {item.company_name === null ? (
+                  <>
+                    <span className="text-center">{item.timestamp}</span>
+                    {item.user_id == null ? (
+                      <span className="text-center">user tidak diketahui</span>
+                    ) : (
+                      <span className="text-center">{item.user_id}</span>
+                    )}
                     <span className="text-center">
-                      perusahaan tidak ditemukan
+                      {item.activity_description}
                     </span>
-                  ) : (
-                    <span className="text-center">{item.company_name}</span>
-                  )}
-                  <span
-                    className={`uppercase py-2 px-5 rounded-full text-white ${
-                      typeText === "Login"
-                        ? "bg-[#13D376]"
-                        : typeText === "Data"
-                        ? "bg-[#DBBE03]"
-                        : typeText === "Error"
-                        ? "bg-[#DB3726]"
-                        : typeText === "Proses "
-                        ? "bg-[#1069C9]"
-                        : ""
-                    }`}>
-                    {typeText}
-                  </span>
-                </>
-              )
-              }
-            }
+                    {item.company_name === null ? (
+                      <span className="text-center">
+                        perusahaan tidak ditemukan
+                      </span>
+                    ) : (
+                      <span className="text-center">{item.company_name}</span>
+                    )}
+                    <span
+                      className={`uppercase py-2 px-5 rounded-full text-white ${
+                        typeText === "Login"
+                          ? "bg-[#13D376]"
+                          : typeText === "Data"
+                          ? "bg-[#DBBE03]"
+                          : typeText === "Error"
+                          ? "bg-[#DB3726]"
+                          : typeText === "Proses "
+                          ? "bg-[#1069C9]"
+                          : ""
+                      }`}>
+                      {typeText}
+                    </span>
+                  </>
+                );
+              }}
             />
             <div className="flex justify-end mt-3">
               <button

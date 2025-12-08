@@ -20,9 +20,11 @@ const aiChatResponse = async () => {
   }
 };
 
-const getDocuments = async (page: number, limit: number) => {
+const getDocuments = async (page: number, limit: number, filter: string) => {
   try {
-    const res = await api.get(`/documents/?page=${page}&limit=${limit}`);
+    const res = await api.get(
+      `/documents/?search=${filter}&page=${page}&limit=${limit}`
+    );
     return res.data;
   } catch (error) {
     throw error;

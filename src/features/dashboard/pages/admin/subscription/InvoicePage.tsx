@@ -23,8 +23,10 @@ const InvoicePage = () => {
     Amount: 0,
     plan_name: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchInvoice = async () => {
       try {
         const res = await receiptApi(initParams);
@@ -44,6 +46,8 @@ const InvoicePage = () => {
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchInvoice();
@@ -81,42 +85,62 @@ const InvoicePage = () => {
 
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-semibold">Bukti Pembayaran</h1>
-              <span className="bg-[#00AA58] px-3 py-1 rounded-full text-white text-sm">
-                {invoice.PaidStatus}
-              </span>
+              {isLoading ? (
+                  <p className="h-3 w-10 bg-gray-200 animate-pulse"></p>
+              ) : (
+                <span className="bg-[#00AA58] px-3 py-1 rounded-full text-white text-sm">
+                  {invoice.PaidStatus}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-3">
               <div className="text-sm flex justify-between items-center">
                 <p className="text-[#666666]">Nomor Transaksi</p>
-                <p>
-                  {invoice.SessionId} ({invoice.PaymentName} ID{" "}
-                  {invoice.TransactionId})
-                </p>
+                {isLoading ? (
+                  <p className="h-3 w-50 bg-gray-200 animate-pulse"></p>
+                ) : (
+                  <p>
+                    {invoice.SessionId} ({invoice.PaymentName} ID{" "}
+                    {invoice.TransactionId})
+                  </p>
+                )}
               </div>
               <div className="text-sm flex justify-between items-center">
                 <p className="text-[#666666]">Pembayar (PIC Perusahaan)</p>
-                <p>
-                  {invoice.BuyerName} ({invoice.BuyerEmail})
-                </p>
+                {isLoading ? (
+                  <p className="h-3 w-70 bg-gray-200 animate-pulse"></p>
+                ) : (
+                  <p>
+                    {invoice.BuyerName} ({invoice.BuyerEmail})
+                  </p>
+                )}
               </div>
               <div className="text-sm flex justify-between items-center">
                 <p className="text-[#666666]">Tanggal Pembayaran</p>
-                <p>
-                  {new Date(invoice.SuccessDate).toLocaleString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    second: "numeric",
-                    timeZone: "Asia/Jakarta",
-                  })}
-                </p>
+                {isLoading ? (
+                  <p className="h-3 w-40 bg-gray-200 animate-pulse"></p>
+                ) : (
+                  <p>
+                    {new Date(invoice.SuccessDate).toLocaleString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      second: "numeric",
+                      timeZone: "Asia/Jakarta",
+                    })}
+                  </p>
+                )}
               </div>
               <div className="text-sm flex justify-between items-center">
                 <p className="text-[#666666]">Metode Pembayaran</p>
-                <p>Payment Gateway ({invoice.PaymentMethod})</p>
+                {isLoading ? (
+                  <p className="h-3 w-30 bg-gray-200 animate-pulse"></p>
+                ) : (
+                  <p>Payment Gateway ({invoice.PaymentMethod})</p>
+                )}
               </div>
             </div>
 
@@ -124,17 +148,28 @@ const InvoicePage = () => {
               <h2 className="text-lg text-[#126F3D] border-b pb-2 border-gray-200 font-semibold">
                 Detail Tagihan
               </h2>
-              <div className="flex justify-between text-xs">
-                <p>Upgrade Paket: {invoice.plan_name}</p>
-                <p>Rp. {invoice.SubTotal.toLocaleString("id-ID")},-</p>
-              </div>
+              {isLoading ? (
+                <div className="flex justify-between text-xs">
+                  <p className="h-3 w-30 bg-gray-200 animate-pulse"></p>
+                  <p className="h-3 w-20 bg-gray-200 animate-pulse"></p>
+                </div>
+              ) : (
+                <div className="flex justify-between text-xs">
+                  <p>Upgrade Paket: {invoice.plan_name}</p>
+                  <p>Rp. {invoice.SubTotal.toLocaleString("id-ID")},-</p>
+                </div>
+              )}
             </div>
             <div className=" flex flex-col gap-2 border-b border-gray-200 pb-3">
               <h2 className="text-lg text-[#126F3D] border-b pb-2 border-gray-200 font-semibold">
                 Total Bayar
               </h2>
               <div className="flex justify-end text-xl font-bold text-[#126F3D]">
-                <p>Rp. {invoice.Amount.toLocaleString("id-ID")},-</p>
+                {isLoading ? (
+                  <p className="h-3 w-40 bg-gray-200 animate-pulse"></p>
+                ) : (
+                  <p>Rp. {invoice.Amount.toLocaleString("id-ID")},-</p>
+                )}
               </div>
             </div>
 
@@ -161,7 +196,9 @@ const InvoicePage = () => {
         </div>
       </div>
 
-      <div id="canvas-download" className="bg-white border absolute top-0 left-0 -z-1 py-3 px-5 justify-between w-170 h-screen flex flex-col gap-4">
+      <div
+        id="canvas-download"
+        className="bg-white border absolute top-0 left-0 -z-1 py-3 px-5 justify-between w-170 h-screen flex flex-col gap-4">
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <img src="" alt="" />

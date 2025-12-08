@@ -1,8 +1,8 @@
 import api from "../../../../shared/lib/Axios"
 
-const chatLog = async (page:number, limit:number) => {
+const chatLog = async (page:number, limit:number, filter:string) => {
     try {
-        const res = await api.get(`/company/chatlogs?page=${page}&limit=${limit}`)
+        const res = await api.get(`/company/chatlogs?search=${filter}&page=${page}&limit=${limit}`)
         return res.data
     } catch (error) {
         throw error
