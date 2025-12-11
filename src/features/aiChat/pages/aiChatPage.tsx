@@ -51,6 +51,7 @@ const aiChatPage = () => {
     };
     fetchPlanSubs();
   }, []);
+  
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };

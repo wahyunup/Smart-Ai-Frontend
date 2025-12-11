@@ -38,11 +38,22 @@ const AdminLoginPage = () => {
 
       const accessToken = res.access_token;
       const expiresIn = res.expires_in;
-console.log(res);
 
       if (res.user.role !== "super_admin") {
-        removeCookie("accesstoken");
-        navigate("/");
+        Swal.fire({
+          text: "akun tidak memiliki akses",
+          icon: "error",
+          confirmButtonText: "oke",
+        }).then((response) => {
+          if (response.isConfirmed) {
+            removeCookie("accesstoken");
+            navigate("/auth/admin/login");
+            setForm({
+              password: "",
+              username: "",
+            });
+          }
+        });
         return;
       }
 

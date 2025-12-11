@@ -77,8 +77,8 @@ const SubcriptionPage = () => {
       console.log(res);
       setTotalPage(res.total_pages);
       setTransaction(res.items);
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -122,9 +122,6 @@ const SubcriptionPage = () => {
                 <h1 className="text-3xl font-semibold text-[#1D8A45] font-inter">
                   {mySub.plan_name}
                 </h1>
-                <p className="text-sm text-[#008846]">
-                  {mySub.monthly_quota} Pertanyaan / Bulan
-                </p>
                 <p className="text-sm text-[#DB3726]">
                   Sisa Kuota: {mySub.remaining_quota} / {mySub.total_quota}{" "}
                   Pertanyaan

@@ -18,6 +18,7 @@ import {
   SubscriptionRequestPage,
   AdminPaymentSuccessPage,
   AdminPaymentFailedPage,
+  ManageTransactionPage,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -97,6 +98,7 @@ function App() {
             element={<SuperAdminManageAdminCompanyPage />}
           />
           <Route path="settings" element={<SuperAdminSettingsPage />} />
+          <Route path="manage-transaction" element={<ManageTransactionPage />} />
         </Route>
 
         <Route path="/" element={<HomePage />} />

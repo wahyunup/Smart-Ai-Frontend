@@ -17,3 +17,4 @@ export { default as SuperAdminLogAuditPage } from "./pages/superadmin/logAudit/L
 export { default as SuperAdminManageCompanyPage } from "./pages/superadmin/manageCompany/ManageCompanyPage";
 export { default as SuperAdminManageAdminCompanyPage } from "./pages/superadmin/manageAdminCompany/ManageAdminCompanyPage";
 export { default as SuperAdminSettingsPage } from "./pages/superadmin/settings/SettingsPage";
+export { default as ManageTransactionPage } from "./pages/superadmin/manageTransaction/manageTransaction";

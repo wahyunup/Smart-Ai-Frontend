@@ -23,7 +23,7 @@ import logo from "../../../assets/icons/LOGO FIX.svg";
 import mascot from "../../../assets/icons/SmartAI-2.png";
 import { getCookie, removeCookie } from "../../utils/Cookies";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   deleteConversationApi,
   fetchAllConversation,
@@ -47,11 +47,24 @@ const Sidebar = () => {
   const { decoded } = useAuthStore();
   const isLogin = decoded.role;
   const initAuth = useAuthStore((state) => state.initAuth);
+  const hideTimer = useRef<any>(null);
   const [loginUser, setLoginUser] = useState({
     division: "",
     username: "",
     profile_picture_url: "",
   });
+
+  const handleEnter = () => {
+    clearTimeout(hideTimer.current);
+    setIsHidden(true);
+  };
+
+  const handleLeave = () => {
+    clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => {
+      setIsHidden(false);
+    }, 100); // delay biar tidak blinking
+  };
 
   const navlist = [
     {
@@ -106,6 +119,12 @@ const Sidebar = () => {
       category: "Manajemen Klien",
     },
     {
+      icon: <CircleDollarSign size={27} />,
+      lable: "Manajemen Transaksi",
+      link: "/superadmin/manage-transaction",
+      category: "Manajemen Klien",
+    },
+    {
       icon: <ClipboardClock size={27} />,
       lable: "Audit Log & Aktivitas",
       link: "/superadmin/log-audit",
@@ -155,7 +174,7 @@ const Sidebar = () => {
       const fetchUserIsLogin = async () => {
         try {
           const res = await userIsLoginApi();
-          
+
           if (res) {
             setLoginUser({
               division: res.division,
@@ -192,9 +211,20 @@ const Sidebar = () => {
     try {
       await deleteConversationApi(id);
       Swal.fire({
-        text: "conversation berhasil di hapus",
-        icon: "success",
-        confirmButtonText: "oke",
+        text: "ingin menghapus conversation??",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+      }).then((response) => {
+        if (response.isConfirmed) {
+          Swal.fire({
+            text: "conversation berhasil di hapus",
+            icon: "success",
+            confirmButtonText: "oke",
+          });
+        }
       });
     } catch (error: any) {
       Swal.fire({
@@ -337,7 +367,7 @@ const Sidebar = () => {
       ) : isLogin === "employee" ? (
         <div
           className={`${
-            isOpen ? "2xl:w-[19%] md:w-70" : " w-[5%]"
+            isOpen ? "2xl:w-[20%] md:w-70" : " w-[5%]"
           } bg-[#F2F2F2] h-full flex flex-col relative justify-between`}>
           <div
             className={`p-5 flex flex-col ${
@@ -348,22 +378,26 @@ const Sidebar = () => {
                 <img src={logo} className="2xl:w-13 md:w-10" alt="" />
               ) : (
                 <>
-                  <img
-                    src={logo}
-                    onMouseEnter={() => setIsHidden(true)}
-                    onMouseLeave={() => setIsHidden(false)}
-                    className={`2xl:w-13 md:w-10  ${isHidden ? "hidden" : ""}`}
-                    alt=""
-                  />
-                  <button
-                    onClick={() => setIsOpen()}
-                    onMouseEnter={() => setIsHidden(true)}
-                    onMouseLeave={() => setIsHidden(false)}
-                    className={`cursor-pointer transition-all duration-700  ${
-                      isHidden ? "" : "hidden"
-                    }`}>
-                    <PanelLeftClose color="#126F3D" className="size-8 w-13" />
-                  </button>
+                  <div>
+                    <img
+                      onMouseEnter={handleEnter}
+                      onMouseLeave={handleLeave}
+                      src={logo}
+                      className={`2xl:w-10 md:w-10  ${
+                        isHidden ? "hidden" : ""
+                      }`}
+                      alt=""
+                    />
+                  </div>
+                  <div onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+                    <button
+                      onClick={() => setIsOpen()}
+                      className={`cursor-pointer transition-all duration-700  ${
+                        isHidden ? "" : "hidden"
+                      }`}>
+                      <PanelLeftClose color="#126F3D" className="size-[34px]" />
+                    </button>
+                  </div>
                 </>
               )}
               {isOpen && (
@@ -405,7 +439,7 @@ const Sidebar = () => {
                                 )
                                   ? "bg-[#3BC15240] "
                                   : ""
-                              }  hover:bg-[#3BC15240] px-5 py-2 rounded-full flex items-center justify-between`}
+                              }  hover:bg-[#3BC15240] min-h-[40px] px-5 py-6 rounded-full flex items-center justify-between`}
                               onClick={() =>
                                 handleConversation(conversation.id)
                               }

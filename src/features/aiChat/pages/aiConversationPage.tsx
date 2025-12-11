@@ -9,6 +9,8 @@ import {
 import Input from "../../../shared/components/ui/Input";
 import { CircleArrowUp } from "lucide-react";
 import { Icon } from "@iconify/react";
+import ReactMarkDown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const aiConversationPage = () => {
   const { conversationId } = useParams();
@@ -36,10 +38,9 @@ const aiConversationPage = () => {
           const res = await fetchConversationApi(conversationId);
           const regex = res.map((rx: { answer: string }) => ({
             ...rx,
-            answer: rx.answer.replace(
-              /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
-              "<strong>$1</strong>"
-            ),
+            answer: rx.answer
+            .replace(/(\d+)\./g, "\n$1. ")
+            ,
           }));
 
           setChats(regex);
@@ -53,6 +54,31 @@ const aiConversationPage = () => {
     };
     fetchConversation();
   }, [conversationId]);
+
+  // const formatAnswer = (text: string) => {
+  //   return (
+  //     text
+  //     .replace(/(\d+)\./g, "\n$1.")
+
+  //       // bold **text**
+  //       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+
+  //       // italic *text*
+  //       .replace(/\*(.*?)\*/g, "<em>$1</em>")
+
+  //       // numbering list 1. item
+  //       .replace(/^\d+\.\s+(.*)$/gm, "<li>$1</li>")
+
+  //       // bullet list - item
+  //       .replace(/^[\-\*]\s+(.*)$/gm, "<li>$1</li>")
+
+  //       // ubah baris li menjadi <ul>...</ul>
+  //       .replace(/(<li>[\s\S]*?<\/li>)/g, "<ul>$1</ul>")
+
+  //       // newline → <br/>
+  //       .replace(/\n/g, "<br/>")
+  //   );
+  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,13 +112,8 @@ const aiConversationPage = () => {
                     line.startsWith("data:") && line.trim() !== "data: {}"
                 ) // ambil baris data
                 .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
-                .join("\n");
-
-              chunk = chunk.replace(
-                /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
-                "<strong>$1</strong>"
-              );
-
+                .join("\n")
+                .replace(/(\d+)\./g, "\n$1. ")
               fullAnswer += chunk;
 
               // Update chat terakhir secara live
@@ -144,15 +165,36 @@ const aiConversationPage = () => {
                   </p>
                 </div>
                 <div className="flex justify-start">
-                  <p
-                    dangerouslySetInnerHTML={{ __html: chat.answer }}
-                    className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit "></p>
+                  <p className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none ">
+                    <ReactMarkDown
+                      components={{
+                        h1: ({ children }) => (
+                          <h1 className="text-2xl font-bold">{children}</h1>
+                        ),
+                        p: ({ children }) => (
+                          <p className="my-2 leading-relaxed">{children}</p>
+                        ),
+                        ol: ({ children }) => (
+                          <ol className="list-decimal ml-6 mb-3">{children}</ol>
+                        ),
+                        li: ({ children }) => (
+                          <li className="mb-1">{children}</li>
+                        ),
+                        code: ({ children }) => (
+                          <code className="px-1 py-0.5 bg-gray-200 rounded text-sm">
+                            {children}
+                          </code>
+                        ),
+                      }}
+                      remarkPlugins={[remarkGfm]}>
+                      {chat.answer}
+                    </ReactMarkDown>
+                  </p>
                 </div>
                 <div ref={chatEndRef} />
               </>
             ))
           )}
-         
         </div>
         <div className="bg-white sticky bottom-0 w-full 2xl:py-10 md:py-5">
           <Input
@@ -161,7 +203,7 @@ const aiConversationPage = () => {
                 <Icon icon="line-md:loading-loop" width="24" height="24" />
               ) : (
                 <button className="cursor-pointer" type="submit">
-                <CircleArrowUp color="#666666" />
+                  <CircleArrowUp color="#666666" />
                 </button>
               )
             }

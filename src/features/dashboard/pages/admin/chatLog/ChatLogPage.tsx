@@ -85,7 +85,7 @@ const ChatLogPage = () => {
   };
 
   useEffect(() => {
-    setSearchParams({ page: String(page), filter : String(value) });
+    setSearchParams({ page: String(page), filter: String(value) });
   }, [page, value]);
 
   const handleDeleteChatLog = () => {};
@@ -99,7 +99,7 @@ const ChatLogPage = () => {
             <h3 className="text-xl">Log Chat Perusahaan</h3>
             <div className="flex gap-5 items-center">
               <Input
-              value={value}
+                value={value}
                 onchange={(e) => setValue(e.target.value)}
                 variant="secondary"
                 placeholder="Cari (User ID/Keyword)"
@@ -165,6 +165,11 @@ const ChatLogPage = () => {
                   dateStyle: "long",
                   timeStyle: "medium",
                 });
+
+                const answerRegex = item.answer.replace(
+                  /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
+                  "<strong>$1</strong>"
+                );
                 return (
                   <>
                     <span className="text-center">{item.id}</span>
@@ -191,11 +196,14 @@ const ChatLogPage = () => {
                         setHoverType("answer");
                       }}
                       onMouseLeave={() => setHoverEffect(false)}>
-                      <span className="z-[2] wrap-anywhere">
-                        {item.answer.length > 50
-                          ? item?.answer.slice(0, 50) + "..."
-                          : item?.answer}
-                      </span>
+                      <span
+                        className="z-[2] wrap-anywhere"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            item.answer.length > 50
+                              ? answerRegex.slice(0, 50) + "..."
+                              : answerRegex,
+                        }}></span>
                     </div>
                   </>
                 );

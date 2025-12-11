@@ -18,7 +18,7 @@ const SectionFeature = () => {
           iconLayout="left"
           classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Upload Dokumen"
-          subheading="Unggah dokumen penting perusahaan dengan mudah. Sistem akan otomatis memprosesnya untuk digunakan chatbot."
+          subheading="Unggah dokumen penting (PDF, Word, Excel). Siap dianalisis dan menjadi sumber jawaban chatbot."
           icon={
             <Icon
               color="#fff"
@@ -30,8 +30,8 @@ const SectionFeature = () => {
         <Card
           iconLayout="left"
           classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
-          heading="Pemindaian OCR Otomatis"
-          subheading="Dokumen yang diunggah akan dipindai otomatis menggunakan OCR untuk mengenali dan mengekstrak teks secara cepat dan akurat."
+          heading="Ekstraksi Teks Cerdas"
+          subheading="Sistem memindai dan membaca teks dari dokumen, gambar, atau tabel, menjadikannya dapat dicari."
           icon={
             <Icon
               color="#fff"
@@ -44,7 +44,7 @@ const SectionFeature = () => {
           iconLayout="left"
           classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Chatbot"
-          subheading="Ajukan pertanyaan dan dapatkan jawaban akurat berdasarkan dokumen perusahaan Anda, didukung teknologi AI terkini."
+          subheading="Ajukan pertanyaan. AI memberikan jawaban akurat dan referensi langsung dari data perusahaan."
           icon={
             <Icon
               color="#fff"
@@ -57,7 +57,7 @@ const SectionFeature = () => {
           iconLayout="left"
           classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
           heading="Dashboard & Monitoring"
-          subheading="Pantau status dokumen, proses OCR, dan performa chatbot dalam satu tampilan dashboard yang informatif."
+          subheading="Lacak penggunaan chatbot, kinerja, dan akurasi data dalam satu dashboard terpusat."
           icon={
             <Icon
               className="2xl:size-[35px] md:size-[25px] size-[25px]"

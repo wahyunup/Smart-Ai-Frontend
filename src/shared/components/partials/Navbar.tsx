@@ -2,11 +2,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 import { useEffect, useState } from "react";
 import LogoSmartAi from "../../../assets/icons/logo-footer.png";
-import { CircleUser, Menu, PanelLeftClose } from "lucide-react";
+import { CircleUser, Menu, PanelLeftClose, Sparkles } from "lucide-react";
 import useToggle from "../../store/isOpen";
 import { getCookie } from "../../utils/Cookies";
 import { decodeJwt } from "../../utils/Decode";
 import smartAiMascot from "../../../assets/icons/SmartAI 3.png";
+import { planStatusApi } from "../../../features/aiChat/services/aiChat";
 
 const Navbar = () => {
   const [me, setMe] = useState({
@@ -16,6 +17,21 @@ const Navbar = () => {
   const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
   const { setIsOpen } = useToggle();
+  const [plan, setPlan] = useState();
+
+  if (location.pathname !== "/") {
+    useEffect(() => {
+      const fetchPlanSubs = async () => {
+        try {
+          const res = await planStatusApi();
+          setPlan(res.plan_name);
+        } catch (error: any) {
+          console.log(error.response.data.message);
+        }
+      };
+      fetchPlanSubs();
+    }, []);
+  }
 
   const handleScroll = () => {
     setScrollY(window.scrollY);
@@ -83,12 +99,18 @@ const Navbar = () => {
           </div>
         </>
       ) : location.pathname.startsWith("/chat/conversation/") ? (
-        <div className="grid grid-cols-3 bg-white p-5">
+        <div className="grid grid-cols-3 bg-white p-5 items-center">
           <div className="flex gap-3 items-center">
             <img src={smartAiMascot} alt="" />
             <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
           </div>
-          <p>asdads</p>
+          <div className="flex flex-col sticky top-10 items-center w-full">
+            <p className="bg-[#1D8A4514] px-3 py-2 rounded-full border border-[#1D8A45] text-[#1D8A45] flex gap-1">
+              SmartAI Pro: <span>{plan}</span>
+              <Sparkles size={15} color="#3BC152" />
+            </p>
+          </div>
+          <p></p>
         </div>
       ) : location.pathname.startsWith(
           "/chat"

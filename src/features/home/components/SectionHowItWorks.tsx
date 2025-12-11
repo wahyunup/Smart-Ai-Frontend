@@ -26,7 +26,7 @@ const SectionHowItWorks = () => {
             />
           }
           heading="Upload Dokumen"
-          subheading="Unggah dokumen perusahaan (PDF, gambar, atau teks). Sistem otomatis memulai proses analisis."
+          subheading="Unggah semua file perusahaan Anda (dari berbagai format)."
         />
         <Icon
           className="md:inline hidden"
@@ -46,8 +46,8 @@ const SectionHowItWorks = () => {
               className="2xl:size-[58px] md:size-[48px] size-[50px]"
             />
           }
-          heading="Ekstraksi Teks (OCR)"
-          subheading="SmartAI mengekstrak isi dokumen menggunakan teknologi OCR agar teks bisa dipahami sistem."
+          heading="Analisis Data Cerdas"
+          subheading="AI membaca, mengekstrak, dan memahami semua teks di dalamnya."
         />
         <Icon
           className="md:inline hidden"
@@ -67,8 +67,8 @@ const SectionHowItWorks = () => {
               className="2xl:size-[58px] md:size-[48px] size-[50px]"
             />
           }
-          heading="Pembuatan Embedding"
-          subheading="Teks yang sudah dibaca diubah menjadi vektor embedding dan disimpan ke basis data pintar (Vector DB)."
+          heading="Bentuk Pengetahuan AI"
+          subheading="Data diubah menjadi basis pengetahuan yang terstruktur, siap menjawab pertanyaan."
         />
         <Icon
           className="md:inline hidden"
@@ -87,8 +87,8 @@ const SectionHowItWorks = () => {
               className="2xl:size-[58px] md:size-[48px] size-[50px]"
             />
           }
-          heading="Chat dengan AI"
-          subheading="Ajukan pertanyaan apa pun! SmartAI akan mencari jawaban dari dokumen Anda dengan cepat dan akurat."
+          heading="Akses Jawaban Instan"
+          subheading="Tim Anda langsung mendapat jawaban akurat dan cepat dari Chatbot."
         />
       </div>
     </div>
