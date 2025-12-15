@@ -52,4 +52,3 @@ jobs:
                   key: ${{ secrets.VPS_KEY }}
                   script: |
                       sudo systemctl restart nginx
-
