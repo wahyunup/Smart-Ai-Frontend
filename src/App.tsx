@@ -19,6 +19,7 @@ import {
   AdminPaymentSuccessPage,
   AdminPaymentFailedPage,
   ManageTransactionPage,
+  SuperadminManageCompanyCreate,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -80,7 +81,10 @@ function App() {
             <Route index element={<SubscriptionPage />} />
             <Route path="select-sub" element={<SelectSubcriptionPage />} />
             <Route path="sub-req" element={<SubscriptionRequestPage />} />
-            <Route path="payment-success" element={<AdminPaymentSuccessPage />} />
+            <Route
+              path="payment-success"
+              element={<AdminPaymentSuccessPage />}
+            />
             <Route path="payment-failed" element={<AdminPaymentFailedPage />} />
             <Route path="invoice" element={<InvoicePage />} />
           </Route>
@@ -89,16 +93,20 @@ function App() {
         <Route path="/superadmin">
           <Route path="dashboard" element={<SuperAdminDashboardPage />} />
           <Route path="log-audit" element={<SuperAdminLogAuditPage />} />
-          <Route
-            path="manage-company"
-            element={<SuperAdminManageCompanyPage />}
-          />
+          <Route path="manage-company">
+            <Route index element={<SuperAdminManageCompanyPage/>}/>
+            <Route path="create" element={<SuperadminManageCompanyCreate/>}/>
+            <Route path="edit/:id" element={<SuperadminManageCompanyCreate/>}/>
+          </Route>
           <Route
             path="manage-admin-company"
             element={<SuperAdminManageAdminCompanyPage />}
           />
           <Route path="settings" element={<SuperAdminSettingsPage />} />
-          <Route path="manage-transaction" element={<ManageTransactionPage />} />
+          <Route
+            path="manage-transaction"
+            element={<ManageTransactionPage />}
+          />
         </Route>
 
         <Route path="/" element={<HomePage />} />

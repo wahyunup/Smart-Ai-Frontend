@@ -11,6 +11,7 @@ const AddStaf = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [showingPassword, setShowingPassword] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [editPreviewImage, setEditPreviewImage] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -76,21 +77,31 @@ const AddStaf = () => {
         form.role,
         form.division_name
       );
-       Swal.fire({
+      Swal.fire({
         text: "Staff berhasil dibuat",
         icon: "success",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
-          navigate("/admin/manage-staff")
+          navigate("/admin/manage-staff");
         }
       });
-    } catch (error:any) {
-       Swal.fire({
+    } catch (error: any) {
+      Swal.fire({
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
-      })
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -127,9 +138,9 @@ const AddStaf = () => {
         dataEdit.division
       );
 
-      if(res) {
+      if (res) {
         console.log(res);
-        navigate("/admin/manage-staff")
+        navigate("/admin/manage-staff");
       }
     } catch (error) {
       console.log(error);
@@ -155,7 +166,11 @@ const AddStaf = () => {
                   htmlFor="profile_picture_file"
                   className="border-1 border-gray-300 p-10 rounded-2xl border-dashed flex items-center justify-center text-gray-500 cursor-pointer flex-col gap-5 w-full h-41">
                   {previewImage ? (
-                    <img src={previewImage} className="h-full" alt="preview-image" />
+                    <img
+                      src={previewImage}
+                      className="h-full"
+                      alt="preview-image"
+                    />
                   ) : (
                     "Klik untuk mengunggah"
                   )}
@@ -213,7 +228,9 @@ const AddStaf = () => {
                 name="password"
                 htmlFor="password"
                 classname="gap-17"
-                type="password"
+                tooglePassword={() => setShowingPassword(!showingPassword)}
+                showPassword={showingPassword}
+                type={`${showingPassword ? "text" : "password"}`}
                 labelLayout="inline"
               />
               <Input
@@ -314,7 +331,9 @@ const AddStaf = () => {
                 name="password"
                 htmlFor="password"
                 classname="gap-17"
-                type="password"
+                tooglePassword={() => setShowingPassword(!showingPassword)}
+                showPassword={showingPassword}
+                type={`${showingPassword ? "text" : "password"}`}
                 labelLayout="inline"
               />
               <Input

@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 
 const EmployeLoginPage = () => {
   const navigate = useNavigate();
+  const [showingPassword, setShowingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -32,11 +33,31 @@ const EmployeLoginPage = () => {
       const res = await authLoginApi(form.username, form.password);
       const token = res.access_token;
       const expiresIn = res.expires_in;
+      
+      if (res.user.role !== "employee") {
+        Swal.fire({
+          text: "akun tidak memiliki akses",
+          icon: "warning",
+          confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
+        });
+        return;
+      }
+
       if (token) {
         Swal.fire({
           text: "login berhasil",
           icon: "success",
           confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
         }).then((response) => {
           if (response.isConfirmed) {
             setCookie("accesstoken", token, expiresIn);
@@ -47,9 +68,14 @@ const EmployeLoginPage = () => {
     } catch (error: any) {
       Swal.fire({
         text: error.response.data.message,
-        icon : "error",
-        confirmButtonText : "oke"
-      })
+        icon: "error",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -95,10 +121,12 @@ const EmployeLoginPage = () => {
                 htmlFor={form.password}
                 label="Kata Sandi"
                 placeholder="Masukan kata sandi"
-                type="password"
+                tooglePassword={() => setShowingPassword(!showingPassword)}
+                showPassword={showingPassword}
+                type={`${showingPassword ? "text" : "password"}`}
               />
-              <span className="text-[#3BC152] text-xs cursor-pointer">
-                Lupa kata sandi?
+              <span className="text-[#0B5C37] text-xs cursor-pointer">
+                Lupa kata sandi? Hubungi admin perusahaan
               </span>
             </div>
           </div>

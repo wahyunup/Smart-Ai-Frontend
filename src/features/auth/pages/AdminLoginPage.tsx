@@ -16,6 +16,8 @@ import Swal from "sweetalert2";
 
 const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showingPassword, setShowingPassword] = useState(false);
+
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
@@ -42,8 +44,13 @@ const AdminLoginPage = () => {
       if (res.user.role !== "super_admin") {
         Swal.fire({
           text: "akun tidak memiliki akses",
-          icon: "error",
+          icon: "warning",
           confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
         }).then((response) => {
           if (response.isConfirmed) {
             removeCookie("accesstoken");
@@ -62,6 +69,11 @@ const AdminLoginPage = () => {
           text: "login berhasil",
           icon: "success",
           confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
         }).then((response) => {
           if (response.isConfirmed) {
             setCookie("accesstoken", accessToken, expiresIn);
@@ -74,6 +86,11 @@ const AdminLoginPage = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(false);
@@ -115,13 +132,15 @@ const AdminLoginPage = () => {
               variant="primary"
               onchange={handleOnChange}
               value={form.password}
+              tooglePassword={() => setShowingPassword(!showingPassword)}
+              showPassword={showingPassword}
+              type={`${showingPassword ? "text" : "password"}`}
               name="password"
               placeholder="masukan kata sandi"
-              type="password"
               htmlFor="password"
               label="Kata Sandi"
             />
-            <p className="cursor-pointer text-[#3BC152] text-xs text-start">
+            <p className="cursor-pointer text-[#0B5C37] text-xs text-start">
               Lupa kata sandi?
             </p>
           </div>

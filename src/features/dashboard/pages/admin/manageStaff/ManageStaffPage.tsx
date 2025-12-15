@@ -79,9 +79,15 @@ const ManageStaffPage = () => {
         text: "yakin ingin menghapus staff?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#DB3726",
+        cancelButtonColor: "#F2F2F2",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+          cancelButton: "disable-button",
+        },
       }).then(async (response) => {
         if (response.isConfirmed) {
           await deleteStaff(id);
@@ -93,6 +99,11 @@ const ManageStaffPage = () => {
         text: error.response.data.message,
         icon: "warning",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(0);

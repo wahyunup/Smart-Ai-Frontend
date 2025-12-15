@@ -28,6 +28,8 @@ export interface InputProps {
   value?: string | number;
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
   icon?: React.ReactNode;
+  tooglePassword?: () => void;
+  showPassword? : boolean
   variant?: "primary" | "secondary" | "third" | "disable";
   labelLayout?: "inline" | "block";
   iconPosition?: "left" | "right";
@@ -37,7 +39,7 @@ export interface ButtonProps {
   onclick?: () => void;
   children: React.ReactNode;
   classname?: string;
-  variant?: "primary" | "secondary" | "link" | "cancel";
+  variant?: "primary" | "secondary" | "link" | "cancel" | "cancel secondary" | "info";
 }
 
 export interface CardProps {
@@ -85,6 +87,7 @@ export interface TableBodyProps {
   isLoading?: number;
   canAction?: boolean;
   isLoadingFetch?: boolean;
+  showPreview? : boolean
 }
 
 export interface ChatLogProps {
@@ -122,8 +125,23 @@ export interface BasicAreaProps {
 
 export interface notificationProps {
   heading?: string;
-  type?: string
+  type?: string;
   subheading?: string;
   onClose?: boolean;
   setOnClose?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface plan {
+  name: string;
+  price: number;
+}
+
+export interface topUpPackage {
+  package_type: string;
+  price: number;
+}
+
+export interface updateTransactionApiProps {
+  plans: plan[];
+  top_up_packages: topUpPackage[];
 }

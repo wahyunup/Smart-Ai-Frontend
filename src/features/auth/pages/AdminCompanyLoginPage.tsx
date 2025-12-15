@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 const CompanyLoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [showingPassword, setShowingPassword] = useState(false)
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -29,28 +30,51 @@ const CompanyLoginPage = () => {
     setIsLoading(true);
     try {
       const res = await authLoginApi(form.email, form.password);
+      console.log(res.user);
+      
       const token = res?.access_token;
-      console.log(res);
 
       if (!token) {
         throw new Error("access tokennya kosong");
       }
-
-      Swal.fire({
-        text: "login berhasil",
-        icon: "success",
-        confirmButtonText: "oke",
-      }).then((response) => {
-        if (response.isConfirmed) {
-          setCookie("accesstoken", token, 3600);
-          window.location.reload();
-        }
-      });
+      if(res.user.role !== "admin") {
+        Swal.fire({
+          text : "akun tidak memiliki akses",
+          icon : "warning",
+          confirmButtonText : "oke",
+          confirmButtonColor : "#2BA54B",
+          buttonsStyling : true,
+          customClass : {
+            confirmButton : "primary-button"
+          }
+        })
+      } else {
+        Swal.fire({
+          text: "login berhasil",
+          icon: "success",
+          confirmButtonText: "oke",
+          confirmButtonColor : "#2BA54B",
+          buttonsStyling : true,
+          customClass : {
+            confirmButton : "primary-button"
+          }          
+        }).then((response) => {
+          if (response.isConfirmed) {
+            setCookie("accesstoken", token, 3600);
+            window.location.reload();
+          }
+        });
+      }
     } catch (error: any) {
       Swal.fire({
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor : "#DB3726",
+        buttonsStyling : true,
+        customClass : {
+          confirmButton : "danger-button"
+        }
       });
     } finally {
       setIsLoading(false);
@@ -93,12 +117,14 @@ const CompanyLoginPage = () => {
                 label="Kata Sandi"
                 name="password"
                 placeholder="Masukan kata sandi"
-                type="password"
+                type={`${showingPassword ? "text" : "password"}`}
                 htmlFor="password"
+                tooglePassword={() => setShowingPassword(!showingPassword)}
+                showPassword={showingPassword}
                 value={form.password}
                 onchange={handleOnChange}
               />
-              <span className="text-[#3BC152] text-xs cursor-pointer">
+              <span className="text-[#0B5C37] text-xs cursor-pointer">
                 Lupa kata sandi?
               </span>
             </div>

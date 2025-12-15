@@ -1,11 +1,16 @@
-const formatDate = (rawDate: string) => {
-  const date = new Date(rawDate).toLocaleString("id-ID", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+const formatDate = (rawDate: string, time?:boolean) => {
+const options:Intl.DateTimeFormatOptions = {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}
 
-  return date;
+if (time) {
+  options.hour = "2-digit",
+  options.minute = "2-digit"
+}
+
+  return new Date(rawDate).toLocaleString("id-ID", options)
 };
 
 export { formatDate };

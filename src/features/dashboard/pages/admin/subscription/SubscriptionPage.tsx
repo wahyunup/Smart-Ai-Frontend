@@ -167,7 +167,7 @@ const SubcriptionPage = () => {
 
           <div className="p-6 bg-white shadow-xl/3 border border-gray-200 rounded-2xl">
             <h1 className="text-2xl font-semibold">Riwayat Transaksi</h1>
-            <div className="overflow-hidden rounded-2xl mt-5">
+            <div className="overflow-hidden rounded-2xl mt-5 border border-[#B2B2B2]">
               <TableHeaderList classname="grid-cols-6 bg-[#E3F9E8]">
                 <span>ID Transaksi</span>
                 <span>Deskripsi</span>
@@ -186,7 +186,8 @@ const SubcriptionPage = () => {
                 page={page}
                 data={transaction}
                 renderItem={(item) => {
-                  const date = formatDate(item.paid_at);
+                  const dateCondition = item.paid_at === null ? item.created_at : item.paid_at
+                  const date = formatDate(dateCondition);
                   const amountIdn = item?.amount?.toLocaleString("id-ID");
                   return (
                     <>

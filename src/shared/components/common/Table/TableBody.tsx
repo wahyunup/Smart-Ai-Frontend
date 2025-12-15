@@ -24,14 +24,17 @@ const TableBody = ({
   canAction = true,
   tooltipe,
   isLoadingFetch,
+  showPreview,
 }: TableBodyProps) => {
   return (
     <>
       {data?.map((item, i) => tooltipe?.(item, i))}
       <div>
         {isLoadingFetch
-          ? Array.from({ length: 4 }).map((_) => (
-              <div className="justify-between px-10 border-t border-[#B2B2B2] py-10 items-center justify-items-center-safe flex bg-gray-50">
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="justify-between px-10 border-t border-[#B2B2B2] py-10 items-center justify-items-center-safe flex bg-gray-50">
                 <div className="h-3 bg-gray-200 rounded-full w-40 animate-pulse"></div>
                 <div className="h-3 bg-gray-200 rounded-full w-40 animate-pulse"></div>
                 <div className="h-3 bg-gray-200 rounded-full w-30 animate-pulse"></div>
@@ -52,6 +55,17 @@ const TableBody = ({
                     <>
                       {canEdit ? (
                         <>
+                          {showPreview && (
+                            <>
+                              <button
+                                onClick={() => onclickEdit?.(item?.id)}
+                                className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
+                                <View size={24} />
+                              </button>
+                              <span className="border-r-1 border-[#F0F0F0]"></span>
+                            </>
+                          )}
+
                           <button
                             onClick={() => onclickEdit?.(item?.id)}
                             className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">

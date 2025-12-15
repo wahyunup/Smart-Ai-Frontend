@@ -5,38 +5,112 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import {
   allPlanApi,
   allTransactionApi,
+  updateTransactionApi,
 } from "../../../services/superadmin/Transaction";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
+import { useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const manageTransaction = () => {
-  const [isActive, setIsActive] = useState("Riwayat Transaksi");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initParamsPage = Number(searchParams.get("page")) || 1;
+  const initNav = searchParams.get("nav") ?? "Riwayat Transaksi";
+  const [isActive, setIsActive] = useState(initNav);
   const [data, setData] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(initParamsPage);
   const [plans, setplans] = useState<any>([]);
+  const [topUp, setTopUp] = useState<any>([]);
+  const [date, setDate] = useState("")
 
   const fetchTransaction = async () => {
     try {
-      const res = await allTransactionApi();
-      setData(res);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-    }
-  };
-
-  const fetchPlans = async () => {
-    try {
-      const res = await allPlanApi();
-      setplans(res);
+      const res = await allTransactionApi(page, 4);
+      setTotalPage(res.total_pages);
+      setPage(res.current_page);
+      setData(res.items);
     } catch (error: any) {
       console.log(error.response.data.message);
     }
   };
 
   useEffect(() => {
+    setSearchParams({ page: String(page), nav: String(isActive) });
+  }, [page, isActive]);
+
+  const handleChangePlan = (index: number, value: string) => {
+    const cleanValue = Number(value.replace(/\D/g, ""));
+    const updated = [...plans];
+    updated[index].price = cleanValue;
+    setplans(updated);
+  };
+
+  const handleChangeTopup = (index: number, value: string) => {
+    const cleanValue = Number(value.replace(/\D/g, ""));
+    const updated = [...topUp];
+    updated[index].price = cleanValue;
+    setTopUp(updated);
+  };
+
+  const fetchPlans = async () => {
+    try {
+      const res = await allPlanApi();
+      console.log(res);
+      const convert_date = formatDate(res.updated_at)
+      setDate(convert_date)
+      setTopUp(res.top_up_packages);
+      setplans(res.plans);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
+  };
+
+  const handleSubmitChange = async () => {
+    try {
+      const payload = {
+        plans: plans.map((p: { name: string; price: number }) => ({
+          name: p.name,
+          price: Number(p.price),
+        })),
+        top_up_packages: topUp.map(
+          (t: { package_type: string; price: number }) => ({
+            package_type: t.package_type,
+            price: Number(t.price),
+          })
+        ),
+      };
+
+      await updateTransactionApi(payload);
+
+      Swal.fire({
+        text: "Harga berhasil diperbarui!",
+        icon: "success",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling : true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
+      }).then(async (response) => {
+        if (response.isConfirmed) {
+          window.location.reload();
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response?.data?.message,
+        icon: "error",
+        confirmButtonText: "OKE",
+      });
+    }
+  };
+
+  useEffect(() => {
     fetchPlans();
     fetchTransaction();
-  }, []);
+  }, [page]);
 
   const subNavigate = [
     {
@@ -46,6 +120,19 @@ const manageTransaction = () => {
       name: "Kelola Harga",
     },
   ];
+
+  const nextPage = () => {
+    if (page < totalPage) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-3">
@@ -69,7 +156,7 @@ const manageTransaction = () => {
             <h1 className="text-lg font-semibold">
               Riwayat Pembayaran Pro & Top Up (Otomatis iPaymu)
             </h1>
-            <div className="rounded-2xl overflow-hidden mt-4">
+            <div className="rounded-2xl overflow-hidden mt-4 border border-[#B2B2B2]">
               <TableHeaderList classname="grid-cols-6 bg-[#E3F9E8]">
                 <span>ID Transaksi</span>
                 <span>Nama Perusahaan</span>
@@ -79,16 +166,20 @@ const manageTransaction = () => {
                 <span>Status</span>
               </TableHeaderList>
               <TableBody
+                nextPage={nextPage}
+                prevPage={prevPage}
+                page={page}
+                totalPage={totalPage}
                 canAction={false}
                 data={data}
-                classname="grid-cols-6"
+                classname="grid-cols-6 text-center"
                 renderItem={(item) => {
                   const convertAmount = item.amount.toLocaleString("id-ID");
                   const convertDate = formatDate(item.created_at);
                   return (
                     <>
                       <span>{item.payment_reference}</span>
-                      <span>{item.company_id}</span>
+                      <span>{item.company_name}</span>
                       <span>{item.type}</span>
                       <span>{convertAmount}</span>
                       <span>{convertDate}</span>
@@ -98,6 +189,8 @@ const manageTransaction = () => {
                             ? "bg-[#00AA58]"
                             : item.status === "expired"
                             ? "bg-[#DB3726]"
+                            : item.status === "pending_payment"
+                            ? "bg-[#DBBE03]"
                             : null
                         }`}>
                         {item.status}
@@ -120,32 +213,39 @@ const manageTransaction = () => {
               <div className="flex w-full gap-5 mt-5">
                 <div className="w-full flex flex-col gap-5">
                   <Input
-                    value={`Rp ${plans[0]?.price.toLocaleString("id-ID")} ,-`}
-                    label="Harga Basic Plan (Bulanan)"
+                    onchange={(e) => handleChangePlan(0, e.target.value)}
+                    value={plans[0]?.price.toLocaleString("id-ID")}
+                    label={`Harga ${plans[0]?.name} (Bulanan)`}
                     labelLayout="block"
                     variant="secondary"
                   />
                   <Input
-                    value={`Rp ${plans[1]?.price.toLocaleString("id-ID")} ,-`}
-                    label="Harga Premium Plan (Bulanan)"
+                    onchange={(e) => handleChangePlan(1, e.target.value)}
+                    value={plans[1]?.price.toLocaleString("id-ID")}
+                    label={`Harga ${plans[1]?.name} (Bulanan)`}
                     labelLayout="block"
                     variant="secondary"
                   />
                   <Input
-                    value={`Rp ${plans[2]?.price.toLocaleString("id-ID")} ,-`}
-                    label="Harga Pro Plan (Bulanan)"
+                    onchange={(e) => handleChangePlan(2, e.target.value)}
+                    value={plans[2]?.price.toLocaleString("id-ID")}
+                    label={`Harga ${plans[2]?.name} (Bulanan)`}
                     labelLayout="block"
                     variant="secondary"
                   />
                 </div>
                 <div className="w-full flex flex-col gap-5">
                   <Input
-                    label="Harga Top Up Kecil (Per 1.000 Pertanyaan)"
+                    onchange={(e) => handleChangeTopup(0, e.target.value)}
+                    value={topUp[0]?.price.toLocaleString("id-ID")}
+                    label={`Harga Top Up ${topUp[0]?.package_type} (Per ${topUp[0]?.questions} Pertanyaan)`}
                     labelLayout="block"
                     variant="secondary"
                   />
                   <Input
-                    label="Harga Top Up Besar (Per 5.000 Pertanyaan)"
+                    onchange={(e) => handleChangeTopup(1, e.target.value)}
+                    value={topUp[1]?.price.toLocaleString("id-ID")}
+                    label={`Harga Top Up ${topUp[1]?.package_type} (Per ${topUp[1]?.questions} Pertanyaan)`}
                     labelLayout="block"
                     variant="secondary"
                   />
@@ -154,12 +254,13 @@ const manageTransaction = () => {
               {/* submit */}
               <div className="flex flex-col gap-3 items-center">
                 <Button
+                  onclick={handleSubmitChange}
                   variant="secondary"
                   classname="px-30 py-3 mt-10 rounded-xl">
                   Simpan Perubahan
                 </Button>
                 <p className="text-xs text-[#666666]">
-                  Terakhir diubah oleh Super Admin pada 10 November 2025
+                  Terakhir diubah oleh Super Admin pada {date}
                 </p>
               </div>
             </div>

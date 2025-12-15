@@ -49,6 +49,11 @@ const AddDocumentPage = () => {
         text: "semua field wajib diisi!",
         icon: "warning",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           return;
@@ -63,14 +68,24 @@ const AddDocumentPage = () => {
           text: "semua field wajib diisi!",
           icon: "warning",
           confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
         });
         return;
       }
       await uploadDocuments(form.file, form.name, form.tag);
       Swal.fire({
         text: "upload dokument berhasil",
-        icon: "warning",
+        icon: "success",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           navigate("/admin/manage-documents");
@@ -81,6 +96,11 @@ const AddDocumentPage = () => {
         text: error.response.data.message,
         icon: "warning",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(false);
@@ -93,6 +113,11 @@ const AddDocumentPage = () => {
         text: "Semua field wajib diisi!",
         icon: "warning",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           return;
@@ -111,6 +136,11 @@ const AddDocumentPage = () => {
         text: "edit dokument berhasil",
         icon: "success",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           navigate("/admin/manage-documents");
@@ -121,6 +151,11 @@ const AddDocumentPage = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(false);

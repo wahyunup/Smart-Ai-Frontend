@@ -72,24 +72,47 @@ const ManageDocuments = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const confirmation = confirm("yakin menghapus dokumen?");
-      if (confirmation) {
-        await deleteDocument(id);
-        Swal.fire({
-          text: "dokument berhasil dihapus",
-          icon: "warning",
-          confirmButtonText: "oke",
-        }).then((response) => {
-          if (response.isConfirmed) {
-            fetchDocument();
-          }
-        });
-      }
+      Swal.fire({
+        text: "yakin ingin menghapus dokumen",
+        icon: "warning",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#DB3726",
+        cancelButtonColor: "#F2F2F2",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+          cancelButton : "disable-button"
+        },
+      }).then(async (response) => {
+        if (response.isConfirmed) {
+          await deleteDocument(id);
+          Swal.fire({
+            text: "dokumen berhasil dihapus",
+            icon: "warning",
+            confirmButtonText: "oke",
+            confirmButtonColor: "#2BA54B",
+            buttonsStyling: true,
+            customClass: {
+              confirmButton: "primary-button",
+            },
+          }).then((response) => {
+            if (response.isConfirmed) {
+              fetchDocument();
+            }
+          });
+        }
+      });
     } catch (error: any) {
       Swal.fire({
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     }
   };

@@ -23,8 +23,7 @@ const ChatLogDetail = () => {
       try {
         if (conversationId) {
           const res = await chatLogDetail(conversationId);
-          console.log(res);
-          const dateConvert = formatDate(res.conversation_created_at);
+          const dateConvert = formatDate(res.conversation_created_at, true);
           const milisecond = res.avg_response_time_ms;
           const totalSecond = Math.floor(milisecond / 1000);
           const minute = Math.floor(totalSecond / 60);

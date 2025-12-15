@@ -9,6 +9,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { chatLog, downloadCsv } from "../../../services/admin/ChatLog";
 import { Icon } from "@iconify/react";
 import type { ChatLogProps } from "../../../../../shared/types/type";
+import { formatDate } from "../../../../../shared/utils/FormatDate";
 
 const ChatLogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -159,12 +160,7 @@ const ChatLogPage = () => {
               }
               totalPage={totalPage}
               renderItem={(item, i) => {
-                const uploadedAt = new Date(item.created_at);
-                const formattedDate = uploadedAt.toLocaleString("id-ID", {
-                  timeZone: "Asia/Jakarta",
-                  dateStyle: "long",
-                  timeStyle: "medium",
-                });
+                const uploadedAt = formatDate(item.created_at);
 
                 const answerRegex = item.answer.replace(
                   /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
@@ -173,7 +169,7 @@ const ChatLogPage = () => {
                 return (
                   <>
                     <span className="text-center">{item.id}</span>
-                    <span className="text-center">{formattedDate}</span>
+                    <span className="text-center">{uploadedAt}</span>
                     <span className="text-center">{item.username}</span>
 
                     <div

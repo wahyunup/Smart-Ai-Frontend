@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 const CompanyRegisterPage = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [showingPassword, setShowingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     companyName: "",
@@ -35,6 +36,11 @@ const CompanyRegisterPage = () => {
         text: "register berhasil",
         icon: "success",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           setStep(3);
@@ -45,6 +51,11 @@ const CompanyRegisterPage = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(false);
@@ -111,7 +122,7 @@ const CompanyRegisterPage = () => {
               <p className="text-center text-black/65 mt-3 text-sm">
                 sudah punya aku?{" "}
                 <span
-                  className="text-[#3BC152] cursor-pointer"
+                  className="text-[#0B5C37] cursor-pointer"
                   onClick={() => navigate("/auth/company-admin/login")}>
                   masuk disini
                 </span>
@@ -160,7 +171,9 @@ const CompanyRegisterPage = () => {
                   value={form.password}
                   name="password"
                   placeholder="Kata sandi"
-                  type="password"
+                  tooglePassword={() => setShowingPassword(!showingPassword)}
+                  showPassword={showingPassword}
+                  type={`${showingPassword ? "text" : "password"}`}
                   htmlFor="password"
                   label="Kata sandi"
                 />
@@ -172,7 +185,9 @@ const CompanyRegisterPage = () => {
                   value={form.confirmPassword}
                   name="confirmPassword"
                   placeholder="Konfirmasi kata sandi"
-                  type="password"
+                  tooglePassword={() => setShowingPassword(!showingPassword)}
+                  showPassword={showingPassword}
+                  type={`${showingPassword ? "text" : "password"}`}
                   htmlFor="confirmPassword"
                 />
               </div>
@@ -197,7 +212,7 @@ const CompanyRegisterPage = () => {
               <p className="text-center text-black/65 mt-3 text-sm">
                 sudah punya aku?{" "}
                 <span
-                  className="text-[#3BC152] cursor-pointer"
+                  className="text-[#0B5C37] cursor-pointer"
                   onClick={() => navigate("/auth/company-admin/login")}>
                   masuk disini
                 </span>

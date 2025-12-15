@@ -43,6 +43,11 @@ const CompanyProfilePage = () => {
         text: "profile berhasil diedit",
         icon: "success",
         confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           setEditEmailCompany(false);
@@ -55,6 +60,11 @@ const CompanyProfilePage = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     }
   };

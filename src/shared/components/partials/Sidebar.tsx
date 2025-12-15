@@ -146,9 +146,15 @@ const Sidebar = () => {
         text: "yakin ingin keluar?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#DB3726",
+        cancelButtonColor: "#F2F2F2",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+          cancelButton: "disable-button",
+        },
       }).then((result) => {
         if (result.isConfirmed) {
           removeCookie("accesstoken");
@@ -214,15 +220,26 @@ const Sidebar = () => {
         text: "ingin menghapus conversation??",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#DB3726",
+        cancelButtonColor: "#F2F2F2",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+          cancelButton: "disable-button",
+        },
       }).then((response) => {
         if (response.isConfirmed) {
           Swal.fire({
             text: "conversation berhasil di hapus",
             icon: "success",
             confirmButtonText: "oke",
+            confirmButtonColor: "#2BA54B",
+            buttonsStyling: true,
+            customClass: {
+              confirmButton: "primary-button",
+            },
           });
         }
       });
@@ -231,6 +248,11 @@ const Sidebar = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(null);
@@ -299,18 +321,18 @@ const Sidebar = () => {
       ) : isLogin == "super_admin" ? (
         <div
           className={`bg-[#F2F2F2] ${
-            !isOpen ? "2xl:w-[20%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
+            isOpen ? "2xl:w-[20%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
           }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
           <div className="flex items-center flex-col gap-8">
             <div
               className={`flex ${
-                isOpen ? "justify-center" : "justify-start"
+                isOpen ? "justify-start" : " justify-center"
               }  w-full`}>
               <img className="size-15" src={logo} alt="" />
             </div>
             <div className="flex flex-col gap-2 items-center">
               <img className="size-25" src={mascot} alt="" />
-              {isOpen ? "" : <span>Super Admin</span>}
+              {isOpen ? <span>Super Admin</span> : ""}
             </div>
 
             <div className="flex flex-col items-start gap-5 font-inter">
@@ -323,9 +345,9 @@ const Sidebar = () => {
               ).map(([category, items]) => (
                 <div key={category} className="flex flex-col gap-2">
                   {isOpen ? (
-                    <span className="border-b border-gray-200"></span>
-                  ) : (
                     <p className="text-gray-500 text-sm mb-2">{category}</p>
+                  ) : (
+                    <span className="border-b border-gray-200"></span>
                   )}
                   {items.map((item, i) => (
                     <Button
@@ -340,7 +362,7 @@ const Sidebar = () => {
                       {item.icon}
                       <span
                         className={` font-medium
-                        ${!isOpen ? "" : "hidden"}
+                        ${isOpen ? "" : "hidden"}
                         `}>
                         {item.lable}
                       </span>
@@ -356,7 +378,7 @@ const Sidebar = () => {
                 <LogOut size={27} />
                 <span
                   className={` font-medium
-          ${!isOpen ? "" : "hidden"}
+          ${isOpen ? "" : "hidden"}
             `}>
                   Keluar
                 </span>
