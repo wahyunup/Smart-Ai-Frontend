@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 const CompanyLoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [showingPassword, setShowingPassword] = useState(false)
+  const [showingPassword, setShowingPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -30,35 +30,33 @@ const CompanyLoginPage = () => {
     setIsLoading(true);
     try {
       const res = await authLoginApi(form.email, form.password);
-      console.log(res.user);
-      
       const token = res?.access_token;
 
       if (!token) {
         throw new Error("access tokennya kosong");
       }
-      if(res.user.role !== "admin") {
+      if (res.user.role !== "admin") {
         Swal.fire({
-          text : "akun tidak memiliki akses",
-          icon : "warning",
-          confirmButtonText : "oke",
-          confirmButtonColor : "#2BA54B",
-          buttonsStyling : true,
-          customClass : {
-            confirmButton : "primary-button"
-          }
-        })
+          text: "akun tidak memiliki akses",
+          icon: "warning",
+          confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
+        });
       } else {
         Swal.fire({
           text: "login berhasil",
           icon: "success",
           confirmButtonText: "oke",
-          confirmButtonColor : "#2BA54B",
-          buttonsStyling : true,
-          customClass : {
-            confirmButton : "primary-button"
-          }          
-        }).then((response) => {
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
+        }).then(async (response) => {
           if (response.isConfirmed) {
             setCookie("accesstoken", token, 3600);
             window.location.reload();
@@ -70,11 +68,11 @@ const CompanyLoginPage = () => {
         text: error.response.data.message,
         icon: "error",
         confirmButtonText: "oke",
-        confirmButtonColor : "#DB3726",
-        buttonsStyling : true,
-        customClass : {
-          confirmButton : "danger-button"
-        }
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
       });
     } finally {
       setIsLoading(false);

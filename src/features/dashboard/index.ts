@@ -19,3 +19,4 @@ export { default as SuperAdminManageAdminCompanyPage } from "./pages/superadmin/
 export { default as SuperAdminSettingsPage } from "./pages/superadmin/settings/SettingsPage";
 export { default as ManageTransactionPage } from "./pages/superadmin/manageTransaction/manageTransaction";
 export { default as SuperadminManageCompanyCreate } from "./pages/superadmin/manageCompany/CreateCompany";
+export { default as SuperadminAdminCompanyCreate } from "./pages/superadmin/manageAdminCompany/CreateAdminCompanyPage";

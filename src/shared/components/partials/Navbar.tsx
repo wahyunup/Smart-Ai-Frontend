@@ -7,31 +7,25 @@ import useToggle from "../../store/isOpen";
 import { getCookie } from "../../utils/Cookies";
 import { decodeJwt } from "../../utils/Decode";
 import smartAiMascot from "../../../assets/icons/SmartAI 3.png";
-import { planStatusApi } from "../../../features/aiChat/services/aiChat";
+import { usePlanStore } from "../../store/useSubsStat";
 
 const Navbar = () => {
   const [me, setMe] = useState({
     name: "",
+    role: "",
   });
+
   const navigate = useNavigate();
   const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
   const { setIsOpen } = useToggle();
-  const [plan, setPlan] = useState();
+  const { fetchPlan, plan } = usePlanStore();
 
-  if (location.pathname !== "/") {
-    useEffect(() => {
-      const fetchPlanSubs = async () => {
-        try {
-          const res = await planStatusApi();
-          setPlan(res.plan_name);
-        } catch (error: any) {
-          console.log(error.response.data.message);
-        }
-      };
-      fetchPlanSubs();
-    }, []);
-  }
+  useEffect(() => {
+    if (location.pathname.startsWith("/chat")) {
+      fetchPlan();
+    }
+  }, []);
 
   const handleScroll = () => {
     setScrollY(window.scrollY);
@@ -51,6 +45,7 @@ const Navbar = () => {
         const decode = decodeJwt(cookie);
         setMe({
           name: decode.name,
+          role: decode.role,
         });
       }
     } catch (error: any) {
@@ -65,7 +60,7 @@ const Navbar = () => {
           {/* desktop */}
           <div
             className={`hidden md:flex justify-between px-10  md:py-3 2xl:py-0 items-center z-10 outline-[#3BC152] sticky  transition-all duration-700 ease-in-out ${
-              scrollY > 10
+              scrollY > 100
                 ? "top-10 mx-10 shadow-lg shadow-[#3BC152]/50 outline rounded-4xl bg-white/80 backdrop-blur-xl outline-[#3BC152]"
                 : "rounded-none top-0 bg-white"
             }`}>
@@ -98,7 +93,8 @@ const Navbar = () => {
             </button>
           </div>
         </>
-      ) : location.pathname.startsWith("/chat/conversation/") ? (
+      ) : location.pathname.startsWith("/chat/conversation/") ||
+        location.pathname.startsWith("/chat/faq") ? (
         <div className="grid grid-cols-3 bg-white p-5 items-center">
           <div className="flex gap-3 items-center">
             <img src={smartAiMascot} alt="" />
@@ -117,7 +113,7 @@ const Navbar = () => {
         ) ? null : location.pathname.startsWith("/admin") ? (
         <>
           <div
-            className={`bg-[#E3F9E8] 2xl:h-30 md:h-55 flex justify-between items-center px-10 `}>
+            className={`bg-[#E3F9E8] 2xl:h-30 md:h-20 flex justify-between items-center px-10 `}>
             <Button variant="link" onclick={setIsOpen}>
               <PanelLeftClose size={27} />
             </Button>
@@ -125,7 +121,10 @@ const Navbar = () => {
             <div className="flex items-center bg-white px-4 py-3 rounded-xl">
               <Button variant="link" classname="flex items-center gap-2">
                 <CircleUser size={27} />
-                <span className="text-base">{me?.name}</span>
+                <div className="flex flex-col text-start text-[#2F2F2F] w-24">
+                  <p className="text-base font-semibold truncate">{me?.name}</p>
+                  <p className="text-xs truncate">{me?.role}</p>
+                </div>
               </Button>
             </div>
           </div>

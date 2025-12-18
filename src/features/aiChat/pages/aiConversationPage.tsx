@@ -11,6 +11,7 @@ import { CircleArrowUp } from "lucide-react";
 import { Icon } from "@iconify/react";
 import ReactMarkDown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { usePlanStore } from "../../../shared/store/useSubsStat";
 
 const aiConversationPage = () => {
   const { conversationId } = useParams();
@@ -20,6 +21,7 @@ const aiConversationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [value, setValue] = useState("");
+  const { monthly_quota } = usePlanStore();
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -38,9 +40,7 @@ const aiConversationPage = () => {
           const res = await fetchConversationApi(conversationId);
           const regex = res.map((rx: { answer: string }) => ({
             ...rx,
-            answer: rx.answer
-            .replace(/(\d+)\./g, "\n$1. ")
-            ,
+            answer: rx.answer.replace(/(\d+)\./g, "\n$1. "),
           }));
 
           setChats(regex);
@@ -113,7 +113,7 @@ const aiConversationPage = () => {
                 ) // ambil baris data
                 .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
                 .join("\n")
-                .replace(/(\d+)\./g, "\n$1. ")
+                .replace(/(\d+)\./g, "\n$1. ");
               fullAnswer += chunk;
 
               // Update chat terakhir secara live
@@ -157,15 +157,15 @@ const aiConversationPage = () => {
               ))}
             </>
           ) : (
-            chats.map((chat: { question: string; answer: string }) => (
+            chats.map((chat: { question: string; answer: string }, i) => (
               <>
-                <div className="flex justify-end">
+                <div key={i} className="flex justify-end">
                   <p className="bg-[#1D8A45] p-3 rounded-3xl rounded-br-none text-white w-fit">
                     {chat.question}
                   </p>
                 </div>
                 <div className="flex justify-start">
-                  <p className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none ">
+                  <div className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none ">
                     <ReactMarkDown
                       components={{
                         h1: ({ children }) => (
@@ -189,7 +189,7 @@ const aiConversationPage = () => {
                       remarkPlugins={[remarkGfm]}>
                       {chat.answer}
                     </ReactMarkDown>
-                  </p>
+                  </div>
                 </div>
                 <div ref={chatEndRef} />
               </>
@@ -197,26 +197,32 @@ const aiConversationPage = () => {
           )}
         </div>
         <div className="bg-white sticky bottom-0 w-full 2xl:py-10 md:py-5">
-          <Input
-            icon={
-              isLoadingSubmit ? (
-                <Icon icon="line-md:loading-loop" width="24" height="24" />
-              ) : (
-                <button className="cursor-pointer" type="submit">
-                  <CircleArrowUp color="#666666" />
-                </button>
-              )
-            }
-            onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setValue(e.target.value)
-            }
-            value={value}
-            classname="text-[#666666] text-sm"
-            iconPosition="right"
-            type="text"
-            variant="third"
-            placeholder="Tanyakan apa saja terkait perusahaan"
-          />
+          {monthly_quota > 0 ? (
+            <Input
+              icon={
+                isLoadingSubmit ? (
+                  <Icon icon="line-md:loading-loop" width="24" height="24" />
+                ) : (
+                  <button className="cursor-pointer" type="submit">
+                    <CircleArrowUp color="#666666" />
+                  </button>
+                )
+              }
+              onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setValue(e.target.value)
+              }
+              value={value}
+              classname="text-[#666666] text-sm"
+              iconPosition="right"
+              type="text"
+              variant="third"
+              placeholder="Tanyakan apa saja terkait perusahaan"
+            />
+          ) : (
+           <div className="rounded-lg bg-[#F2F2F2] outline text-sm outline-[#E5E5E5] text-[#000000AB] 2xl:p-3 md:p-2 text-center">
+            <p className="text-[#B2B2B2]">Kuota pertanyaan habis. <a href="https://api.whatsapp.com/send/?phone=6287790417767&text=Halo+saya+ingin+tambah+kuota&type=phone_number&app_absent=0" target="_blank" className="text-[#126F3D]">Hubungi Admin Perusahaan.</a></p>
+           </div>
+          )}
         </div>
       </form>
     </MainLayout>

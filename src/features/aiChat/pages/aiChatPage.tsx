@@ -15,7 +15,6 @@ const aiChatPage = () => {
   const [isLoadingDefaultValue, setIsLoadingDefaultValue] = useState<
     number | null
   >(null);
-
   const uuid = uuidv4();
   const defaultMessage = [
     {
@@ -41,15 +40,15 @@ const aiChatPage = () => {
   ];
 
   useEffect(() => {
-    const fetchPlanSubs = async () => {
-      try {
-        const res = await planStatusApi();
-        setPlan(res.plan_name);
-      } catch (error: any) {
-        console.log(error.response.data.message);
-      }
-    };
-    fetchPlanSubs();
+      const fetchPlanSubs = async () => {
+        try {
+          const res = await planStatusApi();
+          setPlan(res.plan_name);
+        } catch (error: any) {
+          console.log(error.response.data.message);
+        }
+      };
+      fetchPlanSubs();
   }, []);
   
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {

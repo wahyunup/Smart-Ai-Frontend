@@ -46,6 +46,7 @@ const Sidebar = () => {
   const [isHidden, setIsHidden] = useState(false);
   const { decoded } = useAuthStore();
   const isLogin = decoded.role;
+  const companyImage = decoded.logo_s3_path;
   const initAuth = useAuthStore((state) => state.initAuth);
   const hideTimer = useRef<any>(null);
   const [loginUser, setLoginUser] = useState({
@@ -180,7 +181,6 @@ const Sidebar = () => {
       const fetchUserIsLogin = async () => {
         try {
           const res = await userIsLoginApi();
-
           if (res) {
             setLoginUser({
               division: res.division,
@@ -281,7 +281,11 @@ const Sidebar = () => {
           }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
           <div className="flex items-center flex-col gap-8">
             <img className="2xl:size-15 md:size-10" src={logo} alt="" />
-            <img className="2xl:size-15 md:size-10" src="/Logo.png" alt="" />
+            <img
+              className="2xl:size-15 md:size-10"
+              src={`${companyImage}`}
+              alt=""
+            />
             <div className="flex flex-col items-start gap-5 font-inter">
               {navlist.map((item, i) => (
                 <Button
@@ -389,12 +393,12 @@ const Sidebar = () => {
       ) : isLogin === "employee" ? (
         <div
           className={`${
-            isOpen ? "2xl:w-[20%] md:w-70" : " w-[5%]"
+            isOpen ? "2xl:w-80 md:w-70" : "w-[5%]"
           } bg-[#F2F2F2] h-full flex flex-col relative justify-between`}>
           <div
-            className={`p-5 flex flex-col ${
+            className={`p-5 flex flex-col gap-4 w-full ${
               isOpen ? "" : "items-center"
-            } gap-4`}>
+            } `}>
             <div className="flex items-center justify-between">
               {isOpen ? (
                 <img src={logo} className="2xl:w-13 md:w-10" alt="" />
@@ -439,7 +443,7 @@ const Sidebar = () => {
                 <button className="text-start 2xl:text-base md:text-sm">
                   Cari Obrolan
                 </button>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-full">
                   <Button
                     classname="flex text-[#666666]"
                     variant="link"
@@ -450,81 +454,82 @@ const Sidebar = () => {
                   </Button>
 
                   {isVisibleConversation && (
-                    <>
-                      <div className="flex flex-col gap-1 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
-                        {conversationList.map(
-                          (conversation: { title: string; id: string }) => (
-                            <div
-                              className={`text-[#211719] 2xl:text-sm md:text-xs cursor-pointer  ${
-                                location.pathname.startsWith(
-                                  `/chat/conversation/${conversation.id}`
-                                )
-                                  ? "bg-[#3BC15240] "
-                                  : ""
-                              }  hover:bg-[#3BC15240] min-h-[40px] px-5 py-6 rounded-full flex items-center justify-between`}
-                              onClick={() =>
-                                handleConversation(conversation.id)
-                              }
-                              onMouseEnter={() => handleHover(conversation.id)}
-                              onMouseLeave={() => handleHover(!visibleIcon)}>
-                              <span className="w-full overflow-auto">
-                                {conversation.title}
-                              </span>
-                              {visibleIcon === conversation.id && (
-                                <>
-                                  <EllipsisVertical
-                                    onClick={() => setVisibleAction(true)}
-                                    className="2xl:size-8 md:size-6"
-                                    color="#1D8A45"
-                                  />
-                                  {visibleAction && (
-                                    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
-                                      <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
-                                        {isLoading ? (
-                                          <div className="p-3 bg-red-100 rounded-xl flex justify-center">
-                                            <Icon
-                                              icon="line-md:loading-loop"
-                                              width="20"
-                                              height="20"
-                                              color="#DB3726"
-                                            />
-                                          </div>
-                                        ) : (
-                                          <button
-                                            className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
-                                            onClick={() =>
-                                              handleDeleteConversation(
-                                                conversation.id
-                                              )
-                                            }>
-                                            <Trash2 size={17} color="#DB3726" />
-                                            <p>Delete</p>
-                                          </button>
-                                        )}
+                    <div className="flex flex-col gap-1 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
+                      {conversationList.map(
+                        (conversation: { title: string; id: string }) => (
+                          <div
+                            className={`text-[#211719] 2xl:text-sm md:text-xs cursor-pointer w-full ${
+                              location.pathname.startsWith(
+                                `/chat/conversation/${conversation.id}`
+                              )
+                                ? "bg-[#3BC15240] "
+                                : ""
+                            }  hover:bg-[#3BC15240] h-13 px-5 rounded-full flex items-center justify-between`}
+                            onClick={() => handleConversation(conversation.id)}
+                            onMouseEnter={() => handleHover(conversation.id)}
+                            onMouseLeave={() => handleHover(!visibleIcon)}>
+                            <span className="w-full overflow-hidden truncate">
+                              {conversation.title}
+                            </span>
+                            {visibleIcon === conversation.id && (
+                              <>
+                                <EllipsisVertical
+                                  onClick={() => setVisibleAction(true)}
+                                  className="2xl:size-8 md:size-6"
+                                  color="#1D8A45"
+                                />
+                                {visibleAction && (
+                                  <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
+                                    <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
+                                      {isLoading ? (
+                                        <div className="p-3 bg-red-100 rounded-xl flex justify-center">
+                                          <Icon
+                                            icon="line-md:loading-loop"
+                                            width="20"
+                                            height="20"
+                                            color="#DB3726"
+                                          />
+                                        </div>
+                                      ) : (
                                         <button
-                                          className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
+                                          className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
                                           onClick={() =>
-                                            setVisibleAction(false)
+                                            handleDeleteConversation(
+                                              conversation.id
+                                            )
                                           }>
-                                          Cancel
+                                          <Trash2 size={17} color="#DB3726" />
+                                          <p>Delete</p>
                                         </button>
-                                      </div>
+                                      )}
+                                      <button
+                                        className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
+                                        onClick={() => setVisibleAction(false)}>
+                                        Cancel
+                                      </button>
                                     </div>
-                                  )}
-                                </>
-                              )}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <p className="text-[#666666] text-sm">Dukungan</p>
-                  <span className="flex text-black px-3 py-2 hover:bg-gray-200 rounded-full 2xl:text-sm md:text-xs">
+                  <Button
+                    onclick={() => navigate("/chat/faq")}
+                    variant="link"
+                    classname={`flex text-black px-5 py-3 hover:bg-gray-200 ${
+                      location.pathname.startsWith("/chat/faq")
+                        ? "bg-gray-200"
+                        : ""
+                    } rounded-full 2xl:text-sm md:text-xs`}>
                     Bantuan & FAQ
-                  </span>
+                  </Button>
                 </div>
               </>
             ) : (
@@ -564,8 +569,8 @@ const Sidebar = () => {
               onClick={() => setVisibleActionProfile(!visibleActionProfile)}
               className="flex gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full">
               {!loginUser.profile_picture_url ? (
-                <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-100">
-                  <p className="text-white mb-1 uppercase">
+                <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
+                  <p className="text-[#1D8A45] mb-1 uppercase">
                     {loginUser.username.slice(0, 1)}
                   </p>
                 </div>

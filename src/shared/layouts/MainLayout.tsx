@@ -8,9 +8,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <Sidebar />
       <div className="flex flex-col w-screen h-full">
         <Navbar />
-        <div className="h-screen overflow-auto">
+        <main className="h-screen overflow-auto">
         {children}
-        </div>
+        </main>
       </div>
     </div>
   );

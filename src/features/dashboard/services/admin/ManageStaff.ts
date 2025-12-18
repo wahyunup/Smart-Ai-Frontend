@@ -25,7 +25,7 @@ const createStaff = async (
   username: string,
   password: string,
   role: string,
-  division_name: string
+  division: string
 ) => {
   try {
     const formData = new FormData();
@@ -37,7 +37,7 @@ const createStaff = async (
     formData.append("username", username);
     formData.append("password", password);
     formData.append("role", role);
-    formData.append("division_name", division_name);
+    formData.append("division", division);
     const res = await api.post("/companies/employees/register", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -51,7 +51,7 @@ const createStaff = async (
 
 const editStaff = async (
   user_id: number,
-  profile_picture_file?: File,
+  profile_picture_file?: File | null,
   name?: string,
   email?: string,
   username?: string,

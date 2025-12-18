@@ -1,16 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../../shared/components/ui/Input";
 import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
 import Button from "../../../shared/components/ui/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { authCompanyRegisterApi } from "../services/authApis";
 import Swal from "sweetalert2";
 
 const CompanyRegisterPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const stepParams = Number(searchParams.get("step")) || 1;
+  const [step, setStep] = useState(stepParams);
+  const emailParams = searchParams.get("verifyEmail") ?? "";
   const [showingPassword, setShowingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
@@ -21,6 +24,10 @@ const CompanyRegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    setSearchParams({ verifyEmail: String(emailParams) , step : String(step)});
+  }, [step]);
 
   const handleRegister = async () => {
     setIsLoading(true);

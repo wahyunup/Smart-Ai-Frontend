@@ -25,7 +25,7 @@ export interface InputProps {
   type?: string;
   htmlFor?: string;
   classname?: string;
-  value?: string | number;
+  value?: string | number
   onchange?: React.ChangeEventHandler<HTMLInputElement>;
   icon?: React.ReactNode;
   tooglePassword?: () => void;
@@ -75,6 +75,7 @@ export interface TableBodyProps {
   data?: EmployedProps[] | CustomerProps[];
   onclickEdit?: (id: number) => void;
   onclickDelete?: (id: number) => void;
+  onClickPreview?: (id: number) => void;
   renderItem?: (item: any, i: number) => ReactNode;
   tooltipe?: (item: any, i: number) => ReactNode;
   classname?: string;

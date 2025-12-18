@@ -53,7 +53,7 @@ const ManageStaffPage = () => {
 
   useEffect(() => {
     fetchStaff();
-  }, [page, value]);
+  }, [page, value, deleteStaff]);
 
   const handleNextPage = () => {
     if (isLoadingStaff) return;
@@ -91,7 +91,15 @@ const ManageStaffPage = () => {
       }).then(async (response) => {
         if (response.isConfirmed) {
           await deleteStaff(id);
-          fetchStaff();
+          Swal.fire({
+            icon : "success",
+            text: "user berhasil dihapus",
+            confirmButtonText: "oke",
+          }).then(async (response) => {
+            if (response.isConfirmed) {
+              fetchStaff();
+            }
+          });
         }
       });
     } catch (error: any) {
@@ -107,7 +115,6 @@ const ManageStaffPage = () => {
       });
     } finally {
       setIsLoading(0);
-      fetchStaff();
     }
   };
   const handleEdit = (id: number) => {
@@ -192,6 +199,8 @@ const ManageStaffPage = () => {
               totalPage={totalPage}
               renderItem={(item, i) => {
                 const bgColor = getRandomColor();
+                
+                
                 return (
                   <>
                     <div className="flex items-center gap-5">

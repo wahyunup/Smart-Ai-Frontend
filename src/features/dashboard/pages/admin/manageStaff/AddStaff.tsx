@@ -21,7 +21,7 @@ const AddStaf = () => {
     username: "",
     password: "",
     role: "",
-    division_name: "",
+    division: "",
   });
   const [dataEdit, setDataEdit] = useState({
     id: 0,
@@ -75,7 +75,7 @@ const AddStaf = () => {
         form.username,
         form.password,
         form.role,
-        form.division_name
+        form.division
       );
       Swal.fire({
         text: "Staff berhasil dibuat",
@@ -124,12 +124,15 @@ const AddStaf = () => {
     }
   }, [location.state]);
 
+console.log(editPreviewImage, "edit prev image");
+
+
   const handleEdit = async () => {
     setIsLoading(true);
     try {
       const res = await editStaff(
         dataEdit.id,
-        dataEdit.profile_picture_file ?? undefined,
+        dataEdit.profile_picture_file ?? null,
         dataEdit.name,
         dataEdit.email,
         dataEdit.username,
@@ -248,11 +251,11 @@ const AddStaf = () => {
               <Input
                 label="Divisi"
                 variant="secondary"
-                value={form.division_name}
+                value={form.division}
                 onchange={handleOnChange}
                 placeholder="input teks"
-                name="division_name"
-                htmlFor="division_name"
+                name="division"
+                htmlFor="division"
                 classname="gap-24"
                 type="text"
                 labelLayout="inline"
@@ -271,7 +274,7 @@ const AddStaf = () => {
                   {editPreviewImage ? (
                     <img
                       className="h-full"
-                      src={`https://145.79.15.190${editPreviewImage}`}
+                      src={editPreviewImage}
                       alt="preview-image"
                     />
                   ) : (

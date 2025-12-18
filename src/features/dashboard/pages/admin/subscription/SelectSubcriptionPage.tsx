@@ -19,10 +19,9 @@ const SelectSubcriptionPage = () => {
     const fetchSubPlan = async () => {
       try {
         const res = await planSubcriptionApi();
-        setCurrentPlan(res.current_subscription.plan_name);
-        console.log(res, "<-----plans");
-        setData(res.plans);
-        setOptionPlan(res.top_up_packages);
+        setCurrentPlan(res?.current_subscription?.plan_name);
+        setData(res?.plans);
+        setOptionPlan(res?.top_up_packages);
       } catch (error) {
         console.log(error);
       }
@@ -42,6 +41,7 @@ const SelectSubcriptionPage = () => {
     try {
       if (!package_type) {
         const res = await myPaymentApi(id, successRoute, failedRoute, "");
+        
         if (res) {
           window.open(res.payment_url, "_blank");
         }
@@ -156,7 +156,9 @@ const SelectSubcriptionPage = () => {
 
             <div className="flex gap-3 mt-5 mb-5">
               {optionPlan.map((item: any, i: number) => (
-                <div className="flex flex-col justify-between gap-3 border border-gray-200 bg-[#0DB57526] px-3 py-5 h-50 rounded-2xl w-60">
+                <div
+                key={i}
+                className="flex flex-col justify-between gap-3 border border-gray-200 bg-[#0DB57526] px-3 py-5 h-50 rounded-2xl w-60">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-[#009C61] text-3xl font-semibold">
                       Top Up{" "}

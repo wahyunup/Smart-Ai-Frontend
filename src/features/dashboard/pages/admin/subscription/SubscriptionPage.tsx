@@ -22,10 +22,10 @@ const SubcriptionPage = () => {
     current_users: 0,
     days_until_renewal: 0,
     document_quota: 0,
-    end_date: "",
+    end_date: "Free",
     max_users: 0,
     monthly_quota: 0,
-    plan_name: "",
+    plan_name: "Trial",
     remaining_documents: 0,
     remaining_documents_percentage: 0,
     remaining_quota: 0,
@@ -43,7 +43,6 @@ const SubcriptionPage = () => {
   const fetchMySub = async () => {
     try {
       const res = await mySubcriptionApi();
-
       const roundedPrecentace = Math.floor(res.remaining_quota_percentage);
       const convertDate = formatDate(res.end_date);
 
@@ -65,8 +64,8 @@ const SubcriptionPage = () => {
         top_up_quota: res.top_up_quota,
         total_quota: res.total_quota,
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      console.log(error.response.data.message);
     }
   };
 
@@ -74,7 +73,6 @@ const SubcriptionPage = () => {
     setIsLoading(true);
     try {
       const res = await myTransactionApi(page, 2);
-      console.log(res);
       setTotalPage(res.total_pages);
       setTransaction(res.items);
     } catch (error:any) {
@@ -120,7 +118,7 @@ const SubcriptionPage = () => {
               </p>
               <div>
                 <h1 className="text-3xl font-semibold text-[#1D8A45] font-inter">
-                  {mySub.plan_name}
+                  { mySub.plan_name}
                 </h1>
                 <p className="text-sm text-[#DB3726]">
                   Sisa Kuota: {mySub.remaining_quota} / {mySub.total_quota}{" "}

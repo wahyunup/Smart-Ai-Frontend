@@ -12,6 +12,7 @@ const TableBody = ({
   data,
   onclickEdit,
   onclickDelete,
+  onClickPreview,
   renderItem,
   classname,
   userIsLogin,
@@ -26,6 +27,7 @@ const TableBody = ({
   isLoadingFetch,
   showPreview,
 }: TableBodyProps) => {
+  if (!data) return;
   return (
     <>
       {data?.map((item, i) => tooltipe?.(item, i))}
@@ -42,7 +44,8 @@ const TableBody = ({
                 <div className="h-3 bg-gray-200 rounded-full w-30 animate-pulse"></div>
               </div>
             ))
-          : data?.map((item: any, i) => (
+          : data.length > 0
+          ? data.map((item: any, i) => (
               <div
                 key={item.id}
                 className={`grid ${classname} justify-between px-10 border-t border-[#B2B2B2] py-6 items-center justify-items-center-safe hover:bg-gray-50 transition-all duration-300 hover:scale-[1.005] active:scale-[1]  ${
@@ -58,7 +61,7 @@ const TableBody = ({
                           {showPreview && (
                             <>
                               <button
-                                onClick={() => onclickEdit?.(item?.id)}
+                                onClick={() => onClickPreview?.(item?.id)}
                                 className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1] ">
                                 <View size={24} />
                               </button>
@@ -102,7 +105,13 @@ const TableBody = ({
                   </div>
                 )}
               </div>
-            ))}
+            ))
+          : (
+            <div className="flex justify-center h-20 items-center">
+          <p>Belum terdapat data untuk ditampilkan.</p>
+            </div>
+        )
+          }
         {page && (
           <div className="bg-gray-100 py-3 px-7 flex items-center gap-3 justify-end">
             <p>Halaman</p>

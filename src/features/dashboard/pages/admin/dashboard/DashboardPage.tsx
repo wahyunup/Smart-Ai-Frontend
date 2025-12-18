@@ -15,6 +15,8 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../../../shared/store/useCookieAuth";
+import { statUserCompanyApi } from "../../../../auth/services/authApis";
+import Swal from "sweetalert2";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ const AdminDashboard = () => {
   const [chatActivity, setChatActivity] = useState();
   const [chatBotActivity, setChatBotActivity] = useState();
   const [recentDocuments, setRecentDocuments] = useState([]);
-  const {decoded} = useAuthStore()
+  const { decoded } = useAuthStore();
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -64,12 +66,39 @@ const AdminDashboard = () => {
     return namaHari;
   });
 
+  useEffect(() => {
+    const fetchStatCompany = async () => {
+      try {
+        const res = await statUserCompanyApi();
+        if (res.address === null || res.logo_s3_path === null) {
+          Swal.fire({
+            text: "lengkapi data perusahaan terlebih dahulu",
+            icon: "info",
+            confirmButtonText: "oke",
+            confirmButtonColor: "#2BA54B",
+            buttonsStyling: true,
+            customClass: {
+              confirmButton: "primary-button",
+            },
+          }).then(async (response) => {
+            if (response.isConfirmed) {
+              navigate("/auth/fill-biodata");
+            }
+          });
+
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchStatCompany();
+  }, []);
+
   const dataChartMonthly = Object.values(chatActivity || {});
   const month = Object.keys(chatActivity || {}).map(
     (date) => date.split("-")[2]
   );
-
-  
 
   return (
     <MainLayout>

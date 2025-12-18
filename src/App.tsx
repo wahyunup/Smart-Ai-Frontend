@@ -20,6 +20,7 @@ import {
   AdminPaymentFailedPage,
   ManageTransactionPage,
   SuperadminManageCompanyCreate,
+  SuperadminAdminCompanyCreate,
 } from "./features/dashboard";
 import {
   AdminLoginPage,
@@ -27,9 +28,10 @@ import {
   CompanyRegisterPage,
   EmployeLoginPage,
   VerifiedAccountPage,
+  FillCompanyBiodata,
 } from "./features/auth";
 import { HomePage } from "./features/home";
-import { AiChatPage, AiConversationPage } from "./features/aiChat";
+import { AiChatPage, AiConversationPage, FAQPage } from "./features/aiChat";
 import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
 import SelectSubcriptionPage from "./features/dashboard/pages/admin/subscription/SelectSubcriptionPage";
 import InvoicePage from "./features/dashboard/pages/admin/subscription/InvoicePage";
@@ -50,6 +52,7 @@ function App() {
           />
           <Route path="admin/login" element={<AdminLoginPage />} />
           <Route path="account-verified" element={<VerifiedAccountPage />} />
+          <Route path="fill-biodata" element={<FillCompanyBiodata />} />
         </Route>
 
         <Route path="/admin">
@@ -94,14 +97,19 @@ function App() {
           <Route path="dashboard" element={<SuperAdminDashboardPage />} />
           <Route path="log-audit" element={<SuperAdminLogAuditPage />} />
           <Route path="manage-company">
-            <Route index element={<SuperAdminManageCompanyPage/>}/>
-            <Route path="create" element={<SuperadminManageCompanyCreate/>}/>
-            <Route path="edit/:id" element={<SuperadminManageCompanyCreate/>}/>
+            <Route index element={<SuperAdminManageCompanyPage />} />
+            <Route path="create" element={<SuperadminManageCompanyCreate />} />
+            <Route
+              path="edit/:id"
+              element={<SuperadminManageCompanyCreate />}
+            />
           </Route>
-          <Route
-            path="manage-admin-company"
-            element={<SuperAdminManageAdminCompanyPage />}
-          />
+          <Route path="manage-admin-company">
+            <Route index element={<SuperAdminManageAdminCompanyPage />} />
+            <Route path="create" element={<SuperadminAdminCompanyCreate />} />
+            <Route path="edit/:id" element={<SuperadminAdminCompanyCreate />} />
+            <Route path="details/:id" element={<SuperadminAdminCompanyCreate />} />
+          </Route>
           <Route path="settings" element={<SuperAdminSettingsPage />} />
           <Route
             path="manage-transaction"
@@ -116,6 +124,10 @@ function App() {
           <Route
             path="conversation/:conversationId"
             element={<AiConversationPage />}
+          />
+          <Route
+            path="faq"
+            element={<FAQPage />}
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
