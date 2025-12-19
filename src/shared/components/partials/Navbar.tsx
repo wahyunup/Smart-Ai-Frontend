@@ -81,10 +81,10 @@ const Navbar = () => {
 
           {/* mobile */}
           <div
-            className={`md:hidden flex justify-between px-10 items-center z-10 outline-[#3BC152] sticky  transition-all duration-700 ease-in-out ${
+            className={`md:hidden flex justify-between px-10 items-center z-10 outline-[#3BC152] fixed transition-all duration-700 ease-in-out ${
               scrollY > 10
-                ? "top-5 mx-3 shadow-lg shadow-[#3BC152]/50 outline rounded-4xl bg-white/80 backdrop-blur-xl outline-[#3BC152]"
-                : "rounded-none top-0 bg-white"
+                ? "top-5 mx-3 shadow-lg shadow-[#3BC152]/50 outline rounded-4xl bg-white/80 backdrop-blur-xl outline-[#3BC152] w-[94.9%]"
+                : "rounded-none top-0 bg-white w-full"
             }`}>
             <img className="w-20 mt-3" src={LogoSmartAi} alt="" />
 
@@ -97,22 +97,12 @@ const Navbar = () => {
               className={` md:hidden w-full rounded-2xl z-10 fixed ${
                 scrollY > 10 ? "top-20 p-4 " : "top-15"
               } transition-all duration-700 ease-in-out font-manrope font-semibold`}>
-              <div
-                className={`flex flex-col gap-5 items-center p-5 bg-white/80 backdrop-blur-xl ${
-                  scrollY > 10
-                    ? "outline-[#3BC152] outline-1 shadow-lg shadow-[#3BC152]/50 rounded-3xl"
-                    : ""
-                }`}>
+              <div className={`flex flex-col gap-5 items-center p-5 bg-white/80 backdrop-blur-xl ${scrollY > 10 ? "outline-[#3BC152] outline-1 shadow-lg shadow-[#3BC152]/50 rounded-3xl" : ""}`}>
                 <a href="#home">Home</a>
                 <a href="#feature">Features</a>
                 <a href="#howitworks">How it works</a>
                 <a href="#whoweare">Who we are</a>
-                <Button
-                  onclick={() => navigate("/auth/company-employe/login")}
-                  variant="secondary"
-                  classname="w-full py-3 rounded-xl">
-                  Masuk
-                </Button>
+                <Button onclick={() => navigate("/auth/company-employe/login")} variant="secondary" classname="w-full py-3 rounded-xl">Masuk</Button>
               </div>
             </div>
           )}
