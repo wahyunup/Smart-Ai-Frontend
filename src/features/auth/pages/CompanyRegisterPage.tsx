@@ -14,6 +14,7 @@ const CompanyRegisterPage = () => {
   const stepParams = Number(searchParams.get("step")) || 1;
   const [step, setStep] = useState(stepParams);
   const emailParams = searchParams.get("verifyEmail") ?? "";
+  const [verifyEmail, setVerifyEmail] = useState(emailParams);
   const [showingPassword, setShowingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
@@ -26,8 +27,8 @@ const CompanyRegisterPage = () => {
   });
 
   useEffect(() => {
-    setSearchParams({ verifyEmail: String(emailParams) , step : String(step)});
-  }, [step]);
+    setSearchParams({ verifyEmail: String(verifyEmail), step: String(step) });
+  }, [step, verifyEmail]);
 
   const handleRegister = async () => {
     setIsLoading(true);
@@ -75,6 +76,10 @@ const CompanyRegisterPage = () => {
       ...prev,
       [name]: value,
     }));
+
+    if (name === "companyEmail") {
+      setVerifyEmail(value);
+    }
   };
 
   return (
@@ -86,7 +91,7 @@ const CompanyRegisterPage = () => {
           subHeadingAuth="Kami perlu verifikasi manual akun admin perusahaan."
           formContent={
             <>
-              <div className="flex flex-col items-start w-100">
+              <div className="flex flex-col items-start md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -101,7 +106,7 @@ const CompanyRegisterPage = () => {
                   Nama resmi yang lengkap.
                 </p>
               </div>
-              <div className="flex flex-col items-start w-100">
+              <div className="flex flex-col items-start md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -126,7 +131,7 @@ const CompanyRegisterPage = () => {
                 classname="py-3 w-full rounded-xl cursor-pointer">
                 Selanjutnya
               </Button>
-              <p className="text-center text-black/65 mt-3 text-sm">
+              <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
                 sudah punya aku?{" "}
                 <span
                   className="text-[#0B5C37] cursor-pointer"
@@ -144,7 +149,7 @@ const CompanyRegisterPage = () => {
           subHeadingAuth="Kami perlu verifikasi manual akun perusahaan"
           formContent={
             <>
-              <div className="w-100">
+              <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -156,7 +161,7 @@ const CompanyRegisterPage = () => {
                   label="Nama PIC"
                 />
               </div>
-              <div className="w-100">
+              <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -171,7 +176,7 @@ const CompanyRegisterPage = () => {
                   Nomor Whatsapp Yang Aktif
                 </span>
               </div>
-              <div className="w-100">
+              <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -185,7 +190,7 @@ const CompanyRegisterPage = () => {
                   label="Kata sandi"
                 />
               </div>
-              <div className="w-100">
+              <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -216,7 +221,7 @@ const CompanyRegisterPage = () => {
                   Daftar
                 </Button>
               )}
-              <p className="text-center text-black/65 mt-3 text-sm">
+              <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
                 sudah punya aku?{" "}
                 <span
                   className="text-[#0B5C37] cursor-pointer"
@@ -234,7 +239,8 @@ const CompanyRegisterPage = () => {
           subHeadingAuth={
             <>
               <p className="text-center font-light font-inter text-[#282222]">
-                Terima kasih telah mendaftar. Kami akan menghubungi 08******53
+                Terima kasih telah mendaftar. Kami akan menghubungi{" "}
+                <span className="font-medium underline">{verifyEmail}</span>{" "}
                 dalam 1x24 <br /> jam untuk verifikasi manual oleh tim Super
                 Admin.
               </p>

@@ -98,7 +98,7 @@ const CompanyLoginPage = () => {
         headingAuth="Selamat Datang Kembali"
         subHeadingAuth="Masuk sebagai Administrator SmartAI."
         formContent={
-          <div className="w-100 flex flex-col gap-2">
+          <div className="md:w-100 w-90 flex flex-col gap-2">
             <Input
               variant="primary"
               label="Email Perusahaan"
@@ -144,7 +144,7 @@ const CompanyLoginPage = () => {
                 Masuk
               </Button>
             )}
-            <p className="text-center text-black/65 mt-3 text-sm">
+            <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
               Ingin Mendaftarkan Perusahaan Anda? Daftar Sebagai Admin
               Perusahaan
               <span

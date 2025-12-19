@@ -117,7 +117,7 @@ const AdminLoginPage = () => {
         headingAuth="Selamat Datang Kembali"
         subHeadingAuth="Masuk ke akun SmartAI sebagai Super Admin."
         formContent={
-          <div className="flex flex-col gap-2 w-100">
+          <div className="flex flex-col gap-2 md:w-100 w-90">
             <Input
               variant="primary"
               onchange={handleOnChange}

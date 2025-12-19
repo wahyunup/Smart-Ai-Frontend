@@ -85,14 +85,14 @@ const Footer = () => {
     <div className="pt-7 flex flex-col items-center 2xl:gap-4 bg-white text-manrope">
       <img
         src={LogoFooter}
-        className="2xl:w-[103.83977508544922px] md:w-[80px]"
+        className="2xl:w-[103.83977508544922px] md:w-[80px] w-[70px]"
         alt=""
       />
       <div className="flex justify-between items-center px-5 w-full">
-        <p className=" text-[#B2B2B2] 2xl:text-base md:text-xs">
+        <p className=" text-[#B2B2B2] 2xl:text-base text-xs">
           © 2025 SmartAI. All rights reserved.
         </p>
-        <p className="text-[#2F2F2F] 2xl:mr-50 md:mr-34 underline  2xl:text-base md:text-xs">
+        <p className="text-[#2F2F2F] 2xl:mr-50 md:mr-34 underline  2xl:text-base text-xs">
           Term & Condition . Privacy Polici . Hak Cipta
         </p>
         <img src={LogoFooter} className="w-20" alt="" />

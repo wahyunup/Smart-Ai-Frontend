@@ -27,13 +27,13 @@ const Input = ({
         {label ? (
           <label
             htmlFor={htmlFor}
-            className="font-semibold 2xl:text-md md:text-sm">
+            className="font-semibold 2xl:text-md text-sm">
             {label}
           </label>
         ) : null}
         <div
           className={clsx(
-            `flex 2xl:p-3 md:p-2 gap-3  w-full ${
+            `flex 2xl:p-3 md:p-2 p-3 gap-3 w-full ${
               iconPosition === "left"
                 ? ""
                 : iconPosition === "right"

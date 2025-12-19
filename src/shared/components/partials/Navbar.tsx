@@ -18,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrollY, setScrollY] = useState(0);
-  const { setIsOpen } = useToggle();
+  const { setIsOpen, isOpen } = useToggle();
   const { fetchPlan, plan } = usePlanStore();
 
   useEffect(() => {
@@ -88,10 +88,34 @@ const Navbar = () => {
             }`}>
             <img className="w-20 mt-3" src={LogoSmartAi} alt="" />
 
-            <button>
+            <button onClick={setIsOpen}>
               <Menu />
             </button>
           </div>
+          {isOpen && (
+            <div
+              className={` md:hidden w-full rounded-2xl z-10 fixed ${
+                scrollY > 10 ? "top-20 p-4 " : "top-15"
+              } transition-all duration-700 ease-in-out font-manrope font-semibold`}>
+              <div
+                className={`flex flex-col gap-5 items-center p-5 bg-white/80 backdrop-blur-xl ${
+                  scrollY > 10
+                    ? "outline-[#3BC152] outline-1 shadow-lg shadow-[#3BC152]/50 rounded-3xl"
+                    : ""
+                }`}>
+                <a href="#home">Home</a>
+                <a href="#feature">Features</a>
+                <a href="#howitworks">How it works</a>
+                <a href="#whoweare">Who we are</a>
+                <Button
+                  onclick={() => navigate("/auth/company-employe/login")}
+                  variant="secondary"
+                  classname="w-full py-3 rounded-xl">
+                  Masuk
+                </Button>
+              </div>
+            </div>
+          )}
         </>
       ) : location.pathname.startsWith("/chat/conversation/") ||
         location.pathname.startsWith("/chat/faq") ? (

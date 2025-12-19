@@ -101,7 +101,7 @@ const EmployeLoginPage = () => {
         subHeadingAuth="Masuk ke akun SmartAI anda"
         subabHeading="Silakan gunakan kredensial yang telah diberikan oleh Admin Anda."
         formContent={
-          <div className="flex flex-col gap-4 w-100">
+          <div className="flex flex-col gap-4 md:w-100 w-90">
             <Input
               variant="primary"
               onchange={handleOnChange}
