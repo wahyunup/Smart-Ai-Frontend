@@ -255,8 +255,7 @@ const CompanyRegisterPage = () => {
               )}
 
               <iframe
-                width="350"
-                height="350"
+              className="md:size-90 size-60"
                 src="https://lottie.host/embed/a21bfb0a-9614-44ae-8570-4e8ccc51c538/lJq53o4oER.lottie"
                 onLoad={() => setIsLoading(true)}></iframe>
             </div>
