@@ -35,6 +35,7 @@ const CompanyLoginPage = () => {
       if (!token) {
         throw new Error("access tokennya kosong");
       }
+
       if (res.user.role !== "admin") {
         Swal.fire({
           text: "akun tidak memiliki akses",
@@ -45,6 +46,10 @@ const CompanyLoginPage = () => {
           customClass: {
             confirmButton: "primary-button",
           },
+        }).then((response) => {
+          if (response.isConfirmed) {
+            return;
+          }
         });
       } else {
         Swal.fire({
@@ -84,9 +89,7 @@ const CompanyLoginPage = () => {
     if (token) {
       const decode = decodeJwt(token);
       const role = decode.role;
-      if (role === "employee") {
-        navigate("/chat");
-      } else if (role === "admin") {
+      if (role === "admin") {
         navigate("/admin/dashboard");
       }
     }
@@ -122,7 +125,9 @@ const CompanyLoginPage = () => {
                 value={form.password}
                 onchange={handleOnChange}
               />
-              <span onClick={() => navigate("/auth/reset-password-send-email")} className="text-[#0B5C37] text-xs cursor-pointer">
+              <span
+                onClick={() => navigate("/auth/reset-password-send-email")}
+                className="text-[#0B5C37] text-xs cursor-pointer">
                 Lupa kata sandi?
               </span>
             </div>

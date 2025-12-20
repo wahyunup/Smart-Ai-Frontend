@@ -33,7 +33,7 @@ const EmployeLoginPage = () => {
       const res = await authLoginApi(form.username, form.password);
       const token = res.access_token;
       const expiresIn = res.expires_in;
-      
+
       if (res.user.role !== "employee") {
         Swal.fire({
           text: "akun tidak memiliki akses",
@@ -88,8 +88,6 @@ const EmployeLoginPage = () => {
       const role = decode.role;
       if (role === "employee") {
         navigate("/chat");
-      } else if (role === "admin") {
-        navigate("/admin/dashboard");
       }
     }
   }, []);

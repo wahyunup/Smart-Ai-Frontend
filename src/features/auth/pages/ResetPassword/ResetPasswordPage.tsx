@@ -6,12 +6,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPassword } from "../../services/authApis";
 import Swal from "sweetalert2";
 import Button from "../../../../shared/components/ui/Button";
+import { Icon } from "@iconify/react";
 
 const ResetPasswordPage = () => {
   const [searchParams] = useSearchParams();
   const initTokenParams = searchParams.get("token") ?? "";
   const initEmailParams = searchParams.get("email") ?? "";
   const navigate = useNavigate();
+  const [isLoading, setIsloading] = useState(false);
 
   const [form, setForm] = useState({
     password: "",
@@ -32,6 +34,7 @@ const ResetPasswordPage = () => {
   };
 
   const handleSubmitResetPassword = async () => {
+    setIsloading(true);
     if (form.passwordConfirm !== form.password) {
       Swal.fire({
         text: "confirm password tidak sama",
@@ -43,7 +46,6 @@ const ResetPasswordPage = () => {
           confirmButton: "primary-button",
         },
       });
-
       return;
     }
 
@@ -75,6 +77,8 @@ const ResetPasswordPage = () => {
           confirmButton: "danger-button",
         },
       });
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -122,14 +126,27 @@ const ResetPasswordPage = () => {
           </div>
         }
         footerContent={
-          <>
-            <Button
-              onclick={handleSubmitResetPassword}
-              variant="primary"
-              classname="py-3 w-80 mt-5">
-              Reset Kata Sandi
-            </Button>
-          </>
+          <div className="w-80">
+            {isLoading ? (
+              <Button
+                variant="primary"
+                classname="py-3 flex justify-center w-full">
+                <Icon
+                  className="text-center"
+                  icon="line-md:loading-loop"
+                  width="24"
+                  height="24"
+                />
+              </Button>
+            ) : (
+              <Button
+                onclick={handleSubmitResetPassword}
+                variant="primary"
+                classname="py-3 w-full">
+                Reset Kata Sandi
+              </Button>
+            )}
+          </div>
         }
       />
     </AuthLayout>
