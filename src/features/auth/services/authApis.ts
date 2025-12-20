@@ -109,6 +109,34 @@ const fillInfoCompanyApi = async (
   }
 };
 
+const resetPassword = async (
+  email: string,
+  token: string,
+  newPassword: string
+) => {
+  try {
+    const res = await api.post("/auth/reset-password", {
+      email: email,
+      token: token,
+      new_password: newPassword,
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const resetPasswordEmail = async (
+  email: string,
+) => {
+  try {
+    const res = await api.post(`/auth/request-password-reset?email=${email}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   authLoginApi,
   authCompanyRegisterApi,
@@ -116,4 +144,6 @@ export {
   userIsLoginApi,
   statUserCompanyApi,
   fillInfoCompanyApi,
+  resetPassword,
+  resetPasswordEmail
 };

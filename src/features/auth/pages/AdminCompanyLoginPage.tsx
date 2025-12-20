@@ -122,7 +122,7 @@ const CompanyLoginPage = () => {
                 value={form.password}
                 onchange={handleOnChange}
               />
-              <span className="text-[#0B5C37] text-xs cursor-pointer">
+              <span onClick={() => navigate("/auth/reset-password-send-email")} className="text-[#0B5C37] text-xs cursor-pointer">
                 Lupa kata sandi?
               </span>
             </div>

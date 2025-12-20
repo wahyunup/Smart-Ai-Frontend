@@ -55,6 +55,8 @@ const Sidebar = () => {
     profile_picture_url: "",
   });
 
+const isLocalhost = window.location.hostname === "localhost"
+
   const handleEnter = () => {
     clearTimeout(hideTimer.current);
     setIsHidden(true);
@@ -282,8 +284,8 @@ const Sidebar = () => {
           <div className="flex items-center flex-col gap-8">
             <img className="2xl:size-15 md:size-10" src={logo} alt="" />
             <img
-              className="2xl:size-15 md:size-10"
-              src={`${companyImage}`}
+              className="2xl:w-23 h-fit"
+              src={`${isLocalhost? `https://145.79.15.190${companyImage}` : companyImage}`}
               alt=""
             />
             <div className="flex flex-col items-start gap-5 font-inter">

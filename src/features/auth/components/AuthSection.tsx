@@ -23,7 +23,7 @@ const AuthSection = ({
           <h1 className="2xl:text-5xl md:text-3xl text-2xl font-bold text-[#282222]">
             {headingAuth}
           </h1>
-          <div className="flex flex-col gap-1 items-center">
+          <div className="flex flex-col gap-1 items-center text-center">
             <p className="2xl:text-lg md:text-md text-sm font-light font-inter">
               {subHeadingAuth}
             </p>

@@ -18,6 +18,7 @@ const manageTransaction = () => {
   const initParamsPage = Number(searchParams.get("page")) || 1;
   const initNav = searchParams.get("nav") ?? "Riwayat Transaksi";
   const [isActive, setIsActive] = useState(initNav);
+  const [isLoadingFetch, setIsLoadingFetch] = useState(false)
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(initParamsPage);
@@ -55,6 +56,7 @@ const manageTransaction = () => {
   };
 
   const fetchPlans = async () => {
+    setIsLoadingFetch(true)
     try {
       const res = await allPlanApi();
       console.log(res);
@@ -64,6 +66,8 @@ const manageTransaction = () => {
       setplans(res.plans);
     } catch (error: any) {
       console.log(error.response.data.message);
+    } finally {
+      setIsLoadingFetch(false)
     }
   };
 
@@ -166,6 +170,7 @@ const manageTransaction = () => {
                 <span>Status</span>
               </TableHeaderList>
               <TableBody
+              isLoadingFetch={isLoadingFetch}
                 nextPage={nextPage}
                 prevPage={prevPage}
                 page={page}

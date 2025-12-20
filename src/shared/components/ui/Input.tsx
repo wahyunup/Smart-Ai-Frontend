@@ -60,7 +60,7 @@ const Input = ({
             placeholder={placeholder}
             className="w-full outline-none 2xl:placeholder:text-md md:placeholder:text-sm placeholder:text-black/65 "
           />
-          {name === "password" ? (
+          {name?.startsWith("password") ? (
             <button className="cursor-pointer" onClick={tooglePassword}>
               {showPassword ? (
                 <Eye color="#8BEC89" size={20} />

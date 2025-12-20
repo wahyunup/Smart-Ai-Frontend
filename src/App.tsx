@@ -29,6 +29,8 @@ import {
   EmployeLoginPage,
   VerifiedAccountPage,
   FillCompanyBiodata,
+  ResetPasswordPage,
+  ResetPasswordSendEmailPage,
 } from "./features/auth";
 import { HomePage } from "./features/home";
 import { AiChatPage, AiConversationPage, FAQPage } from "./features/aiChat";
@@ -51,6 +53,8 @@ function App() {
             element={<CompanyRegisterPage />}
           />
           <Route path="admin/login" element={<AdminLoginPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="reset-password-send-email" element={<ResetPasswordSendEmailPage />} />
           <Route path="account-verified" element={<VerifiedAccountPage />} />
           <Route path="fill-biodata" element={<FillCompanyBiodata />} />
         </Route>
