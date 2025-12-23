@@ -142,7 +142,7 @@ const aiConversationPage = () => {
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col h-full md:px-20 px-5">
-        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm">
+        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm mb-22">
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -196,7 +196,8 @@ const aiConversationPage = () => {
             ))
           )}
         </div>
-        <div className="bg-white py-5 md:sticky bottom-0 md:w-full 2xl:py-10 md:py-5">
+        <div className="bg-white border-t border-gray-100 py-5 px-5 md:sticky fixed bottom-0 right-0
+  w-full md:w-full 2xl:py-10 md:py-5">
           {monthly_quota > 0 ? (
             <Input
               icon={
