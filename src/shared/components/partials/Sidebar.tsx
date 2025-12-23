@@ -5,10 +5,11 @@ import {
   CircleDollarSign,
   CircleUser,
   ClipboardClock,
-  EllipsisVertical,
+  Ellipsis,
   Files,
   House,
   LogOut,
+  Menu,
   MessageCircleMore,
   PanelLeftClose,
   Search,
@@ -16,6 +17,7 @@ import {
   Trash2,
   UserCog,
   UserPen,
+  X,
 } from "lucide-react";
 import Button from "../ui/Button";
 import useToggle from "../../store/isOpen";
@@ -32,6 +34,7 @@ import { userIsLoginApi } from "../../../features/auth/services/authApis";
 import { Icon } from "@iconify/react";
 import { useAuthStore } from "../../store/useCookieAuth";
 import Swal from "sweetalert2";
+import { formatDate } from "../../utils/FormatDate";
 
 const Sidebar = () => {
   const { isOpen, setIsOpen } = useToggle();
@@ -39,9 +42,12 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [visibleIcon, setVisibleIcon] = useState<boolean | string>(false);
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [conversationList, setConversation] = useState([]);
+  const [conversationList, setConversationList] = useState<any[]>([]);
+  const [conversationListSearch, setConversationListSearch] = useState<any>([]);
   const [isVisibleConversation, setIsVisibleConversation] = useState(true);
   const [visibleAction, setVisibleAction] = useState(false);
+  const [visibleSearchConversation, setVisibleSearchConversation] =
+    useState(false);
   const [visibleActionProfile, setVisibleActionProfile] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const { decoded } = useAuthStore();
@@ -49,13 +55,35 @@ const Sidebar = () => {
   const companyImage = decoded.logo_s3_path;
   const initAuth = useAuthStore((state) => state.initAuth);
   const hideTimer = useRef<any>(null);
+  const [limit, setLimit] = useState(10);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const contentOverlayRef = useRef<HTMLDivElement | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [value, setValue] = useState("");
+  const [isloadingScroll, setIsLoadingScroll] = useState(false);
   const [loginUser, setLoginUser] = useState({
     division: "",
     username: "",
     profile_picture_url: "",
   });
 
-const isLocalhost = window.location.hostname === "localhost"
+  const isLocalhost = window.location.hostname === "localhost";
+
+  const handleInfinitScroll = () => {
+    const el = contentRef.current;
+    const ov = contentOverlayRef.current;
+
+    const target = visibleSearchConversation ? ov : el;
+    if (!target) return;
+
+    const scrollBottom = target.scrollTop + target.clientHeight;
+
+    if (scrollBottom >= target.scrollHeight - 10) {
+      if (hasMore && !isloadingScroll) {
+        setLimit((prev) => prev + 5);
+      }
+    }
+  };
 
   const handleEnter = () => {
     clearTimeout(hideTimer.current);
@@ -66,7 +94,7 @@ const isLocalhost = window.location.hostname === "localhost"
     clearTimeout(hideTimer.current);
     hideTimer.current = setTimeout(() => {
       setIsHidden(false);
-    }, 100); // delay biar tidak blinking
+    }, 100);
   };
 
   const navlist = [
@@ -190,7 +218,6 @@ const isLocalhost = window.location.hostname === "localhost"
               username: res.username,
             });
           }
-          console.log(res);
         } catch (error) {
           console.log(error);
         }
@@ -202,16 +229,29 @@ const isLocalhost = window.location.hostname === "localhost"
   useEffect(() => {
     if (isLogin === "employee") {
       const fetchConversation = async () => {
+        setIsLoadingScroll(true);
         try {
-          const res = await fetchAllConversation();
-          setConversation(res);
+          const res = await fetchAllConversation(limit, value);
+          const conversationWithDate = res.conversations.map(
+            (conv: { created_at: string }) => ({
+              ...conv,
+              convertDate: formatDate(conv.created_at),
+            })
+          );
+          setConversationList(res.conversations);
+          setConversationListSearch(conversationWithDate);
+          if (res.conversations.length < limit) {
+            setHasMore(false);
+          }
         } catch (error) {
           console.log(error);
+        } finally {
+          setIsLoadingScroll(false);
         }
       };
       fetchConversation();
     }
-  }, [isLogin, isLoading]);
+  }, [isLogin, isLoading, limit, value]);
 
   const handleDeleteConversation = async (id: string) => {
     setVisibleAction(true);
@@ -273,6 +313,7 @@ const isLocalhost = window.location.hostname === "localhost"
   if (isLogin === null || undefined) {
     window.location.reload();
   }
+  console.log(conversationList, "conv list");
 
   return (
     <>
@@ -285,7 +326,11 @@ const isLocalhost = window.location.hostname === "localhost"
             <img className="2xl:size-15 md:size-10" src={logo} alt="" />
             <img
               className="2xl:w-23 h-fit"
-              src={`${isLocalhost? `https://145.79.15.190${companyImage}` : companyImage}`}
+              src={`${
+                isLocalhost
+                  ? `https://145.79.15.190${companyImage}`
+                  : companyImage
+              }`}
               alt=""
             />
             <div className="flex flex-col items-start gap-5 font-inter">
@@ -393,209 +438,366 @@ const isLocalhost = window.location.hostname === "localhost"
           </div>
         </div>
       ) : isLogin === "employee" ? (
-        <div
-          className={`${
-            isOpen ? "2xl:w-80 md:w-70" : "w-[5%]"
-          } bg-[#F2F2F2] h-full flex flex-col relative justify-between`}>
+        <>
+          {/* desktop */}
           <div
-            className={`p-5 flex flex-col gap-4 w-full ${
-              isOpen ? "" : "items-center"
-            } `}>
-            <div className="flex items-center justify-between">
+            className={`${
+              isOpen ? "2xl:w-80 md:w-70" : "w-[5%]"
+            } bg-white border-r h-full md:flex flex-col ${
+              location.pathname === "/chat" ? "fixed" : "sticky"
+            } z-10 justify-between hidden`}>
+            <div
+              className={`p-5 flex flex-col gap-4 w-full ${
+                isOpen ? "" : "items-center"
+              } `}>
+              <div className="flex items-center justify-between">
+                {isOpen ? (
+                  <img src={logo} className="2xl:w-13 md:w-10" alt="" />
+                ) : (
+                  <>
+                    <div>
+                      <img
+                        onMouseEnter={handleEnter}
+                        onMouseLeave={handleLeave}
+                        src={logo}
+                        className={`w-10  ${isHidden ? "hidden" : ""}`}
+                        alt=""
+                      />
+                    </div>
+                    <div onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+                      <button
+                        onClick={() => setIsOpen()}
+                        className={`cursor-pointer transition-all duration-700  ${
+                          isHidden ? "" : "hidden"
+                        }`}>
+                        <PanelLeftClose
+                          color="#126F3D"
+                          className="size-[34px]"
+                        />
+                      </button>
+                    </div>
+                  </>
+                )}
+                {isOpen && (
+                  <button
+                    onClick={() => setIsOpen()}
+                    className="cursor-pointer">
+                    <PanelLeftClose color="#126F3D" size={28} />
+                  </button>
+                )}
+              </div>
               {isOpen ? (
-                <img src={logo} className="2xl:w-13 md:w-10" alt="" />
-              ) : (
                 <>
-                  <div>
-                    <img
-                      onMouseEnter={handleEnter}
-                      onMouseLeave={handleLeave}
-                      src={logo}
-                      className={`2xl:w-10 md:w-10  ${
-                        isHidden ? "hidden" : ""
-                      }`}
-                      alt=""
-                    />
+                  <Button
+                    variant="secondary"
+                    onclick={() => navigate("/chat")}
+                    classname="2xl:px-3 2xl:py-2 md:py-1.5 rounded-full">
+                    Obrolan Baru
+                  </Button>
+                  <Button
+                    onclick={() => setVisibleSearchConversation(true)}
+                    variant="link"
+                    classname="text-start 2xl:text-base md:text-sm">
+                    Cari Obrolan
+                  </Button>
+
+                  <div className="flex flex-col gap-2 w-full">
+                    <Button
+                      classname="flex text-[#666666]"
+                      variant="link"
+                      onclick={() =>
+                        setIsVisibleConversation(!isVisibleConversation)
+                      }>
+                      Obrolan <ChevronDown />
+                    </Button>
+
+                    {isVisibleConversation && (
+                      <div
+                        ref={contentRef}
+                        onScroll={handleInfinitScroll}
+                        className="flex flex-col gap-2 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
+                        {conversationList.map(
+                          (conversation: { title: string; id: string }) => (
+                            <div
+                              className={`text-[#211719]  2xl:text-sm md:text-xs cursor-pointer w-full ${
+                                location.pathname.startsWith(
+                                  `/chat/conversation/${conversation.id}`
+                                )
+                                  ? "bg-[#3BC15240]"
+                                  : ""
+                              }  hover:bg-[#3BC15240] px-5 min-h-12 rounded-full flex items-center justify-between`}
+                              onClick={() =>
+                                handleConversation(conversation.id)
+                              }
+                              onMouseEnter={() => handleHover(conversation.id)}
+                              onMouseLeave={() => handleHover(!visibleIcon)}>
+                              <span className="w-full overflow-hidden truncate">
+                                {conversation.title}
+                              </span>
+                              {visibleIcon === conversation.id && (
+                                <>
+                                  <Ellipsis
+                                    onClick={() => setVisibleAction(true)}
+                                    className="2xl:size-8 md:size-6"
+                                    color="#1D8A45"
+                                  />
+                                  {visibleAction && (
+                                    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
+                                      <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
+                                        {isLoading ? (
+                                          <div className="p-3 bg-red-100 rounded-xl flex justify-center">
+                                            <Icon
+                                              icon="line-md:loading-loop"
+                                              width="20"
+                                              height="20"
+                                              color="#DB3726"
+                                            />
+                                          </div>
+                                        ) : (
+                                          <button
+                                            className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
+                                            onClick={() =>
+                                              handleDeleteConversation(
+                                                conversation.id
+                                              )
+                                            }>
+                                            <Trash2 size={17} color="#DB3726" />
+                                            <p>Delete</p>
+                                          </button>
+                                        )}
+                                        <button
+                                          className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
+                                          onClick={() =>
+                                            setVisibleAction(false)
+                                          }>
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          )
+                        )}
+
+                        {isloadingScroll && (
+                          <div className="flex justify-center">
+                            <Icon
+                              icon="line-md:loading-loop"
+                              width="24"
+                              height="24"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
-                    <button
-                      onClick={() => setIsOpen()}
-                      className={`cursor-pointer transition-all duration-700  ${
-                        isHidden ? "" : "hidden"
-                      }`}>
-                      <PanelLeftClose color="#126F3D" className="size-[34px]" />
-                    </button>
+
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[#666666] text-sm">Dukungan</p>
+                    <Button
+                      onclick={() => navigate("/chat/faq")}
+                      variant="link"
+                      classname={`flex text-black px-5 py-3 hover:bg-gray-200 ${
+                        location.pathname.startsWith("/chat/faq")
+                          ? "bg-gray-200"
+                          : ""
+                      } rounded-full 2xl:text-sm md:text-xs`}>
+                      Bantuan & FAQ
+                    </Button>
                   </div>
                 </>
-              )}
-              {isOpen && (
-                <button onClick={() => setIsOpen()} className="cursor-pointer">
-                  <PanelLeftClose color="#126F3D" size={28} />
-                </button>
+              ) : (
+                <div className="flex flex-col gap-10 mt-5">
+                  <button
+                    className="cursor-pointer"
+                    onClick={() => navigate("/chat")}>
+                    <SquarePen color="#126F3D" />
+                  </button>
+                  <button
+                    onClick={() => setVisibleSearchConversation(true)}
+                    className="cursor-pointer">
+                    <Search color="#126F3D" />
+                  </button>
+                </div>
               )}
             </div>
-            {isOpen ? (
-              <>
-                <Button
-                  variant="secondary"
-                  onclick={() => navigate("/chat")}
-                  classname="2xl:px-3 2xl:py-2 md:py-1.5 rounded-full">
-                  Obrolan Baru
-                </Button>
-                <button className="text-start 2xl:text-base md:text-sm">
-                  Cari Obrolan
-                </button>
-                <div className="flex flex-col gap-2 w-full">
-                  <Button
-                    classname="flex text-[#666666]"
-                    variant="link"
-                    onclick={() =>
-                      setIsVisibleConversation(!isVisibleConversation)
-                    }>
-                    Obrolan <ChevronDown />
-                  </Button>
 
-                  {isVisibleConversation && (
-                    <div className="flex flex-col gap-1 overflow-auto 2xl:max-h-[35vh] md:max-h-[30vh]">
-                      {conversationList.map(
-                        (conversation: { title: string; id: string }) => (
-                          <div
-                            className={`text-[#211719] 2xl:text-sm md:text-xs cursor-pointer w-full ${
-                              location.pathname.startsWith(
-                                `/chat/conversation/${conversation.id}`
-                              )
-                                ? "bg-[#3BC15240] "
-                                : ""
-                            }  hover:bg-[#3BC15240] h-13 px-5 rounded-full flex items-center justify-between`}
-                            onClick={() => handleConversation(conversation.id)}
-                            onMouseEnter={() => handleHover(conversation.id)}
-                            onMouseLeave={() => handleHover(!visibleIcon)}>
-                            <span className="w-full overflow-hidden truncate">
-                              {conversation.title}
-                            </span>
-                            {visibleIcon === conversation.id && (
-                              <>
-                                <EllipsisVertical
-                                  onClick={() => setVisibleAction(true)}
-                                  className="2xl:size-8 md:size-6"
-                                  color="#1D8A45"
-                                />
-                                {visibleAction && (
-                                  <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
-                                    <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
-                                      {isLoading ? (
-                                        <div className="p-3 bg-red-100 rounded-xl flex justify-center">
-                                          <Icon
-                                            icon="line-md:loading-loop"
-                                            width="20"
-                                            height="20"
-                                            color="#DB3726"
-                                          />
-                                        </div>
-                                      ) : (
-                                        <button
-                                          className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
-                                          onClick={() =>
-                                            handleDeleteConversation(
-                                              conversation.id
-                                            )
-                                          }>
-                                          <Trash2 size={17} color="#DB3726" />
-                                          <p>Delete</p>
-                                        </button>
-                                      )}
-                                      <button
-                                        className="px-1.5 py-3 hover:bg-gray-200 w-full rounded-xl cursor-pointer"
-                                        onClick={() => setVisibleAction(false)}>
-                                        Cancel
-                                      </button>
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  )}
+            <div className="p-3 absolute md:bottom-18 w-full">
+              {visibleActionProfile && (
+                <div
+                  onMouseLeave={() =>
+                    setVisibleActionProfile(!visibleActionProfile)
+                  }
+                  className="md:p-1 bg-white flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200  ">
+                  <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
+                    Pusat bantuan & FAQ <ChevronRight size={15} />
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">
+                    <LogOut size={15} />
+                    Keluar
+                  </button>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <p className="text-[#666666] text-sm">Dukungan</p>
-                  <Button
-                    onclick={() => navigate("/chat/faq")}
-                    variant="link"
-                    classname={`flex text-black px-5 py-3 hover:bg-gray-200 ${
-                      location.pathname.startsWith("/chat/faq")
-                        ? "bg-gray-200"
-                        : ""
-                    } rounded-full 2xl:text-sm md:text-xs`}>
-                    Bantuan & FAQ
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <div className="flex flex-col gap-10 mt-5">
-                <button>
-                  <SquarePen color="#126F3D" />
-                </button>
-                <button>
-                  <Search color="#126F3D" />
-                </button>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className="p-3 absolute md:bottom-18 w-full">
-            {visibleActionProfile && (
+            <div className="flex w-full flex-col p-3 gap-3">
               <div
-                onMouseLeave={() =>
-                  setVisibleActionProfile(!visibleActionProfile)
-                }
-                className="md:p-1 bg-white flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200  ">
-                <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
-                  Pusat bantuan & FAQ <ChevronRight size={15} />
-                </button>
-                <button
-                  onClick={logout}
-                  className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">
-                  <LogOut size={15} />
-                  Keluar
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="flex w-full flex-col p-3 gap-3">
-            <div
-              onClick={() => setVisibleActionProfile(!visibleActionProfile)}
-              className="flex gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full">
-              {!loginUser.profile_picture_url ? (
-                <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
-                  <p className="text-[#1D8A45] mb-1 uppercase">
-                    {loginUser.username.slice(0, 1)}
+                onClick={() => setVisibleActionProfile(!visibleActionProfile)}
+                className="flex gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full">
+                {!loginUser.profile_picture_url ? (
+                  <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
+                    <p className="text-[#1D8A45] mb-1 uppercase">
+                      {loginUser.username.slice(0, 1)}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
+                    <img
+                      className="w-12"
+                      src={loginUser.profile_picture_url}
+                      alt="profile-picture"
+                    />
+                  </div>
+                )}
+                <div className={`${isOpen ? "" : "hidden"}`}>
+                  <span className="md:text-sm 2xl:text-base">
+                    {loginUser.username}
+                  </span>
+                  <p className="2xl:text-sm md:text-xs text-[#666666]">
+                    {loginUser.division}
                   </p>
                 </div>
-              ) : (
-                <div className="w-12 h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
-                  <img
-                    className="w-12"
-                    src={`https://145.79.15.190${loginUser.profile_picture_url}`}
-                    alt="profile-picture"
-                  />
-                </div>
-              )}
-              <div className={`${isOpen ? "" : "hidden"}`}>
-                <span className="md:text-sm 2xl:text-base">
-                  {loginUser.username}
-                </span>
-                <p className="2xl:text-sm md:text-xs text-[#666666]">
-                  {loginUser.division}
-                </p>
               </div>
             </div>
+
+            {/* overlay search */}
+            {visibleSearchConversation && (
+              <div className="fixed inset-0 flex justify-center items-center">
+                <div className="bg-white absolute rounded-2xl w-200 border">
+                  <div className="flex justify-between p-4 border-b">
+                    <input
+                      placeholder="Cari Obrolan..."
+                      onChange={(e) => setValue(e.target.value)}
+                      value={value}
+                      className=" font-inter placeholder:text-[#B2B2B2] outline-0 w-full"
+                    />
+                    <X
+                      color="#B2B2B2"
+                      size={20}
+                      onClick={() => setVisibleSearchConversation(false)}
+                      className="cursor-pointer"
+                    />
+                  </div>
+
+                  <div className="px-4 pt-7 flex flex-col gap-7">
+                    <button
+                      className="flex items-center gap-2 font-medium cursor-pointer"
+                      onClick={() => {
+                        navigate("/chat");
+                        setIsOpen();
+                        setVisibleSearchConversation(false);
+                      }}>
+                      <SquarePen size={20} color="#2F2F2F" />
+                      <span className="font-inter text-[#2F2F2F]">
+                        Chat Baru
+                      </span>
+                    </button>
+
+                    <div
+                      ref={contentOverlayRef}
+                      onScroll={handleInfinitScroll}
+                      className="flex flex-col gap-1 h-100 overflow-auto">
+                      {conversationListSearch.map(
+                        (
+                          conv: {
+                            title: string;
+                            convertDate: string;
+                            id: number;
+                          },
+                          i: number
+                        ) => {
+                          const prevDate =
+                            conversationListSearch[i - 1]?.convertDate;
+
+                          const isSameDate = conv.convertDate === prevDate;
+
+                          return (
+                            <div key={conv.id} className="flex flex-col gap-1">
+                              {!isSameDate && (
+                                <p className="text-xs text-[#B2B2B2]">
+                                  {conv.convertDate}
+                                </p>
+                              )}
+
+                              <button
+                                className="text-sm text-start hover:bg-gray-50 py-3 px-4 rounded-xl cursor-pointer"
+                                onClick={() => {
+                                  setVisibleSearchConversation(false);
+                                  navigate(`/chat/conversation/${conv.id}`);
+                                }}>
+                                {conv.title}
+                              </button>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-black/10 w-full h-full"></div>
+              </div>
+            )}
           </div>
-        </div>
+
+          {/* mobile */}
+          {isOpen ? (
+            <div
+              className={` md:bg-[#F2F2F2] border-r bg-white h-full fixed z-10 flex-col md:w-[80%] gap-3 md:hidden w-[70%] p-3 flex`}>
+              <div className="flex justify-between">
+                <img src={logo} alt="" className="w-10" />
+                <button onClick={() => setIsOpen()}>
+                  <X />
+                </button>
+              </div>
+              <div className="flex rounded-full outline p-3 gap-2 items-center">
+                <Search />
+                <input
+                  type="text"
+                  className="outline-0 w-full"
+                  placeholder="Cari"
+                />
+              </div>
+              <Button variant="secondary" classname="py-2 rounded-full">
+                Chat Baru
+              </Button>
+
+              <div className="flex flex-col gap-3">
+                <button onClick={() => setIsVisibleConversation(!isVisibleConversation)} className="flex text-sm items-center gap-1 text-[#888888]">
+                  <span>Obrolan</span><ChevronDown size={20} />
+                </button>
+                {isVisibleConversation && (
+                  <div ref={contentRef} onScroll={handleInfinitScroll} className="flex flex-col gap-3 h-70 overflow-auto">
+                    {conversationList.map((conv) => (
+                      <button className="text-start text-[13px]">{conv.title}</button>
+                    ))}
+                  </div>
+                )}
+
+                <div><button onClick={logout}>logout</button></div>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsOpen()}
+              className="bg-transparent fixed p-5 md:hidden">
+              <Menu size={25} />
+            </button>
+          )}
+        </>
       ) : null}
     </>
   );

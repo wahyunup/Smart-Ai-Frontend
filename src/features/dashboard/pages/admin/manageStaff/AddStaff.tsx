@@ -42,7 +42,7 @@ const AddStaf = () => {
           ...prev,
           profile_picture_file: files[0],
         }));
-        setEditPreviewImage(URL.createObjectURL(files[0]));
+        setEditPreviewImage("https://145.79.15.190" + URL.createObjectURL(files[0]));
       } else {
         setDataEdit((prev) => ({
           ...prev,
@@ -55,7 +55,9 @@ const AddStaf = () => {
           ...prev,
           profile_picture_file: files[0],
         }));
-        setPreviewImage(URL.createObjectURL(files[0]));
+        setPreviewImage(
+          "https://145.79.15.190" + URL.createObjectURL(files[0])
+        );
       } else {
         setForm((prev) => ({
           ...prev,
@@ -112,7 +114,7 @@ const AddStaf = () => {
       const userData = location.state.userData;
       setDataEdit({
         id: userData.id,
-        profile_picture_file: userData.profile_picture_url,
+        profile_picture_file: null,
         division: userData.division,
         email: userData.email,
         name: userData.name,
@@ -124,13 +126,12 @@ const AddStaf = () => {
     }
   }, [location.state]);
 
-console.log(editPreviewImage, "edit prev image");
-
+  console.log(editPreviewImage, "edit prev image");
 
   const handleEdit = async () => {
     setIsLoading(true);
     try {
-      const res = await editStaff(
+      await editStaff(
         dataEdit.id,
         dataEdit.profile_picture_file ?? null,
         dataEdit.name,
@@ -141,10 +142,20 @@ console.log(editPreviewImage, "edit prev image");
         dataEdit.division
       );
 
-      if (res) {
-        console.log(res);
-        navigate("/admin/manage-staff");
-      }
+      Swal.fire({
+        text: "Staff berhasil diedit",
+        icon: "success",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
+      }).then((response) => {
+        if (response.isConfirmed) {
+          navigate("/admin/manage-staff");
+        }
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -274,7 +285,7 @@ console.log(editPreviewImage, "edit prev image");
                   {editPreviewImage ? (
                     <img
                       className="h-full"
-                      src={editPreviewImage}
+                      src={`https://145.79.15.190${editPreviewImage}`}
                       alt="preview-image"
                     />
                   ) : (

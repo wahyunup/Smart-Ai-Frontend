@@ -109,12 +109,12 @@ const Navbar = () => {
         </>
       ) : location.pathname.startsWith("/chat/conversation/") ||
         location.pathname.startsWith("/chat/faq") ? (
-        <div className="grid grid-cols-3 bg-white p-5 items-center">
-          <div className="flex gap-3 items-center">
+        <div className="md:grid md:grid-cols-3 bg-white p-5 items-center">
+          <div className="md:flex gap-3 items-center hidden">
             <img src={smartAiMascot} alt="" />
             <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
           </div>
-          <div className="flex flex-col sticky top-10 items-center w-full">
+          <div className="flex flex-col sticky top-10 justify-center items-center w-full">
             <p className="bg-[#1D8A4514] px-3 py-2 rounded-full border border-[#1D8A45] text-[#1D8A45] flex gap-1">
               SmartAI Pro: <span>{plan}</span>
               <Sparkles size={15} color="#3BC152" />

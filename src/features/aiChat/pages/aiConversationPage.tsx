@@ -141,12 +141,12 @@ const aiConversationPage = () => {
     <MainLayout>
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className="flex flex-col h-full overflow-hidden px-20">
+        className="flex flex-col h-full overflow-hidden md:px-20 px-5">
         <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm">
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex flex-col gap-3 ">
+                <div key={i} className="flex flex-col gap-3">
                   <div className="flex justify-end">
                     <div className="bg-green-100 h-11 w-150 rounded-3xl rounded-br-none animate-pulse"></div>
                   </div>
@@ -165,7 +165,7 @@ const aiConversationPage = () => {
                   </p>
                 </div>
                 <div className="flex justify-start">
-                  <div className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none ">
+                  <div className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none wrap-anywhere">
                     <ReactMarkDown
                       components={{
                         h1: ({ children }) => (
@@ -196,7 +196,7 @@ const aiConversationPage = () => {
             ))
           )}
         </div>
-        <div className="bg-white sticky bottom-0 w-full 2xl:py-10 md:py-5">
+        <div className="bg-white py-5 sticky bottom-0 w-full 2xl:py-10 md:py-5">
           {monthly_quota > 0 ? (
             <Input
               icon={

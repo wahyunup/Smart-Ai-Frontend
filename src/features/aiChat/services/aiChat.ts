@@ -1,9 +1,9 @@
 import api from "../../../shared/lib/Axios";
 import { getCookie } from "../../../shared/utils/Cookies";
 
-const fetchAllConversation = async () => {
+const fetchAllConversation = async ( limit?:number, search?:string) => {
   try {
-    const res = await api.get("/chatlogs/conversations");
+    const res = await api.get(`/chatlogs/conversations?search=${search}&limit=${limit}`);
     return res.data;
   } catch (error) {
     throw error;
