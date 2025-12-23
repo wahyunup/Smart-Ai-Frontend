@@ -819,11 +819,7 @@ const Sidebar = () => {
             <div className="bg-black/10 fixed inset-0 z-1"></div>
             </>
           ) : (
-            <button
-              onClick={() => setIsOpen()}
-              className="bg-transparent fixed p-5 md:hidden z-10">
-              <Menu size={25} />
-            </button>
+            ""
           )}
         </>
       ) : null}
