@@ -9,7 +9,6 @@ import {
   Files,
   House,
   LogOut,
-  Menu,
   MessageCircleMore,
   PanelLeftClose,
   Search,
