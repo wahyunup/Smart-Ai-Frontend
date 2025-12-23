@@ -443,8 +443,8 @@ const Sidebar = () => {
           <div
             className={`${
               isOpen ? "2xl:w-80 md:w-70" : "w-[5%]"
-            } bg-white border-r h-full md:flex flex-col ${
-              location.pathname === "/chat" ? "fixed" : "sticky"
+            } bg-white border-r top-0 md:flex flex-col ${
+              location.pathname === "/chat" ? "fixed h-screen" : "sticky h-screen"
             } z-10 justify-between hidden`}>
             <div
               className={`p-5 flex flex-col gap-4 w-full ${
