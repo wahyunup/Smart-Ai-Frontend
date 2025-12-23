@@ -141,7 +141,7 @@ const aiConversationPage = () => {
     <MainLayout>
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className="flex flex-col h-full overflow-hidden md:px-20 px-5">
+        className="flex flex-col h-full md:px-20 px-5">
         <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm">
           {isLoading ? (
             <>
