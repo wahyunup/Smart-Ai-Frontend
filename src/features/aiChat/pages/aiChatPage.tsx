@@ -1,15 +1,14 @@
-import { CircleArrowUp, Sparkles } from "lucide-react";
+import { CircleArrowUp } from "lucide-react";
 import Input from "../../../shared/components/ui/Input";
 import MainLayout from "../../../shared/layouts/MainLayout";
-import { useEffect, useState } from "react";
-import { createConversationAxApi, planStatusApi } from "../services/aiChat";
+import {useState } from "react";
+import { createConversationAxApi } from "../services/aiChat";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 const aiChatPage = () => {
   const [value, setValue] = useState("");
-  const [plan, setPlan] = useState();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingDefaultValue, setIsLoadingDefaultValue] = useState<
@@ -38,18 +37,6 @@ const aiChatPage = () => {
       message: "Kebijakan Diskon Reseller",
     },
   ];
-
-  useEffect(() => {
-    const fetchPlanSubs = async () => {
-      try {
-        const res = await planStatusApi();
-        setPlan(res.plan_name);
-      } catch (error: any) {
-        console.log(error.response.data.message);
-      }
-    };
-    fetchPlanSubs();
-  }, []);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
