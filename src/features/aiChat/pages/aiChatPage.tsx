@@ -78,19 +78,13 @@ const aiChatPage = () => {
   return (
     <MainLayout>
       <div className="flex justify-center items-center md:w-screen h-full ">
-        {/* plan */}
-        {/* <div className="flex flex-col fixed top-10 items-center w-full ">
-          <p className="bg-[#1D8A4514] px-3 py-2 rounded-full border border-[#1D8A45] text-[#1D8A45] flex gap-1">
-            SmartAI Pro: <span>{plan}</span>
-            <Sparkles size={15} color="#3BC152" />
-          </p>
-        </div> */}
+       
         {/* chat section */}
         <form
           onSubmit={handleSumbit}
-          className="2xl:w-250 md:w-200 flex flex-col justify-between md:justify-center h-full">
+          className="2xl:w-250 md:w-200 flex flex-col  md:justify-center h-full">
           <div className="md:hidden"></div>
-          <div className="flex flex-col items-center gap-10">
+          <div className="flex flex-col items-center gap-10 md:mt-0 mt-60">
             <h1 className="2xl:text-4xl md:text-3xl text-lg font-semibold">
               Apa yang sedang anda pikirkan hari ini?
             </h1>
@@ -113,7 +107,7 @@ const aiChatPage = () => {
               iconPosition="right"
             />
 
-            <div className="flex flex-col items-center gap-4 justify-between ">
+            <div className="flex flex-col items-center gap-4">
               <p className="2xl:text-sm text-sm text-[#666666]">
                 Topik Cepat Sesuai Peran Anda:
               </p>
@@ -143,7 +137,7 @@ const aiChatPage = () => {
             </div>
           </div>
 
-          <div className="w-full px-5">
+          <div className="w-full md:hidden p-5 fixed bottom-0 bg-white border-t border-gray-200">
             <Input
               variant="third"
               type="text"
@@ -159,7 +153,7 @@ const aiChatPage = () => {
                 )
               }
               placeholder="Tanyakan apa saja terkait perusahaan"
-              classname="rounded-full 2xl:text-sm md:text-xs md:hidden mb-5"
+              classname="rounded-full 2xl:text-sm md:text-xs"
               iconPosition="right"
             />
           </div>

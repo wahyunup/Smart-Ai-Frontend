@@ -196,7 +196,7 @@ const aiConversationPage = () => {
             ))
           )}
         </div>
-        <div className="bg-white py-5 sticky bottom-0 w-full 2xl:py-10 md:py-5">
+        <div className="bg-white py-5 md:sticky bottom-0 md:w-full 2xl:py-10 md:py-5">
           {monthly_quota > 0 ? (
             <Input
               icon={
