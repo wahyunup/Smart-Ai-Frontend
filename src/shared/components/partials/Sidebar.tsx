@@ -755,45 +755,73 @@ const Sidebar = () => {
 
           {/* mobile */}
           {isOpen ? (
+            <>
             <div
-              className={` md:bg-[#F2F2F2] border-r bg-white h-full fixed z-10 flex-col md:w-[80%] gap-3 md:hidden w-[70%] p-3 flex`}>
-              <div className="flex justify-between">
-                <img src={logo} alt="" className="w-10" />
-                <button onClick={() => setIsOpen()}>
-                  <X />
-                </button>
-              </div>
-              <div className="flex rounded-full outline p-3 gap-2 items-center">
-                <Search />
-                <input
-                  type="text"
-                  className="outline-0 w-full"
-                  placeholder="Cari"
-                />
-              </div>
-              <Button variant="secondary" classname="py-2 rounded-full">
-                Chat Baru
-              </Button>
-
+              className={` md:bg-[#F2F2F2] border-r bg-white h-full fixed z-10 md:hidden w-[80%] p-3 flex flex-col justify-between`}>
               <div className="flex flex-col gap-3">
-                <button onClick={() => setIsVisibleConversation(!isVisibleConversation)} className="flex text-sm items-center gap-1 text-[#888888]">
-                  <span>Obrolan</span><ChevronDown size={20} />
-                </button>
-                {isVisibleConversation && (
-                  <div ref={contentRef} onScroll={handleInfinitScroll} className="flex flex-col gap-3 h-70 overflow-auto">
-                    {conversationList.map((conv) => (
-                      <button className="text-start text-[13px]">{conv.title}</button>
-                    ))}
-                  </div>
-                )}
+                <div className="flex justify-between">
+                  <img src={logo} alt="" className="w-10" />
+                  <button onClick={() => setIsOpen()}>
+                    <X />
+                  </button>
+                </div>
+                <div className="flex rounded-full outline px-3 py-1.5 gap-2 items-center">
+                  <Search color="#126F3D"/>
+                  <input
+                    type="text"
+                    className="outline-0 w-full"
+                    placeholder="Cari"
+                  />
+                </div>
+                <Button
+                  onclick={() => navigate("/chat")}
+                  variant="secondary"
+                  classname="py-2 rounded-full">
+                  Chat Baru
+                </Button>
 
-                <div><button onClick={logout}>logout</button></div>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={() =>
+                      setIsVisibleConversation(!isVisibleConversation)
+                    }
+                    className="flex text-sm items-center gap-1 text-[#888888]">
+                    <span>Obrolan</span>
+                    <ChevronDown size={20} />
+                  </button>
+                  {isVisibleConversation && (
+                    <div
+                      ref={contentRef}
+                      onScroll={handleInfinitScroll}
+                      className="flex flex-col gap-2 h-70 overflow-auto ">
+                      {conversationList.map((conv) => (
+                        <div className=" flex justify-between items-center px-3 active:bg-gray-100 rounded-xl">
+                          <span
+                            onClick={() => {
+                              navigate(`/chat/conversation/${conv.id}`),
+                                setIsOpen();
+                            }}
+                            className="text-start py-3 text-sm truncate w-full font-medium font-inter">
+                            {conv.title}
+                          </span>
+                          <Ellipsis size={33} color="#1D8A45"/>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-red-100">
+                <button onClick={logout}>logout</button>
               </div>
             </div>
+            <div className="bg-black/10 fixed inset-0 z-1"></div>
+            </>
           ) : (
             <button
               onClick={() => setIsOpen()}
-              className="bg-transparent fixed p-5 md:hidden">
+              className="bg-transparent fixed p-5 md:hidden z-10">
               <Menu size={25} />
             </button>
           )}
