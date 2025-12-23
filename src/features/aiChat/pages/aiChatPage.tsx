@@ -92,12 +92,12 @@ const aiChatPage = () => {
     <MainLayout>
       <div className="flex justify-center items-center md:w-screen h-full ">
         {/* plan */}
-        <div className="flex flex-col fixed top-10 items-center w-full ">
+        {/* <div className="flex flex-col fixed top-10 items-center w-full ">
           <p className="bg-[#1D8A4514] px-3 py-2 rounded-full border border-[#1D8A45] text-[#1D8A45] flex gap-1">
             SmartAI Pro: <span>{plan}</span>
             <Sparkles size={15} color="#3BC152" />
           </p>
-        </div>
+        </div> */}
         {/* chat section */}
         <form
           onSubmit={handleSumbit}
