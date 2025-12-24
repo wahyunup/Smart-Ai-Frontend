@@ -847,18 +847,20 @@ const Sidebar = () => {
                         Kuota Chat
                       </p>
                       <p className="text-xs text-[#B2B2B2]">
-                        <span>{planStatus.current_question_quota}</span> /{" "}
-                        <span>{planStatus.total_question_quota}</span>{" "}
+                        <span>{planStatus?.current_question_quota}</span> /{" "}
+                        <span>{planStatus?.total_question_quota}</span>{" "}
                         Pertanyaan
                       </p>
                     </div>
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
-                        className={`absolute bg-[#3BC152] h-2 w-[${planStatus.remaining_quota_percentage}%]`}></div>
+                        className={`absolute bg-[#3BC152] h-2`}
+                        style={{ width: `${planStatus?.remaining_quota_percentage}%` }}>
+                        </div>
                     </div>
                     <div className="flex justify-end">
                       <p className="text-xs text-[#B2B2B2]">
-                        Tersisa {planStatus.remaining_quota_percentage}% dari
+                        Tersisa {planStatus?.remaining_quota_percentage}% dari
                         kuota
                       </p>
                     </div>
@@ -871,13 +873,15 @@ const Sidebar = () => {
                         Dokumen
                       </p>
                       <p className="text-xs text-[#B2B2B2]">
-                        <span>{planStatus.current_doc_quota}</span> /{" "}
-                        <span>{planStatus.total_doc_quota}</span> Dokumen
+                        <span>{planStatus?.current_doc_quota}</span> /{" "}
+                        <span>{planStatus?.total_doc_quota}</span> Dokumen
                       </p>
                     </div>
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
-                        className={`absolute bg-[#DBBE03] h-2 w-[${planStatus.remaining_documents_percentage}%]`}></div>
+                        className={`absolute bg-[#DBBE03] h-2 `}
+                        style={{ width: `${planStatus?.remaining_documents_percentage}%` }}
+                        ></div>
                     </div>
                   </div>
                   {/* quota users */}
@@ -888,18 +892,20 @@ const Sidebar = () => {
                         Pengguna (team)
                       </p>
                       <p className="text-xs text-[#B2B2B2]">
-                        <span>{planStatus.current_users_quota}</span> /{" "}
-                        <span>{planStatus.total_users_quota}</span> Pengguna
+                        <span>{planStatus?.current_users_quota}</span> /{" "}
+                        <span>{planStatus?.total_users_quota}</span> Pengguna
                       </p>
                     </div>
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
-                        className={`absolute bg-[#1069C9] h-2 w-[${planStatus.remaining_users_percentage}%]`}></div>
+                        className={`absolute bg-[#1069C9] h-2`}
+                        style={{ width: `${planStatus?.remaining_users_percentage}%` }}
+                        ></div>
                     </div>
                   </div>
                   <div className="border-t border-gray-100 mt-5">
                     <p className="text-sm text-[#B2B2B2] font-light text-center pt-3 pb-1">
-                      Masa Aktif Berakhir : {planStatus.exp_date}
+                      Masa Aktif Berakhir : {planStatus?.exp_date}
                     </p>
                   </div>
                 </div>
