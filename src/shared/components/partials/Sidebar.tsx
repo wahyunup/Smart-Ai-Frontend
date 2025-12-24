@@ -1,4 +1,5 @@
 import {
+  BellRing,
   Building2,
   ChevronDown,
   ChevronRight,
@@ -77,7 +78,7 @@ const Sidebar = () => {
 
     const scrollBottom = target.scrollTop + target.clientHeight;
 
-    if (scrollBottom >= target.scrollHeight - 10) {
+    if (scrollBottom >= target.scrollHeight) {
       if (hasMore && !isloadingScroll) {
         setLimit((prev) => prev + 5);
       }
@@ -443,8 +444,10 @@ const Sidebar = () => {
             className={`${
               isOpen ? "2xl:w-80 md:w-70" : "w-[5%]"
             } bg-white border-r top-0 md:flex flex-col ${
-              location.pathname === "/chat" ? "fixed h-screen" : "sticky h-screen"
-            } z-10 justify-between hidden`}>
+              location.pathname === "/chat"
+                ? "fixed h-screen"
+                : "sticky h-screen"
+            } z-20 justify-between hidden`}>
             <div
               className={`p-5 flex flex-col gap-4 w-full ${
                 isOpen ? "" : "items-center"
@@ -541,7 +544,7 @@ const Sidebar = () => {
                                     color="#1D8A45"
                                   />
                                   {visibleAction && (
-                                    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs z-10">
+                                    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-xs">
                                       <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
                                         {isLoading ? (
                                           <div className="p-3 bg-red-100 rounded-xl flex justify-center">
@@ -755,67 +758,153 @@ const Sidebar = () => {
           {/* mobile */}
           {isOpen ? (
             <>
-            <div
-              className={` md:bg-[#F2F2F2] border-r bg-white h-full fixed z-10 md:hidden w-[80%] p-3 flex flex-col justify-between`}>
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between">
-                  <img src={logo} alt="" className="w-10" />
-                  <button onClick={() => setIsOpen()}>
-                    <X />
-                  </button>
-                </div>
-                <div className="flex rounded-full outline px-3 py-1.5 gap-2 items-center">
-                  <Search color="#126F3D"/>
-                  <input
-                    type="text"
-                    className="outline-0 w-full"
-                    placeholder="Cari"
-                  />
-                </div>
-                <Button
-                  onclick={() => navigate("/chat")}
-                  variant="secondary"
-                  classname="py-2 rounded-full">
-                  Chat Baru
-                </Button>
+              <div
+                className={` md:bg-[#F2F2F2] border-r bg-white h-full fixed z-12 md:hidden w-[80%] p-3 flex flex-col justify-between`}>
+                <div className="flex flex-col gap-6">
+                  <div className="flex justify-between">
+                    <img src={logo} alt="" className="w-10" />
+                    <button onClick={() => setIsOpen()}>
+                      <X />
+                    </button>
+                  </div>
+                  <div className="flex rounded-full outline px-3 py-1.5 gap-2 items-center">
+                    <Search color="#126F3D" />
+                    <input
+                      onChange={(e) => setValue(e.target.value)}
+                      type="text"
+                      className="outline-0 w-full"
+                      placeholder="Cari"
+                    />
+                  </div>
+                  <Button
+                    onclick={() => navigate("/chat")}
+                    variant="secondary"
+                    classname="py-2 rounded-full">
+                    Chat Baru
+                  </Button>
 
-                <div className="flex flex-col gap-3">
-                  <button
-                    onClick={() =>
-                      setIsVisibleConversation(!isVisibleConversation)
-                    }
-                    className="flex text-sm items-center gap-1 text-[#888888]">
-                    <span>Obrolan</span>
-                    <ChevronDown size={20} />
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={() =>
+                        setIsVisibleConversation(!isVisibleConversation)
+                      }
+                      className="flex text-sm items-center gap-1 text-[#888888]">
+                      <span>Obrolan</span>
+                      <ChevronDown size={20} />
+                    </button>
+                    {isVisibleConversation && (
+                      <div
+                        ref={contentRef}
+                        onScroll={handleInfinitScroll}
+                        className="flex flex-col gap-2 h-70 overflow-auto ">
+                        {conversationList.map((conv) => (
+                          <div className=" flex justify-between items-center px-3 active:bg-gray-100 rounded-xl">
+                            <span
+                              onClick={() => {
+                                navigate(`/chat/conversation/${conv.id}`),
+                                  setIsOpen();
+                              }}
+                              className="text-start py-3 text-sm truncate w-full font-medium font-inter">
+                              {conv.title}
+                            </span>
+                            <button onClick={() => setVisibleAction(true)}>
+                              <Ellipsis size={33} color="#1D8A45" />
+                            </button>
+                            {visibleAction && (
+                              <div className="fixed inset-0 flex items-center justify-center bg-black/10">
+                                <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
+                                  {isLoading ? (
+                                    <div className="p-3 bg-red-100 rounded-xl flex justify-center">
+                                      <Icon
+                                        icon="line-md:loading-loop"
+                                        width="20"
+                                        height="20"
+                                        color="#DB3726"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <button
+                                      className="flex items-center px-14 text-sm gap-2 hover:bg-red-100 p-3 rounded-lg cursor-pointer w-full"
+                                      onClick={() =>
+                                        handleDeleteConversation(conv.id)
+                                      }>
+                                      <Trash2 size={17} color="#DB3726" />
+                                      <p>Delete</p>
+                                    </button>
+                                  )}
+                                  <button
+                                    className="px-1.5 py-3 text-sm hover:bg-gray-200 w-full rounded-xl cursor-pointer"
+                                    onClick={() => setVisibleAction(false)}>
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <button className=" underline text-sm flex items-center gap-1">
+                    <BellRing color="#1D8A45" size={20} />{" "}
+                    <span>Langganan & Kuota</span>
                   </button>
-                  {isVisibleConversation && (
-                    <div
-                      ref={contentRef}
-                      onScroll={handleInfinitScroll}
-                      className="flex flex-col gap-2 h-70 overflow-auto ">
-                      {conversationList.map((conv) => (
-                        <div className=" flex justify-between items-center px-3 active:bg-gray-100 rounded-xl">
-                          <span
-                            onClick={() => {
-                              navigate(`/chat/conversation/${conv.id}`),
-                                setIsOpen();
-                            }}
-                            className="text-start py-3 text-sm truncate w-full font-medium font-inter">
-                            {conv.title}
-                          </span>
-                          <Ellipsis size={33} color="#1D8A45"/>
-                        </div>
-                      ))}
+
+                  <div className="flex text-sm flex-col gap-2 items-start">
+                    <p className=" text-[#666666]">Dukungan</p>
+                    <button className="underline ">Bantuan & FAQ</button>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className=" absolute bottom-20 w-full">
+                    {visibleActionProfile && (
+                      <div
+                        onMouseLeave={() =>
+                          setVisibleActionProfile(!visibleActionProfile)
+                        }
+                        className="py-3 bg-white flex flex-col items-center gap-3 rounded-xl text-sm outline outline-gray-100  ">
+                        <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
+                          Pusat bantuan & FAQ <ChevronRight size={15} />
+                        </button>
+                        <button
+                          onClick={logout}
+                          className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">
+                          <LogOut size={15} />
+                          Keluar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div
+                    className="flex gap-3 active:outline rounded-xl p-3 outline-gray-100"
+                    onClick={() => setVisibleActionProfile(!visibleActionProfile)}>
+                    {!loginUser.profile_picture_url ? (
+                      <div className="w-12 h-12 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
+                        <p className="text-[#1D8A45] mb-1 uppercase">
+                          {loginUser.username.slice(0, 1)}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
+                        <img
+                          className="w-12"
+                          src={loginUser.profile_picture_url}
+                          alt="profile-picture"
+                        />
+                      </div>
+                    )}
+
+                    <div>
+                      <p>{loginUser.username}</p>
+                      <p className="text-xs text-[#666666]">
+                        {loginUser.division}
+                      </p>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-
-              <div className="bg-red-100">
-                <button onClick={logout}>logout</button>
-              </div>
-            </div>
-            <div className="bg-black/10 fixed inset-0 z-1"></div>
+              <div className="bg-black/20 fixed inset-0 z-11"></div>
             </>
           ) : (
             ""
