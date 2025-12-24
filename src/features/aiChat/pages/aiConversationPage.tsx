@@ -142,7 +142,7 @@ const aiConversationPage = () => {
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col h-full md:px-20 px-5">
-        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm mb-22">  
+        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm md:mb-0 mb-22">  
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (

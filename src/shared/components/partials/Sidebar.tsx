@@ -8,6 +8,7 @@ import {
   ClipboardClock,
   Ellipsis,
   Files,
+  FileText,
   House,
   LogOut,
   MessageCircleMore,
@@ -17,6 +18,7 @@ import {
   Trash2,
   UserCog,
   UserPen,
+  Users,
   X,
 } from "lucide-react";
 import Button from "../ui/Button";
@@ -29,17 +31,19 @@ import { useEffect, useRef, useState } from "react";
 import {
   deleteConversationApi,
   fetchAllConversation,
+  planStatusApi,
 } from "../../../features/aiChat/services/aiChat";
 import { userIsLoginApi } from "../../../features/auth/services/authApis";
 import { Icon } from "@iconify/react";
 import { useAuthStore } from "../../store/useCookieAuth";
 import Swal from "sweetalert2";
-import { formatDate } from "../../utils/FormatDate";
+import { countDownDate, formatDate } from "../../utils/FormatDate";
 
 const Sidebar = () => {
   const { isOpen, setIsOpen } = useToggle();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isVisiblePlan, setIsVisiblePlan] = useState(false);
   const [visibleIcon, setVisibleIcon] = useState<boolean | string>(false);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [conversationList, setConversationList] = useState<any[]>([]);
@@ -60,6 +64,20 @@ const Sidebar = () => {
   const contentOverlayRef = useRef<HTMLDivElement | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [value, setValue] = useState("");
+  const [planStatus, setPlanStatus] = useState({
+    plan_name: "",
+    current_question_quota: 0,
+    total_question_quota: 0,
+    current_doc_quota: 0,
+    total_doc_quota: 0,
+    current_users_quota: 0,
+    total_users_quota: 0,
+    exp_date: "",
+    cd_exp_plan: 0,
+    remaining_documents_percentage: 0,
+    remaining_quota_percentage: 0,
+    remaining_users_percentage: 0,
+  });
   const [isloadingScroll, setIsLoadingScroll] = useState(false);
   const [loginUser, setLoginUser] = useState({
     division: "",
@@ -95,6 +113,42 @@ const Sidebar = () => {
     hideTimer.current = setTimeout(() => {
       setIsHidden(false);
     }, 100);
+  };
+
+  const handlePlanStatusApi = async () => {
+    try {
+      const res = await planStatusApi();
+      const dateExpired = formatDate(res.end_date);
+      const countDown = countDownDate(res.end_date);
+      const roundedQuestionQuotaPercentage = Math.floor(
+        res.remaining_quota_percentage
+      );
+      const roundedDocQuotaPercentage = Math.floor(
+        res.remaining_documents_percentage
+      );
+
+      const roundedUserQuotaPercentage = Math.floor(
+        res.remaining_users_percentage
+      );
+
+      setPlanStatus({
+        exp_date: dateExpired,
+        cd_exp_plan: countDown,
+        current_doc_quota: res.current_documents,
+        current_question_quota: res.remaining_quota,
+        current_users_quota: res.current_users,
+        plan_name: res.plan_name,
+        total_doc_quota: res.document_quota,
+        total_question_quota: res.total_quota,
+        total_users_quota: res.max_users,
+        remaining_documents_percentage: roundedDocQuotaPercentage,
+        remaining_users_percentage: roundedUserQuotaPercentage,
+        remaining_quota_percentage: roundedQuestionQuotaPercentage,
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const navlist = [
@@ -596,6 +650,18 @@ const Sidebar = () => {
                     )}
                   </div>
 
+                  <div>
+                    <button
+                      className="flex gap-2 text-sm items-center cursor-pointer"
+                      onClick={() => {
+                        setIsVisiblePlan(true);
+                        handlePlanStatusApi();
+                      }}>
+                      <BellRing size={20} color="#1D8A45" />{" "}
+                      <span className="underline">langganan & kuota</span>
+                    </button>
+                  </div>
+
                   <div className="flex flex-col gap-2">
                     <p className="text-[#666666] text-sm">Dukungan</p>
                     <Button
@@ -675,7 +741,6 @@ const Sidebar = () => {
                 </div>
               </div>
             </div>
-
             {/* overlay search */}
             {visibleSearchConversation && (
               <div className="fixed inset-0 flex justify-center items-center">
@@ -754,7 +819,94 @@ const Sidebar = () => {
               </div>
             )}
           </div>
-
+          {isVisiblePlan && (
+            <>
+              <div className=" fixed z-21 inset-0 flex items-center justify-center">
+                <div className="p-5 rounded-2xl bg-white flex flex-col gap-5 md:w-130 w-90 h-fit mb-10">
+                  <div className="flex justify-end">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => setIsVisiblePlan(false)}>
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="flex justify-between border-b pb-3">
+                    <p className=" font-medium">
+                      {" "}
+                      Paket Anda : <span>{planStatus.plan_name}</span>
+                    </p>
+                    <p className="text-xs text-[#0B51AC] bg-[#CDEDFC] p-1 font-medium">
+                      {planStatus.cd_exp_plan} Hari lagi
+                    </p>
+                  </div>
+                  {/* quota chat */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center ">
+                      <p className="text-sm flex items-center gap-1">
+                        <MessageCircleMore size={20} />
+                        Kuota Chat
+                      </p>
+                      <p className="text-xs text-[#B2B2B2]">
+                        <span>{planStatus.current_question_quota}</span> /{" "}
+                        <span>{planStatus.total_question_quota}</span>{" "}
+                        Pertanyaan
+                      </p>
+                    </div>
+                    <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
+                      <div
+                        className={`absolute bg-[#3BC152] h-2 w-[${planStatus.remaining_quota_percentage}%]`}></div>
+                    </div>
+                    <div className="flex justify-end">
+                      <p className="text-xs text-[#B2B2B2]">
+                        Tersisa {planStatus.remaining_quota_percentage}% dari
+                        kuota
+                      </p>
+                    </div>
+                  </div>
+                  {/* quota doc */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center ">
+                      <p className="text-sm flex items-center gap-1">
+                        <FileText size={20} />
+                        Dokumen
+                      </p>
+                      <p className="text-xs text-[#B2B2B2]">
+                        <span>{planStatus.current_doc_quota}</span> /{" "}
+                        <span>{planStatus.total_doc_quota}</span> Dokumen
+                      </p>
+                    </div>
+                    <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
+                      <div
+                        className={`absolute bg-[#DBBE03] h-2 w-[${planStatus.remaining_documents_percentage}%]`}></div>
+                    </div>
+                  </div>
+                  {/* quota users */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center ">
+                      <p className="text-sm flex items-center gap-1">
+                        <Users size={20} />
+                        Pengguna (team)
+                      </p>
+                      <p className="text-xs text-[#B2B2B2]">
+                        <span>{planStatus.current_users_quota}</span> /{" "}
+                        <span>{planStatus.total_users_quota}</span> Pengguna
+                      </p>
+                    </div>
+                    <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
+                      <div
+                        className={`absolute bg-[#1069C9] h-2 w-[${planStatus.remaining_users_percentage}%]`}></div>
+                    </div>
+                  </div>
+                  <div className="border-t border-gray-100 mt-5">
+                    <p className="text-sm text-[#B2B2B2] font-light text-center pt-3 pb-1">
+                      Masa Aktif Berakhir : {planStatus.exp_date}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-black/20 fixed inset-0 z-20"></div>
+            </>
+          )}
           {/* mobile */}
           {isOpen ? (
             <>
@@ -807,11 +959,15 @@ const Sidebar = () => {
                               className="text-start py-3 text-sm truncate w-full font-medium font-inter">
                               {conv.title}
                             </span>
-                            <button onClick={() => setVisibleAction(true)}>
+                            <button
+                              onClick={() => {
+                                setVisibleAction(true);
+                                setVisibleActionProfile(false);
+                              }}>
                               <Ellipsis size={33} color="#1D8A45" />
                             </button>
                             {visibleAction && (
-                              <div className="fixed inset-0 flex items-center justify-center bg-black/10">
+                              <div className="fixed inset-0 flex items-center justify-center z-10 bg-black/10">
                                 <div className="bg-[#f7f7f7] p-1.5 w-50 top-[37px] flex flex-col gap-2 z-50 rounded-xl outline outline-gray-300">
                                   {isLoading ? (
                                     <div className="p-3 bg-red-100 rounded-xl flex justify-center">
@@ -845,7 +1001,9 @@ const Sidebar = () => {
                       </div>
                     )}
                   </div>
-                  <button className=" underline text-sm flex items-center gap-1">
+                  <button
+                    onClick={() => setIsVisiblePlan(true)}
+                    className=" underline text-sm flex items-center gap-1">
                     <BellRing color="#1D8A45" size={20} />{" "}
                     <span>Langganan & Kuota</span>
                   </button>
@@ -878,7 +1036,9 @@ const Sidebar = () => {
 
                   <div
                     className="flex gap-3 active:outline rounded-xl p-3 outline-gray-100"
-                    onClick={() => setVisibleActionProfile(!visibleActionProfile)}>
+                    onClick={() =>
+                      setVisibleActionProfile(!visibleActionProfile)
+                    }>
                     {!loginUser.profile_picture_url ? (
                       <div className="w-12 h-12 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
                         <p className="text-[#1D8A45] mb-1 uppercase">

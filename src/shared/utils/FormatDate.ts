@@ -6,8 +6,7 @@ const formatDate = (rawDate: string, time?: boolean) => {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-  const diffDay =
-    (today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24);
+  const diffDay = (today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24);
 
   // format jam
   const timeString = time
@@ -35,4 +34,17 @@ const formatDate = (rawDate: string, time?: boolean) => {
   return time ? `${dateString}, ${timeString}` : dateString;
 };
 
-export { formatDate };
+const countDownDate = (rawDate: string) => {
+  const date = new Date(rawDate).getTime();
+  const now = new Date().getTime();
+  const diff = date - now;
+  if (diff <= 0) {
+    return 0;
+  }
+
+  const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+  return daysLeft;
+};
+
+export { formatDate, countDownDate };
