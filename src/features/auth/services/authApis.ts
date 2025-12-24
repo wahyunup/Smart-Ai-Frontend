@@ -1,10 +1,24 @@
 import api from "../../../shared/lib/Axios";
 
-const authLoginApi = async (username: string, password: string) => {
+const authLoginApi = async (email: string, password: string) => {
+  try {
+    const res = await api.post("/auth/user/token", {
+      email: email,
+      password: password,
+
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const authLoginSuperadminApi = async (username: string, password: string) => {
   try {
     const res = await api.post("/auth/user/token", {
       username: username,
       password: password,
+
     });
     return res.data;
   } catch (error) {
@@ -138,6 +152,7 @@ const resetPasswordEmail = async (
 };
 
 export {
+  authLoginSuperadminApi,
   authLoginApi,
   authCompanyRegisterApi,
   authEmployeeRegisterApi,

@@ -3,7 +3,7 @@ import Button from "../../../shared/components/ui/Button";
 import Input from "../../../shared/components/ui/Input";
 import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
-import { authLoginApi } from "../services/authApis";
+import { authLoginApi, authLoginSuperadminApi } from "../services/authApis";
 import { Icon } from "@iconify/react";
 import {
   getCookie,
@@ -36,7 +36,7 @@ const AdminLoginPage = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const res = await authLoginApi(form.username, form.password);
+      const res = await authLoginSuperadminApi(form.username, form.password);
 
       const accessToken = res.access_token;
       const expiresIn = res.expires_in;
