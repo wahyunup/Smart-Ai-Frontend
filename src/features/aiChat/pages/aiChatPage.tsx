@@ -77,12 +77,12 @@ const aiChatPage = () => {
   };
   return (
     <MainLayout>
-      <div className="flex justify-center items-center md:w-screen h-full ">
+      <div className="md:flex md:justify-center md:items-center fixed md:w-screen h-full">
        
         {/* chat section */}
         <form
           onSubmit={handleSumbit}
-          className="2xl:w-250 md:w-200 flex flex-col  md:justify-center h-full">
+          className="2xl:w-250 md:w-200 flex flex-col  md:justify-center h-full ">
           <div className="md:hidden"></div>
           <div className="flex flex-col items-center gap-10 md:mt-0 mt-60">
             <h1 className="2xl:text-4xl md:text-3xl text-lg font-semibold">
