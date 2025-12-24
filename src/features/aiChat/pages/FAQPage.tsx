@@ -18,7 +18,7 @@ const FAQPage = () => {
   ];
   return (
     <MainLayout>
-      <div className="p-10">
+      <div className="md:p-10 p-5">
         <div className="text-center">
           <h1 className="text-2xl font-semibold">Pusat Bantuan Smart AI</h1>
           <p className="text-[#666666] text-sm">
@@ -26,8 +26,8 @@ const FAQPage = () => {
             Chatbot.
           </p>
         </div>
-        <div className="text-center mt-5 flex flex-col gap-4 border p-5 rounded-xl">
-          <h1 className="text-2xl font-semibold">Pertanyaan</h1>
+        <div className="text-center mt-5 flex flex-col md:gap-4 gap-2 border md:p-5 p-3 rounded-xl">
+          <h1 className="md:text-2xl font-semibold">Pertanyaan</h1>
           {faq.map((item, i) => (
               <Dropdown
               key={i}

@@ -2,7 +2,7 @@ import Input from "../../../shared/components/ui/Input";
 import AuthSection from "../components/AuthSection";
 import AuthLayout from "../../../shared/layouts/AuthLayout";
 import Button from "../../../shared/components/ui/Button";
-import { authLoginApi } from "../services/authApis";
+import { authLoginEmployeeApi } from "../services/authApis";
 import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "../../../shared/utils/Cookies";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ const EmployeLoginPage = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const res = await authLoginApi(form.username, form.password);
+      const res = await authLoginEmployeeApi(form.username, form.password);
       const token = res.access_token;
       const expiresIn = res.expires_in;
 

@@ -699,12 +699,17 @@ const Sidebar = () => {
                     setVisibleActionProfile(!visibleActionProfile)
                   }
                   className="md:p-1 bg-white flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200  ">
-                  <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
+                  <button
+                    className={`2xl:p-4 md:p-3 ${
+                      isOpen ? "" : "hidden"
+                    }  hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm`}>
                     Pusat bantuan & FAQ <ChevronRight size={15} />
                   </button>
                   <button
                     onClick={logout}
-                    className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">
+                    className={`flex text-[#09976F] items-center justify-center ${
+                      isOpen ? "gap-2" : "gap-0"
+                    } 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500`}>
                     <LogOut size={15} />
                     Keluar
                   </button>
@@ -819,6 +824,7 @@ const Sidebar = () => {
               </div>
             )}
           </div>
+
           {isVisiblePlan && (
             <>
               <div className=" fixed z-21 inset-0 flex items-center justify-center">
@@ -916,6 +922,7 @@ const Sidebar = () => {
               <div className="bg-black/20 fixed inset-0 z-20"></div>
             </>
           )}
+
           {/* mobile */}
           {isOpen ? (
             <>
@@ -938,7 +945,10 @@ const Sidebar = () => {
                     />
                   </div>
                   <Button
-                    onclick={() => navigate("/chat")}
+                    onclick={() => {
+                      navigate("/chat");
+                      setIsOpen();
+                    }}
                     variant="secondary"
                     classname="py-2 rounded-full">
                     Chat Baru
@@ -1022,7 +1032,14 @@ const Sidebar = () => {
 
                   <div className="flex text-sm flex-col gap-2 items-start">
                     <p className=" text-[#666666]">Dukungan</p>
-                    <button className="underline ">Bantuan & FAQ</button>
+                    <button
+                      onClick={() => {
+                        navigate("/chat/faq");
+                        setIsOpen();
+                      }}
+                      className="underline ">
+                      Bantuan & FAQ
+                    </button>
                   </div>
                 </div>
                 <div className="relative">
@@ -1032,10 +1049,10 @@ const Sidebar = () => {
                         onMouseLeave={() =>
                           setVisibleActionProfile(!visibleActionProfile)
                         }
-                        className="py-3 bg-white flex flex-col items-center gap-3 rounded-xl text-sm outline outline-gray-100  ">
-                        <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
+                        className="py-3 bg-white flex-col flex items-center gap-5 rounded-xl text-sm outline outline-gray-100  ">
+                        {/* <button className="2xl:p-4 md:p-3 hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm">
                           Pusat bantuan & FAQ <ChevronRight size={15} />
-                        </button>
+                        </button> */}
                         <button
                           onClick={logout}
                           className="flex text-[#09976F] items-center justify-center gap-2 2xl:p-4 md:p-3 hover:bg-red-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer md:text-xs 2xl:text-sm hover:text-red-500">

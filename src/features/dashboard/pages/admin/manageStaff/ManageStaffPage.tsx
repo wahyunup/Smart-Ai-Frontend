@@ -42,6 +42,8 @@ const ManageStaffPage = () => {
     setIsLoadingStaff(true);
     try {
       const res = await getStaff(page, 4, value);
+      console.log(res);
+      
       setData(res.users);
       setTotalPage(res.total_pages);
     } catch (error) {
@@ -199,6 +201,7 @@ const ManageStaffPage = () => {
               totalPage={totalPage}
               renderItem={(item, i) => {
                 const bgColor = getRandomColor();
+                console.log(item, "uem");
                 
                 
                 return (
@@ -222,7 +225,7 @@ const ManageStaffPage = () => {
                       <span className="text-center">{item.id}</span>
                     </div>
                     <span className="text-center">{item.name}</span>
-                    {item.email.length > 10 ? (
+                    {item.email?.length > 10 ? (
                       <div
                         className="relative"
                         onMouseEnter={() => setHoverEffect(i)}

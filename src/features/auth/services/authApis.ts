@@ -18,7 +18,18 @@ const authLoginSuperadminApi = async (username: string, password: string) => {
     const res = await api.post("/auth/user/token", {
       username: username,
       password: password,
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
+const authLoginEmployeeApi = async (username: string, password: string) => {
+  try {
+    const res = await api.post("/auth/user/token", {
+      username: username,
+      password: password,
     });
     return res.data;
   } catch (error) {
@@ -152,6 +163,7 @@ const resetPasswordEmail = async (
 };
 
 export {
+  authLoginEmployeeApi,
   authLoginSuperadminApi,
   authLoginApi,
   authCompanyRegisterApi,
