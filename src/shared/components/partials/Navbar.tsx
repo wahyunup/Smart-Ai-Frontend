@@ -119,7 +119,7 @@ const Navbar = () => {
         </>
       ) : location.pathname.startsWith("/chat") ||
         location.pathname.startsWith("/chat/faq") ? (
-        <div className={`${location.pathname === "/chat" ? "" : "md:grid md:grid-cols-3"} flex bg-white p-5 items-center sticky top-0`}>
+        <div className={`${location.pathname === "/chat" ? "" : "md:grid md:grid-cols-3"} flex bg-white p-5 items-center sticky top-0 z-10`}>
           <button
             onClick={() => setIsOpen()}
             className="bg-transparent md:hidden">
