@@ -3,7 +3,7 @@ import Button from "../../../shared/components/ui/Button";
 import Input from "../../../shared/components/ui/Input";
 import AuthLayout from "../../../shared/layouts/AuthLayout";
 import AuthSection from "../components/AuthSection";
-import { authLoginApi, authLoginSuperadminApi } from "../services/authApis";
+import { authLoginSuperadminApi } from "../services/authApis";
 import { Icon } from "@iconify/react";
 import {
   getCookie,
