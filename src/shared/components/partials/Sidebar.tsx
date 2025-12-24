@@ -855,8 +855,9 @@ const Sidebar = () => {
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
                         className={`absolute bg-[#3BC152] h-2`}
-                        style={{ width: `${planStatus?.remaining_quota_percentage}%` }}>
-                        </div>
+                        style={{
+                          width: `${planStatus?.remaining_quota_percentage}%`,
+                        }}></div>
                     </div>
                     <div className="flex justify-end">
                       <p className="text-xs text-[#B2B2B2]">
@@ -880,8 +881,9 @@ const Sidebar = () => {
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
                         className={`absolute bg-[#DBBE03] h-2 `}
-                        style={{ width: `${planStatus?.remaining_documents_percentage}%` }}
-                        ></div>
+                        style={{
+                          width: `${planStatus?.remaining_documents_percentage}%`,
+                        }}></div>
                     </div>
                   </div>
                   {/* quota users */}
@@ -899,8 +901,9 @@ const Sidebar = () => {
                     <div className="h-2 w-full bg-gray-300 relative rounded-full overflow-hidden">
                       <div
                         className={`absolute bg-[#1069C9] h-2`}
-                        style={{ width: `${planStatus?.remaining_users_percentage}%` }}
-                        ></div>
+                        style={{
+                          width: `${planStatus?.remaining_users_percentage}%`,
+                        }}></div>
                     </div>
                   </div>
                   <div className="border-t border-gray-100 mt-5">
@@ -1008,7 +1011,10 @@ const Sidebar = () => {
                     )}
                   </div>
                   <button
-                    onClick={() => setIsVisiblePlan(true)}
+                    onClick={() => {
+                      setIsVisiblePlan(true);
+                      handlePlanStatusApi();
+                    }}
                     className=" underline text-sm flex items-center gap-1">
                     <BellRing color="#1D8A45" size={20} />{" "}
                     <span>Langganan & Kuota</span>
