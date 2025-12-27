@@ -200,7 +200,7 @@ console.log(res, "<----staff");
           <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
             <TableHeaderList classname="bg-[#E3F9E8] grid-cols-7">
               <span>Nama</span>
-              <span>Email</span>
+              <span>Username</span>
               <span>Divisi</span>
               <span>Peran</span>
               <span>Pengguna (Qty)</span>
@@ -249,9 +249,9 @@ console.log(res, "<----staff");
                       </Tooltip>
                     </div>
                     {/* email */}
-                    <Tooltip label={item.email}>
-                      <span className="inline-block w-20 truncate text-start">
-                        {item.email}
+                    <Tooltip label={item.username}>
+                      <span className="inline-block w-20 truncate text-center">
+                        {item.username}
                       </span>
                     </Tooltip>
 

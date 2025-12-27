@@ -176,7 +176,6 @@ const CompanyProfilePage = () => {
                 value={datas.company_email}
               />
               <TableCompanyProfile label="Nama Perusahaan" value={datas.name} />
-              <TableCompanyProfile label="Email" value={datas.company_email} />
               <TableCompanyProfile
                 label="Alamat Perusahaan"
                 value={

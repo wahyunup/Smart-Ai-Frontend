@@ -31,10 +31,10 @@ const logos = [
   return (
     <div className="bg-white md:py-30 py-20 rounded-4xl flex flex-col items-center md:gap-40 gap-20 px-10 overflow-hidden">
       <div className="flex flex-col md:gap-7 gap-4 items-center text-center">
-        <h1 className="2xl:text-6xl md:text-4xl text-2xl md:font-semibold font-bold font-manrope">
+        <h1 className="2xl:text-6xl md:text-4xl text-2xl md:font-semibold font-bold font-manrope" data-aos="fade-up" data-aos-duration="1000">
           Dipercaya oleh Perusahaan-Perusahaan Terkemuka.
         </h1>
-        <p className="2xl:text-xl md:text-md text-sm text-[#5A5A5A] font-inter">
+        <p className="2xl:text-xl md:text-md text-sm text-[#5A5A5A] font-inter" data-aos="fade-up" data-aos-duration="1200">
           Dibangun dengan keamanan tingkat enterprise dan akurasi yang teruji di
           berbagai industri.
         </p>
