@@ -11,6 +11,7 @@ import {
   getDocuments,
 } from "../../../services/admin/ManageDocuments";
 import Swal from "sweetalert2";
+import { formatDate } from "../../../../../shared/utils/FormatDate";
 
 const ManageDocuments = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -120,7 +121,7 @@ const ManageDocuments = () => {
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
-        <h1 className="text-3xl">Kelola Dokumen</h1>
+        <h1 className="2xl:text-3xl md:text-2xl font-semibold">Kelola Dokumen</h1>
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">
@@ -170,17 +171,13 @@ const ManageDocuments = () => {
               page={page}
               totalPage={totalPage}
               renderItem={(item) => {
-                const uploadedAt = new Date(item.uploaded_at);
-                const formattedDate = uploadedAt.toLocaleString("id-ID", {
-                  timeZone: "Asia/Jakarta",
-                  dateStyle: "long",
-                  timeStyle: "medium",
-                });
+                const convertDate = formatDate(item.uploaded_at, true)
                 return (
                   <>
                     <span className="text-center">{item.title}</span>
+                    <div>
                     <span
-                      className={`lowercase px-4 py-1 rounded-full ${
+                      className={`lowercase w-fit px-4 py-1 rounded-full ${
                         item.status === "UPLOAD_FAILED" ||
                         item.status === "PROCESSING_FAILED"
                           ? "bg-red-700 text-white"
@@ -196,6 +193,7 @@ const ManageDocuments = () => {
                       }`}>
                       {item.status}
                     </span>
+                    </div>
                     <div className="flex flex-wrap justify-center gap-2">
                       {item.tags.map((tag: string) => (
                         <span className="bg-[#E3F9E8] px-5 py-2 text-sm text-center rounded-2xl flex gap-2">
@@ -204,7 +202,7 @@ const ManageDocuments = () => {
                       ))}
                     </div>
 
-                    <span>{formattedDate}</span>
+                    <span>{convertDate}</span>
                   </>
                 );
               }}

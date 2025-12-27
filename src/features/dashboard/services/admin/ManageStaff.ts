@@ -81,4 +81,15 @@ const editStaff = async (
   }
 };
 
-export { getStaff, deleteStaff, createStaff, editStaff };
+const toogleStatUsers =  async(id:number, is_active:boolean) => {
+  try {
+    const res = await api.patch(`/companies/employees/${id}/status`, {
+      is_active : is_active
+    })
+    return res.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export { getStaff, deleteStaff, createStaff, editStaff, toogleStatUsers };

@@ -1,7 +1,7 @@
 import { CircleArrowUp } from "lucide-react";
 import Input from "../../../shared/components/ui/Input";
 import MainLayout from "../../../shared/layouts/MainLayout";
-import {useState } from "react";
+import { useState } from "react";
 import { createConversationAxApi } from "../services/aiChat";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -78,7 +78,6 @@ const aiChatPage = () => {
   return (
     <MainLayout>
       <div className="md:flex md:justify-center md:items-center fixed md:w-screen h-full">
-       
         {/* chat section */}
         <form
           onSubmit={handleSumbit}
@@ -99,7 +98,9 @@ const aiChatPage = () => {
                 isLoading ? (
                   <Icon icon="line-md:loading-loop" width="24" height="24" />
                 ) : (
-                  <CircleArrowUp color="#666666" />
+                  <button type="submit">
+                    <CircleArrowUp color="#666666" />
+                  </button>
                 )
               }
               placeholder="Tanyakan apa saja terkait perusahaan"

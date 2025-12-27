@@ -5,9 +5,14 @@ import Button from "../../../../../shared/components/ui/Button";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FilePlus, Search } from "lucide-react";
-import { deleteStaff, getStaff } from "../../../services/admin/ManageStaff";
+import { ChevronDown, FilePlus, Search } from "lucide-react";
+import {
+  deleteStaff,
+  getStaff,
+  toogleStatUsers,
+} from "../../../services/admin/ManageStaff";
 import Swal from "sweetalert2";
+import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 
 const ManageStaffPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,9 +27,10 @@ const ManageStaffPage = () => {
   const [isLoadingStaff, setIsLoadingStaff] = useState(false);
   const [statusSelected, setStatusSelected] = useState("");
   const [roleSelected, setRoleSelected] = useState("");
-  const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
+  // const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
+  const [isOpenStat, setIsOpenStat] = useState<number | null>(null);
 
-  const getRandomColor = () => {
+  const getRandomColor = (id: number) => {
     const colors = [
       "#E57373",
       "#81C784",
@@ -35,15 +41,15 @@ const ManageStaffPage = () => {
       "#F06292",
       "#90A4AE",
     ];
-    return colors[Math.floor(Math.random() * colors.length)];
+    return colors[id % colors.length];
   };
 
   const fetchStaff = async () => {
     setIsLoadingStaff(true);
     try {
       const res = await getStaff(page, 4, value);
-      console.log(res);
-      
+console.log(res, "<----staff");
+
       setData(res.users);
       setTotalPage(res.total_pages);
     } catch (error) {
@@ -53,9 +59,22 @@ const ManageStaffPage = () => {
     }
   };
 
+  const handleStatUser = async (id: number, is_active: boolean) => {
+    try {
+      await toogleStatUsers(id, !is_active);
+      await fetchStaff();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleToogleStatus = (id: number) => {
+    setIsOpenStat((prev) => (prev === id ? null : id));
+  };
+
   useEffect(() => {
     fetchStaff();
-  }, [page, value, deleteStaff]);
+  }, [page, value]);
 
   const handleNextPage = () => {
     if (isLoadingStaff) return;
@@ -94,12 +113,12 @@ const ManageStaffPage = () => {
         if (response.isConfirmed) {
           await deleteStaff(id);
           Swal.fire({
-            icon : "success",
+            icon: "success",
             text: "user berhasil dihapus",
             confirmButtonText: "oke",
           }).then(async (response) => {
             if (response.isConfirmed) {
-              fetchStaff();
+              await fetchStaff();
             }
           });
         }
@@ -129,7 +148,7 @@ const ManageStaffPage = () => {
       <div className="p-10 flex flex-col gap-10">
         <h1 className="text-3xl font-semibold">Kelola Staff</h1>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 shadow-2xl p-8 rounded-3xl">
           <div className="flex flex-col gap-3">
             <div className="flex justify-between">
               <h3 className="text-xl">Data Staff Perusahaan</h3>
@@ -180,11 +199,11 @@ const ManageStaffPage = () => {
 
           <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
             <TableHeaderList classname="bg-[#E3F9E8] grid-cols-7">
-              <span>ID</span>
-              <span>Username</span>
+              <span>Nama</span>
               <span>Email</span>
               <span>Divisi</span>
               <span>Peran</span>
+              <span>Pengguna (Qty)</span>
               <span>Status</span>
               <span>Aksi</span>
             </TableHeaderList>
@@ -196,17 +215,16 @@ const ManageStaffPage = () => {
               nextPage={handleNextPage}
               prevPage={handlePrevPage}
               onclickEdit={handleEdit}
-              classname="grid grid-cols-7"
+              classname="grid-cols-7"
               page={page}
               totalPage={totalPage}
-              renderItem={(item, i) => {
-                const bgColor = getRandomColor();
-                console.log(item, "uem");
-                
-                
+              renderItem={(item) => {
+                const bgColor = getRandomColor(item.id);
+
                 return (
                   <>
-                    <div className="flex items-center gap-5">
+                    {/* nama */}
+                    <div className="flex items-center gap-3">
                       <div className="w-10 h-10 overflow-hidden rounded-full bg-gray-200">
                         {item.profile_picture_url === null ||
                         !item.profile_picture_url ? (
@@ -217,42 +235,118 @@ const ManageStaffPage = () => {
                           </div>
                         ) : (
                           <img
-                            src={`https://145.79.15.190${item.profile_picture_url}`}
+                            className="h-full w-full"
+                            src={item.profile_picture_url}
                             alt=""
                           />
                         )}
                       </div>
-                      <span className="text-center">{item.id}</span>
-                    </div>
-                    <span className="text-center">{item.name}</span>
-                    {item.email?.length > 10 ? (
-                      <div
-                        className="relative"
-                        onMouseEnter={() => setHoverEffect(i)}
-                        onMouseLeave={() => setHoverEffect(false)}>
-                        {hoverEffect === i && (
-                          <div className="transition-all duration-300 fixed 2xl:left-160 md:left-100 top-15 -translate-x-1/2 bg-orange-100 rounded-xl p-3 z-50 outline outline-orange-400 md:text-sm 2xl:text-base">
-                            {item?.email}
-                          </div>
-                        )}
-                        <span className="z-10">
-                          {item?.email.slice(0, 10)}...
+
+                      <Tooltip label={item.username}>
+                        <span className="inline-block w-20 truncate text-start">
+                          {item.username}
                         </span>
-                      </div>
-                    ) : (
-                      <span>{item?.email}</span>
-                    )}
+                      </Tooltip>
+                    </div>
+                    {/* email */}
+                    <Tooltip label={item.email}>
+                      <span className="inline-block w-20 truncate text-start">
+                        {item.email}
+                      </span>
+                    </Tooltip>
+
                     {item.division === null ? (
                       <span className="text-center">Tidak ada</span>
                     ) : (
-                      <span className="text-center">{item.division}</span>
+                      <Tooltip label={item.division}>
+                        <span className="inline-block w-20 truncate">
+                          {item.division}
+                        </span>
+                      </Tooltip>
                     )}
-                    <span className="text-center">{item.role}</span>
-                    {item.is_active ? (
-                      <span className="text-center">Aktif</span>
-                    ) : (
-                      <span className="text-center">Tidak Aktif</span>
-                    )}
+
+                    <Tooltip label={item.role}>
+                          <span className="inline-block w-20 truncate text-start">
+                            {item.role}
+                          </span>
+                        </Tooltip>
+                    <Tooltip label={item.role}>
+                          <span className="inline-block w-20 truncate text-start">
+                            {item.role}
+                          </span>
+                        </Tooltip>
+
+                    {/* status */}
+                    <div className="relative">
+                      {item.is_active ? (
+                        <>
+                          <button
+                            onClick={() => handleToogleStatus(item.id)}
+                            className="flex gap-2 justify-between bg-[#00AA58] text-white w-fit rounded-full px-8 py-1.5 cursor-pointer">
+                            Aktif <ChevronDown />
+                          </button>
+                          {isOpenStat === item.id && (
+                            <div className="absolute flex flex-col z-1 bg-white 2xl:py-2 md:py-1.5 w-33 mt-1 border 2xl:rounded-xl md:rounded-lg 2xl:text-base md:text-xs">
+                              {!item.is_active ? (
+                                <button
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    handleStatUser(item.id, item.is_active);
+                                    setIsOpenStat(null);
+                                  }}>
+                                  Aktif
+                                </button>
+                              ) : (
+                                <button
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    handleStatUser(item.id, item.is_active);
+                                    setIsOpenStat(null);
+                                  }}>
+                                  Nonaktif
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleToogleStatus(item.id)}
+                            className="cursor-pointer text-center bg-[#DB3726] text-white w-fit rounded-full px-8 py-1.5 flex gap-2 items-center ">
+                            Nonaktif
+                            <ChevronDown />
+                          </button>
+                          {isOpenStat === item.id && (
+                            <div
+                              onClick={() =>
+                                handleStatUser(item.id, item.is_active)
+                              }
+                              className="absolute flex flex-col z-3 bg-white py-2 w-33 mt-1 border rounded-xl 2xl:text-base md:text-xs 2xl:rounded-xl md:rounded-lg 2xl:py-2 md:py-1.5">
+                              {!item.is_active ? (
+                                <button
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    handleStatUser(item.id, item.is_active);
+                                    setIsOpenStat(null);
+                                  }}>
+                                  Aktif
+                                </button>
+                              ) : (
+                                <button
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    handleStatUser(item.id, item.is_active);
+                                    setIsOpenStat(null);
+                                  }}>
+                                  Nonaktif
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </>
                 );
               }}

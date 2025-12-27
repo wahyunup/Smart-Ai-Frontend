@@ -6,7 +6,7 @@ export default function BasicArea({ heading, datas, days, color }: BasicAreaProp
 
   return (
     <div className="p-5 bg-white rounded-3xl shadow-[0_10px_20px_rgba(0,0,0,0.10)] w-full">
-      <h2 className="text-xl font-semibold mb-2">{heading}</h2>
+      <h2 className="2xl:text-xl md:text-lg font-semibold mb-2">{heading}</h2>
 
       <LineChart
         height={380}

@@ -13,7 +13,7 @@ const TableCompanyProfile = ({
     <>
       <div className="border-b border-gray-300 text-sm p-5 justify-between flex">
         <div className="flex items-center">
-          <span className="font-semibold w-70">{label}</span>
+          <span className="font-semibold 2xl:text-base md:text-sm w-70">{label}</span>
 
       {name === "imageProfile" ? (
             <>
@@ -25,7 +25,7 @@ const TableCompanyProfile = ({
                   <img src={editPreviewImage} className="h-16" />
                 ) : previewImage ? (
                   <img
-                    src={`https://145.79.15.190${previewImage}`}
+                    src={previewImage}
                     className="h-16"
                   />
                 ) : (
@@ -42,8 +42,7 @@ const TableCompanyProfile = ({
               />
             </>
           ) : (
-            /* --- Normal text field --- */
-            <span className={`${!icon ? "text-gray-500" : ""} text-wrap`}>
+            <span className={`${!icon ? "text-gray-500" : ""} text-wrap 2xl:text-sm md:text-xs`}>
               {value}
             </span>
           )}

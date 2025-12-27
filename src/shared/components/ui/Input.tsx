@@ -27,13 +27,15 @@ const Input = ({
         {label ? (
           <label
             htmlFor={htmlFor}
-            className="font-semibold 2xl:text-md text-sm">
+            className={`2xl:font-semibold 2xl:text-base md:text-xs md:font-medium ${
+              labelLayout === "inline" ? " w-33" : ""
+            }`}>
             {label}
           </label>
         ) : null}
         <div
           className={clsx(
-            `flex 2xl:p-3 md:p-2 p-3 gap-3 w-full ${
+            `flex 2xl:p-3 md:p-2.5 p-3 gap-3 w-full ${
               iconPosition === "left"
                 ? ""
                 : iconPosition === "right"
@@ -58,14 +60,14 @@ const Input = ({
             name={name}
             type={type}
             placeholder={placeholder}
-            className="w-full outline-none 2xl:placeholder:text-md md:placeholder:text-sm placeholder:text-black/65 "
+            className="w-full outline-none 2xl:placeholder:text-sm md:placeholder:text-xs placeholder:text-black/65 2xl:text-sm md:text-xs"
           />
           {name?.startsWith("password") ? (
             <button className="cursor-pointer" onClick={tooglePassword}>
               {showPassword ? (
-                <Eye color="#8BEC89" size={20} />
+                <Eye color="#E5E5E5" className="2xl:size-[20px] md:size-[17px]" />
               ) : (
-                <EyeOff color="#8BEC89" size={20} />
+                <EyeOff color="#E5E5E5" className="2xl:size-[20px] md:size-[17px] " />
               )}
             </button>
           ) : null}

@@ -42,7 +42,6 @@ const authCompanyRegisterApi = async (
   email: string,
   password: string,
   company_name: string,
-  pic_phone_number: number
 ) => {
   try {
     const res = await api.post("/auth/register", {
@@ -50,7 +49,6 @@ const authCompanyRegisterApi = async (
       email: email,
       password: password,
       company_name: company_name,
-      pic_phone_number: pic_phone_number,
     });
 
     return res.data;

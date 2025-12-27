@@ -11,6 +11,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../../../../shared/components/ui/Button";
+import { formatDate } from "../../../../../shared/utils/FormatDate";
 
 const LogAuditPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,7 +70,7 @@ const LogAuditPage = () => {
     try {
       const res = await companyListAuditApi();
       console.log(res);
-      
+
       setCompanyList(res.companies);
     } catch (error) {
       console.log(error);
@@ -186,8 +187,10 @@ const LogAuditPage = () => {
       <div className="p-10">
         <div className="flex justify-between items-end">
           <div className="flex gap-2 flex-col">
-            <h1 className="text-4xl font-semibold">Audit Log & Aktivitas</h1>
-            <p className="text-xl">
+            <h1 className="2xl:text-2xl md:text-xl font-semibold">
+              Audit Log & Aktivitas
+            </h1>
+            <p className="2xl:text-xl font-medium">
               Melacak semua aktivitas penting sistem, transaksi data, dan
               kegagalan
             </p>
@@ -195,7 +198,7 @@ const LogAuditPage = () => {
           <Button
             onclick={exportCsv}
             variant="secondary"
-            classname="px-10 py-4 bg-blue-500 rounded-xl h-fit">
+            classname="2xl:px-10 2xl:py-4 md:px-5 md:py-3 bg-blue-500 rounded-xl h-fit">
             Export CSV
           </Button>
         </div>
@@ -223,10 +226,10 @@ const LogAuditPage = () => {
             htmlFor="dateEnd"
             name="dateEnd"
           />
-          <div className="flex items-center h-full w-full">
+          <div className="flex gap-2 items-center h-full w-full">
             <label
               htmlFor="filtercompany"
-              className="font-semibold 2xl:text-md md:text-sm">
+              className="2xl:font-semibold 2xl:text-md md:text-xs md:font-medium">
               Filter Perusahaan
             </label>
             <select
@@ -234,20 +237,23 @@ const LogAuditPage = () => {
               id="company"
               value={filter.company}
               onChange={handleOnChange}
-              className="outline w-full p-3 rounded-xl outline-gray-400 h-full">
+              className="outline w-full p-3 rounded-xl outline-gray-400 h-full 2xl:text-base md:text-xs">
               <option value="">Semua perusahaan</option>
               {companyList.map((item: { name: string; id: number }) => (
-                <option key={item.id} value={item.id}>
+                <option
+                  className="h-10 overflow-auto"
+                  key={item.id}
+                  value={item.id}>
                   {item.name}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="flex items-center h-full w-full">
+          <div className="flex gap-2 items-center h-full w-full">
             <label
               htmlFor="filtercompany"
-              className="font-semibold 2xl:text-md md:text-sm">
+              className="2xl:font-semibold 2xl:text-md md:text-xs md:font-medium">
               Filter Tipe Aktivitas
             </label>
             <select
@@ -255,7 +261,7 @@ const LogAuditPage = () => {
               id="type"
               value={filter.type}
               onChange={handleOnChange}
-              className="outline w-full p-3 rounded-xl outline-gray-400">
+              className="outline w-full p-3 rounded-xl outline-gray-400 2xl:text-base md:text-xs">
               <option value="">Semua Tipe</option>
               {type.map((item) => (
                 <>
@@ -268,7 +274,7 @@ const LogAuditPage = () => {
           <Button
             onclick={handleFilter}
             variant="secondary"
-            classname="px-7 rounded-xl ">
+            classname="2xl:px-7 md:px-10 rounded-xl ">
             Terapkan Filter
           </Button>
         </div>
@@ -293,9 +299,10 @@ const LogAuditPage = () => {
             canAction={false}
             renderItem={(item, i) => {
               const firstText = item.activity_type_category.split("/")[0];
+              const convertDate = formatDate(item.timestamp);
               return (
                 <>
-                  <span>{item?.timestamp}</span>
+                  <span>{convertDate}</span>
                   {item.user === null ? (
                     <span>user tidak diketahui</span>
                   ) : (
@@ -323,20 +330,22 @@ const LogAuditPage = () => {
                       ? "tidak diketahui"
                       : item?.company?.name}
                   </span>
-                  <span
-                    className={`uppercase py-2 px-5 rounded-full text-white ${
-                      firstText === "Login"
-                        ? "bg-[#13D376]"
-                        : firstText === "Data"
-                        ? "bg-[#DBBE03]"
-                        : firstText === "Error"
-                        ? "bg-[#DB3726]"
-                        : firstText === "Proses "
-                        ? "bg-[#1069C9]"
-                        : ""
-                    }`}>
-                    {firstText}
-                  </span>
+                  <div>
+                    <span
+                      className={`uppercase py-2 px-5 rounded-full text-white ${
+                        firstText === "Login"
+                          ? "bg-[#13D376]"
+                          : firstText === "Data"
+                          ? "bg-[#DBBE03]"
+                          : firstText === "Error"
+                          ? "bg-[#DB3726]"
+                          : firstText === "Proses "
+                          ? "bg-[#1069C9]"
+                          : ""
+                      }`}>
+                      {firstText}
+                    </span>
+                  </div>
                 </>
               );
             }}

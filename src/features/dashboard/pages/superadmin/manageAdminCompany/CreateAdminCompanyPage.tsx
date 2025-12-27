@@ -16,7 +16,7 @@ const CreateAdminCompanyPage = () => {
   );
 
   const isDetailPage = location.pathname.startsWith(
-    "/superadmin/manage-admin-company/details"
+    "/superadmin/manage-admin-company/details"  
   );
 
   const [form, setForm] = useState({

@@ -21,7 +21,6 @@ const CompanyRegisterPage = () => {
     companyName: "",
     companyEmail: "",
     picName: "",
-    picNo: 62,
     password: "",
     confirmPassword: "",
   });
@@ -37,8 +36,7 @@ const CompanyRegisterPage = () => {
         form.picName,
         form.companyEmail,
         form.password,
-        form.companyName,
-        form.picNo
+        form.companyName
       );
       Swal.fire({
         text: "register berhasil",
@@ -161,7 +159,7 @@ const CompanyRegisterPage = () => {
                   label="Nama PIC"
                 />
               </div>
-              <div className="md:w-100 w-90">
+              {/* <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
                   onchange={handleOnChange}
@@ -175,7 +173,7 @@ const CompanyRegisterPage = () => {
                 <span className="text-gray-400 text-xs">
                   Nomor Whatsapp Yang Aktif
                 </span>
-              </div>
+              </div> */}
               <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
@@ -255,7 +253,7 @@ const CompanyRegisterPage = () => {
               )}
 
               <iframe
-              className="md:size-90 size-60"
+                className="md:size-90 size-60"
                 src="https://lottie.host/embed/a21bfb0a-9614-44ae-8570-4e8ccc51c538/lJq53o4oER.lottie"
                 onLoad={() => setIsLoading(true)}></iframe>
             </div>

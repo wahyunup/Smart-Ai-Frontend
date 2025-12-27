@@ -42,7 +42,7 @@ const AddStaf = () => {
           ...prev,
           profile_picture_file: files[0],
         }));
-        setEditPreviewImage("https://145.79.15.190" + URL.createObjectURL(files[0]));
+        setEditPreviewImage(URL.createObjectURL(files[0]));
       } else {
         setDataEdit((prev) => ({
           ...prev,
@@ -55,9 +55,7 @@ const AddStaf = () => {
           ...prev,
           profile_picture_file: files[0],
         }));
-        setPreviewImage(
-          "https://145.79.15.190" + URL.createObjectURL(files[0])
-        );
+        setPreviewImage(URL.createObjectURL(files[0]));
       } else {
         setForm((prev) => ({
           ...prev,
@@ -203,7 +201,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="username"
                 value={form.username}
-                classname="gap-17"
                 type="text"
                 labelLayout="inline"
                 htmlFor="username"
@@ -216,7 +213,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="name"
                 htmlFor="name"
-                classname="gap-13"
                 type="text"
                 labelLayout="inline"
                 onchange={handleOnChange}
@@ -229,7 +225,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="email"
                 htmlFor="email"
-                classname="gap-25"
                 type="text"
                 labelLayout="inline"
               />
@@ -241,24 +236,12 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="password"
                 htmlFor="password"
-                classname="gap-17"
                 tooglePassword={() => setShowingPassword(!showingPassword)}
                 showPassword={showingPassword}
                 type={`${showingPassword ? "text" : "password"}`}
                 labelLayout="inline"
               />
-              <Input
-                label="role"
-                variant="secondary"
-                value={form.role}
-                onchange={handleOnChange}
-                placeholder="input teks"
-                name="role"
-                htmlFor="role"
-                classname="gap-27"
-                type="text"
-                labelLayout="inline"
-              />
+
               <Input
                 label="Divisi"
                 variant="secondary"
@@ -267,7 +250,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="division"
                 htmlFor="division"
-                classname="gap-24"
                 type="text"
                 labelLayout="inline"
               />
@@ -285,7 +267,7 @@ const AddStaf = () => {
                   {editPreviewImage ? (
                     <img
                       className="h-full"
-                      src={`https://145.79.15.190${editPreviewImage}`}
+                      src={editPreviewImage}
                       alt="preview-image"
                     />
                   ) : (
@@ -307,7 +289,6 @@ const AddStaf = () => {
                 name="username"
                 value={dataEdit.username}
                 onchange={handleOnChange}
-                classname="gap-17"
                 type="text"
                 labelLayout="inline"
                 htmlFor="username"
@@ -320,7 +301,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="name"
                 htmlFor="name"
-                classname="gap-13"
                 type="text"
                 labelLayout="inline"
               />
@@ -332,7 +312,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="email"
                 htmlFor="email"
-                classname="gap-25"
                 type="text"
                 labelLayout="inline"
               />
@@ -344,24 +323,12 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="password"
                 htmlFor="password"
-                classname="gap-17"
                 tooglePassword={() => setShowingPassword(!showingPassword)}
                 showPassword={showingPassword}
                 type={`${showingPassword ? "text" : "password"}`}
                 labelLayout="inline"
               />
-              <Input
-                label="role"
-                variant="secondary"
-                onchange={handleOnChange}
-                value={dataEdit.role}
-                placeholder="input teks"
-                name="role"
-                htmlFor="role"
-                classname="gap-27"
-                type="text"
-                labelLayout="inline"
-              />
+
               <Input
                 label="Divisi"
                 variant="secondary"
@@ -370,7 +337,6 @@ const AddStaf = () => {
                 placeholder="input teks"
                 name="division"
                 htmlFor="division"
-                classname="gap-24"
                 type="text"
                 labelLayout="inline"
               />

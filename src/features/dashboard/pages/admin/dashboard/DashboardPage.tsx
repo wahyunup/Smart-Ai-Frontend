@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../../../shared/store/useCookieAuth";
 import { statUserCompanyApi } from "../../../../auth/services/authApis";
 import Swal from "sweetalert2";
+import { formatDate } from "../../../../../shared/utils/FormatDate";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ const AdminDashboard = () => {
   return (
     <MainLayout>
       <div className="p-10">
-        <p className="text-xl">
+        <p className="2xl:text-xl">
           Selamat Datang {decoded.name}, Admin {decoded.company}!
         </p>
         {/* breakdown */}
@@ -198,18 +199,21 @@ const AdminDashboard = () => {
               data={recentDocuments}
               canAction={false}
               renderItem={(item) => {
+                const convertDate = formatDate(item.updated_at);
                 return (
                   <>
                     <span>{item.title}</span>
                     {item.status === "COMPLETED" ? (
-                      <span className="py-2 px-4 rounded-full bg-[#13D376] text-white text-sm">
-                        {item.status}
-                      </span>
+                      <div>
+                        <span className="py-2 px-4 rounded-full bg-[#00AA58] text-white text-sm w-fit">
+                          {item.status}
+                        </span>
+                      </div>
                     ) : (
                       ""
                     )}
                     <span>
-                      {item.updated_at ? item.updated_at : "belum ada update"}
+                      {convertDate ? convertDate : "belum ada update"}
                     </span>
                   </>
                 );

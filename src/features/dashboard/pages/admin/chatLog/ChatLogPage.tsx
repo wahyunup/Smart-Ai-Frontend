@@ -10,6 +10,7 @@ import { chatLog, downloadCsv } from "../../../services/admin/ChatLog";
 import { Icon } from "@iconify/react";
 import type { ChatLogProps } from "../../../../../shared/types/type";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
+import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 
 const ChatLogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,10 +24,10 @@ const ChatLogPage = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingDoc, setIsLoadingDoc] = useState(false);
-  const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
-  const [hoverType, setHoverType] = useState<"question" | "answer" | null>(
-    null
-  );
+  // const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
+  // const [hoverType, setHoverType] = useState<"question" | "answer" | null>(
+  //   null
+  // );
 
   useEffect(() => {
     const fetchChatLog = async () => {
@@ -93,7 +94,7 @@ const ChatLogPage = () => {
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
-        <h1 className="text-3xl">Dashboard Admin Perusahaan</h1>
+        <h1 className="2xl:text-3xl md:text-2xl font-semibold">Dashboard Admin Perusahaan</h1>
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">
@@ -146,46 +147,43 @@ const ChatLogPage = () => {
               prevPage={handlePrevPage}
               classname="grid grid-cols-6"
               page={page}
-              tooltipe={(item, i) =>
-                hoverEffect === i &&
-                (hoverType === "question"
-                  ? item.question.length > 40
-                  : item.answer.length > 40) && (
-                  <div className="transition-all duration-300 fixed 2xl:left-[50vw] wrap-anywhere w-[20vw] md:left-100 2xl:top-80 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5] ">
-                    {hoverType === "question"
-                      ? item.question.slice(0, 400)
-                      : item.answer.slice(0, 400)}
-                  </div>
-                )
-              }
+              // tooltipe={(item, i) =>
+              //   hoverEffect === i &&
+              //   (hoverType === "question"
+              //     ? item.question.length > 40
+              //     : item.answer.length > 40) && (
+              //     <div className="transition-all duration-300 fixed 2xl:left-[50vw] wrap-anywhere w-[20vw] md:left-150 2xl:top-80 md:top-50 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5] ">
+              //       {hoverType === "question"
+              //         ? item.question.slice(0, 400)
+              //         : item.answer.slice(0, 400)}
+              //     </div>
+              //   )
+              // }
               totalPage={totalPage}
-              renderItem={(item, i) => {
+              renderItem={(item) => {
                 const uploadedAt = formatDate(item.created_at);
 
-                const answerRegex = item.answer.replace(
-                  /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
-                  "<strong>$1</strong>"
-                );
+                // const answerRegex = item.answer.replace(
+                //   /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
+                //   "<strong>$1</strong>"
+                // );
                 return (
                   <>
                     <span className="text-center">{item.id}</span>
                     <span className="text-center">{uploadedAt}</span>
                     <span className="text-center">{item.username}</span>
 
-                    <div
-                      className="relative text-center"
-                      onMouseEnter={() => {
-                        setHoverEffect(i);
-                        setHoverType("question");
-                      }}
-                      onMouseLeave={() => setHoverEffect(false)}>
-                      <span className="z-[2]">
-                        {item.question.length > 40
-                          ? item?.question.slice(0, 40) + "..."
-                          : item?.question}
+                    <Tooltip label={item.question}>
+                      <span className="inline-block 2xl:w-50 md:w-30 truncate text-start">
+                        {item.question}
+                      </span>
+                    </Tooltip>
+                    <div className="flex justify-center">
+                      <span className="block 2xl:w-60 md:w-30 text-center truncate">
+                        {item.answer}
                       </span>
                     </div>
-                    <div
+                    {/* <div
                       className="relative text-center"
                       onMouseEnter={() => {
                         setHoverEffect(i);
@@ -200,7 +198,7 @@ const ChatLogPage = () => {
                               ? answerRegex.slice(0, 50) + "..."
                               : answerRegex,
                         }}></span>
-                    </div>
+                    </div> */}
                   </>
                 );
               }}

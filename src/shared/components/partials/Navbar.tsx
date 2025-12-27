@@ -146,16 +146,16 @@ const Navbar = () => {
         ) ? null : location.pathname.startsWith("/admin") ? (
         <>
           <div
-            className={`bg-[#E3F9E8] 2xl:h-30 md:h-20 flex justify-between items-center px-10 `}>
+            className={`bg-[#F2F2F2] 2xl:h-30 md:h-20 flex justify-between items-center px-10 `}>
             <Button variant="link" onclick={setIsOpen}>
               <PanelLeftClose size={27} />
             </Button>
 
-            <div className="flex items-center bg-white px-4 py-3 rounded-xl">
+            <div className="flex items-center bg-white 2xl:px-4 2xl:py-3 md:px-2 md:py-2 rounded-xl">
               <Button variant="link" classname="flex items-center gap-2">
-                <CircleUser size={27} />
+                <CircleUser className="2xl:size-[27px]" />
                 <div className="flex flex-col text-start text-[#2F2F2F] w-24">
-                  <p className="text-base font-semibold truncate">{me?.name}</p>
+                  <p className="2xl:text-base md:text-sm font-semibold truncate">{me?.name}</p>
                   <p className="text-xs truncate">{me?.role}</p>
                 </div>
               </Button>
@@ -163,7 +163,7 @@ const Navbar = () => {
           </div>
         </>
       ) : location.pathname.startsWith("/superadmin") ? (
-        <div className="px-10 h-30 flex items-center border-b-1 border-gray-300">
+        <div className="px-10 h-20 flex items-center border-b-1 border-gray-300">
           <Button variant="link" onclick={setIsOpen}>
             <PanelLeftClose size={27} />
           </Button>

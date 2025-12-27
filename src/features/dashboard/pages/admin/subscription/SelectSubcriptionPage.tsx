@@ -124,11 +124,7 @@ const SelectSubcriptionPage = () => {
                   </p>
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />
-                    <span> Hanya bisa digunakan {item.max_users}</span>
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <Check color="#13D376" size={15} />
-                    <span>{item.api_access}</span>
+                    <span> Maksimal {item.max_users}</span>
                   </p>
                   <p className="flex items-center gap-1">
                     <Check color="#13D376" size={15} />

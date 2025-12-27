@@ -149,7 +149,7 @@ const CompanyLoginPage = () => {
                 Masuk
               </Button>
             )}
-            <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
+            <p className="text-center text-black/65 mt-3 2xl:text-sm text-xs">
               Ingin Mendaftarkan Perusahaan Anda? Daftar Sebagai Admin
               Perusahaan
               <span

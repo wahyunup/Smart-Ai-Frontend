@@ -140,12 +140,12 @@ const manageTransaction = () => {
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold">Manajemen Riwayat Transaksi</h1>
+        <h1 className="2xl:text-2xl md:text-xl font-semibold">Manajemen Riwayat Transaksi</h1>
         <div className="flex gap-5 items-center border-b">
           {subNavigate.map((nav) => (
             <button
               onClick={() => setIsActive(nav.name)}
-              className={`p-3 cursor-pointer  ${
+              className={`p-3 cursor-pointer 2xl:text-base md:text-sm  ${
                 isActive === nav.name
                   ? "border-[#126F3D] border-b-3"
                   : "text-[#B2B2B2]"
@@ -157,7 +157,7 @@ const manageTransaction = () => {
 
         {isActive === "Riwayat Transaksi" ? (
           <div className=" mt-5 bg-white border border-gray-100 rounded-2xl p-6 shadow-2xl/8">
-            <h1 className="text-lg font-semibold">
+            <h1 className="2xl:text-xl font-semibold">
               Riwayat Pembayaran Pro & Top Up (Otomatis iPaymu)
             </h1>
             <div className="rounded-2xl overflow-hidden mt-4 border border-[#B2B2B2]">
@@ -188,6 +188,7 @@ const manageTransaction = () => {
                       <span>{item.type}</span>
                       <span>{convertAmount}</span>
                       <span>{convertDate}</span>
+                      <div>
                       <span
                         className={`px-4 py-2 rounded-full text-white ${
                           item.status === "paid"
@@ -200,6 +201,7 @@ const manageTransaction = () => {
                         }`}>
                         {item.status}
                       </span>
+                      </div>
                     </>
                   );
                 }}

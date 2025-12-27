@@ -2,7 +2,6 @@ import {
   BellRing,
   Building2,
   ChevronDown,
-  ChevronRight,
   CircleDollarSign,
   CircleUser,
   ClipboardClock,
@@ -17,7 +16,6 @@ import {
   SquarePen,
   Trash2,
   UserCog,
-  UserPen,
   Users,
   X,
 } from "lucide-react";
@@ -84,8 +82,6 @@ const Sidebar = () => {
     username: "",
     profile_picture_url: "",
   });
-
-  const isLocalhost = window.location.hostname === "localhost";
 
   const handleInfinitScroll = () => {
     const el = contentRef.current;
@@ -186,37 +182,31 @@ const Sidebar = () => {
 
   const navListSuperAdmin = [
     {
-      icon: <House size={27} />,
+      icon: <House className="2xl:size-[27px]" />,
       lable: "Dashboard",
       link: "/superadmin/dashboard",
       category: "Manajemen Klien",
     },
     {
-      icon: <Building2 size={27} />,
+      icon: <Building2 className="2xl:size-[27px]" />,
       lable: "Kelola Perusahaan",
       link: "/superadmin/manage-company",
       category: "Manajemen Klien",
     },
     {
-      icon: <UserPen size={27} />,
-      lable: "Kelola Admin Perusahaan",
-      link: "/superadmin/manage-admin-company",
-      category: "Manajemen Klien",
-    },
-    {
-      icon: <CircleDollarSign size={27} />,
+      icon: <CircleDollarSign className="2xl:size-[27px]" />,
       lable: "Manajemen Transaksi",
       link: "/superadmin/manage-transaction",
       category: "Manajemen Klien",
     },
     {
-      icon: <ClipboardClock size={27} />,
+      icon: <ClipboardClock className="2xl:size-[27px]" />,
       lable: "Audit Log & Aktivitas",
       link: "/superadmin/log-audit",
       category: "Sistem & Keamanan",
     },
     {
-      icon: <UserCog size={27} />,
+      icon: <UserCog className="2xl:size-[27px]" />,
       lable: "Pengaturan Sistem Dasar",
       link: "/superadmin/settings",
       category: "Sistem & Keamanan",
@@ -244,6 +234,7 @@ const Sidebar = () => {
         if (result.isConfirmed) {
           removeCookie("accesstoken");
           navigate("/");
+          setIsOpen();
         }
       });
     }
@@ -367,27 +358,17 @@ const Sidebar = () => {
   if (isLogin === null || undefined) {
     window.location.reload();
   }
-  console.log(conversationList, "conv list");
-
   return (
     <>
       {isLogin === "admin" ? (
         <div
           className={`bg-[#F2F2F2] ${
-            isOpen ? "2xl:w-[17%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
+            isOpen ? "2xl:w-[14%] md:w-[17%]" : "2xl:w-[7%] md:w-[8%]"
           }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
-          <div className="flex items-center flex-col gap-8">
+          <div className="flex items-center flex-col 2x 2xl:gap-8 md:gap-5">
             <img className="2xl:size-15 md:size-10" src={logo} alt="" />
-            <img
-              className="2xl:w-23 h-fit"
-              src={`${
-                isLocalhost
-                  ? `https://145.79.15.190${companyImage}`
-                  : companyImage
-              }`}
-              alt=""
-            />
-            <div className="flex flex-col items-start gap-5 font-inter">
+            <img className="2xl:w-23 md:w-15 h-fit" src={companyImage} alt="" />
+            <div className="flex flex-col items-start 2xl:gap-5 md:gap-3 font-inter">
               {navlist.map((item, i) => (
                 <Button
                   key={i}
@@ -412,7 +393,7 @@ const Sidebar = () => {
                 variant="link"
                 classname="flex items-center gap-3 text-red-500 py-3 px-5"
                 onclick={logout}>
-                <LogOut size={27} />
+                <LogOut className="2xl:size-[27px]" />
                 <span
                   className={` font-medium
           ${isOpen ? "" : "hidden"}
@@ -426,21 +407,28 @@ const Sidebar = () => {
       ) : isLogin == "super_admin" ? (
         <div
           className={`bg-[#F2F2F2] ${
-            isOpen ? "2xl:w-[20%] md:w-[25%]" : "2xl:w-[7%] md:w-[10%]"
-          }  h-screen items-center flex flex-col duration-300 py-3 sticky top-0 transition-all`}>
-          <div className="flex items-center flex-col gap-8">
+            isOpen ? "2xl:w-[17%] md:w-[20%] " : "2xl:w-[7%] md:w-[8%]"
+          }  h-screen items-center flex  flex-col duration-300 py-3 sticky top-0 transition-all`}>
+          <div className="flex items-center flex-col 2xl:gap-8 md:gap-4">
             <div
               className={`flex ${
                 isOpen ? "justify-start" : " justify-center"
               }  w-full`}>
-              <img className="size-15" src={logo} alt="" />
+              <img className="2x:size-15 md:size-10" src={logo} alt="" />
             </div>
             <div className="flex flex-col gap-2 items-center">
-              <img className="size-25" src={mascot} alt="" />
-              {isOpen ? <span>Super Admin</span> : ""}
+              <img className="2xl:size-25" src={mascot} alt="" />
+              {isOpen ? (
+                <span className="2xl:text-base md:text-sm">Super Admin</span>
+              ) : (
+                ""
+              )}
             </div>
 
-            <div className="flex flex-col items-start gap-5 font-inter">
+            <div
+              className={`flex flex-col ${
+                isOpen ? "items-start" : "items-center"
+              } gap-5 font-inter`}>
               {Object.entries(
                 navListSuperAdmin.reduce((acc, item) => {
                   if (!acc[item.category]) acc[item.category] = [];
@@ -450,7 +438,9 @@ const Sidebar = () => {
               ).map(([category, items]) => (
                 <div key={category} className="flex flex-col gap-2">
                   {isOpen ? (
-                    <p className="text-gray-500 text-sm mb-2">{category}</p>
+                    <p className="text-gray-500 2xl:text-sm md:text-xs mb-2">
+                      {category}
+                    </p>
                   ) : (
                     <span className="border-b border-gray-200"></span>
                   )}
@@ -458,7 +448,7 @@ const Sidebar = () => {
                     <Button
                       key={i}
                       variant="link"
-                      classname={`flex w-full items-center gap-3 transition-all duration-300 py-3 px-5 justify-start hover:bg-[#1D8A45] hover:text-white rounded-full underline- ${
+                      classname={`flex w-full items-center gap-3 transition-all duration-300 2xl:py-3 2xl:px-5 md:py-2 md:px-3 justify-start hover:bg-[#1D8A45] hover:text-white rounded-full underline- ${
                         location.pathname.startsWith(item.link)
                           ? " bg-[#1D8A45] text-white rounded-full"
                           : ""
@@ -466,7 +456,7 @@ const Sidebar = () => {
                       onclick={() => navigate(item.link)}>
                       {item.icon}
                       <span
-                        className={` font-medium
+                        className={` font-medium 2xl:text-base md:text-xs
                         ${isOpen ? "" : "hidden"}
                         `}>
                         {item.lable}
@@ -480,9 +470,9 @@ const Sidebar = () => {
                 variant="link"
                 classname="flex items-center gap-3 text-red-500 py-3 px-5"
                 onclick={logout}>
-                <LogOut size={27} />
+                <LogOut className="2xl:md-[27px]" />
                 <span
-                  className={` font-medium
+                  className={` font-medium 2xl:text-base md:text-xs
           ${isOpen ? "" : "hidden"}
             `}>
                   Keluar
@@ -700,12 +690,6 @@ const Sidebar = () => {
                   }
                   className="md:p-1 bg-white flex flex-col items-center gap-1 2xl:rounded-2xl md:rounded-xl text-sm outline outline-gray-200  ">
                   <button
-                    className={`2xl:p-4 md:p-3 ${
-                      isOpen ? "" : "hidden"
-                    }  hover:bg-gray-100 w-full 2xl:rounded-xl md:rounded-lg cursor-pointer flex justify-center gap-3 items-center md:text-xs 2xl:text-sm`}>
-                    Pusat bantuan & FAQ <ChevronRight size={15} />
-                  </button>
-                  <button
                     onClick={logout}
                     className={`flex text-[#09976F] items-center justify-center ${
                       isOpen ? "gap-2" : "gap-0"
@@ -720,7 +704,9 @@ const Sidebar = () => {
             <div className="flex w-full flex-col p-3 gap-3">
               <div
                 onClick={() => setVisibleActionProfile(!visibleActionProfile)}
-                className="flex gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full">
+                className={`flex ${
+                  isOpen ? "justify-start" : "justify-center"
+                } gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full`}>
                 {!loginUser.profile_picture_url ? (
                   <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
                     <p className="text-[#1D8A45] mb-1 uppercase">

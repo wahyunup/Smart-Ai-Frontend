@@ -16,6 +16,7 @@ import BasicArea from "../../../../../shared/components/common/Chart/LineChart";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../../../../shared/utils/FormatDate";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -55,8 +56,6 @@ const DashboardPage = () => {
             res.dashboard_summary.user_wow_change_pct
           ),
         };
-
-        console.log(res, "<------- response");
 
         setBreakDown({
           totalClientActive: {
@@ -104,8 +103,10 @@ const DashboardPage = () => {
     <MainLayout>
       <div className="p-10">
         <div>
-          <h1 className="text-2xl">Selamat Datang Kembali, {decoded.name}!</h1>
-          <p className="text-[#666666] text-base">
+          <h1 className="2xl:text-2xl md:text-xl">
+            Selamat Datang Kembali, {decoded.name}!
+          </h1>
+          <p className="text-[#666666] 2xl:text-base md:text-sm">
             Ringkasan kinerja sistem SMART AI secara keseluruhan (Global
             Monitoring).
           </p>
@@ -262,7 +263,9 @@ const DashboardPage = () => {
         </div>
         {/* table */}
         <div className="mt-10 bg-white p-10 shadow-2xl rounded-3xl">
-          <h1 className="text-2xl">Aktivitas Penting Sistem Terbaru</h1>
+          <h1 className="2xl:text-2xl md:text-xl">
+            Aktivitas Penting Sistem Terbaru
+          </h1>
           <div className=" overflow-hidden rounded-2xl mt-5">
             <TableHeaderList classname="grid-cols-5 bg-[#E3F9E8]">
               <span>Waktu (Timestamp)</span>
@@ -277,9 +280,10 @@ const DashboardPage = () => {
               canAction={false}
               renderItem={(item) => {
                 const typeText = item.activity_type_category.split("/")[0];
+                const convertDate = formatDate(item.timestamp, true)
                 return (
                   <>
-                    <span className="text-center">{item.timestamp}</span>
+                    <span className="text-center">{convertDate}</span>
                     {item.user_id == null ? (
                       <span className="text-center">user tidak diketahui</span>
                     ) : (
@@ -295,20 +299,22 @@ const DashboardPage = () => {
                     ) : (
                       <span className="text-center">{item.company_name}</span>
                     )}
-                    <span
-                      className={`uppercase py-2 px-5 rounded-full text-white ${
-                        typeText === "Login"
-                          ? "bg-[#13D376]"
-                          : typeText === "Data"
-                          ? "bg-[#DBBE03]"
-                          : typeText === "Error"
-                          ? "bg-[#DB3726]"
-                          : typeText === "Proses "
-                          ? "bg-[#1069C9]"
-                          : ""
-                      }`}>
-                      {typeText}
-                    </span>
+                    <div>
+                      <span
+                        className={`uppercase py-2 px-5 rounded-full text-white ${
+                          typeText === "Login"
+                            ? "bg-[#13D376]"
+                            : typeText === "Data"
+                            ? "bg-[#DBBE03]"
+                            : typeText === "Error"
+                            ? "bg-[#DB3726]"
+                            : typeText === "Proses "
+                            ? "bg-[#1069C9]"
+                            : ""
+                        }`}>
+                        {typeText}
+                      </span>
+                    </div>
                   </>
                 );
               }}
