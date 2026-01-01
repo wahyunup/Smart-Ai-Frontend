@@ -9,8 +9,8 @@ const Dropdown = ({
     <>
       <div className="space-y-2">
         <details className="group [&amp;_summary::-webkit-details-marker]:hidden">
-          <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white md:px-4 md:py-3 px-2 py-3 font-medium text-gray-900 hover:bg-gray-50">
-            <span className="text-sm">{headingDropdown}</span>
+          <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white md:px-4 md:py-5 px-2 py-3 font-medium text-gray-900 hover:bg-gray-50">
+            <span className="text-sm text-[#374047] font-manrope font-semibold">{headingDropdown}</span>
 
             <svg
               className="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
@@ -27,7 +27,7 @@ const Dropdown = ({
           </summary>
 
           <div className="p-3">
-            <p className="text-gray-700 text-start text-sm">{fieldDropdown}</p>
+            <p className="text-[#6B6666] font-inter text-start text-sm">{fieldDropdown}</p>
           </div>
         </details>
       </div>

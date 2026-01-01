@@ -66,10 +66,10 @@ const Navbar = () => {
             }`}>
             <img className="2xl:w-35 md:w-26 mt-3" src={LogoSmartAi} alt="" />
             <div className="flex gap-10 2xl:text-xl md:text-md font-manrope font-semibold">
-              <a href="#home">Home</a>
-              <a href="#feature">Features</a>
-              <a href="#howitworks">How it works</a>
-              <a href="#whoweare">Who we are</a>
+              <a href="#home">Beranda</a>
+              <a href="#feature">Fitur</a>
+              <a href="#howitworks">Cara Kerja</a>
+              <a href="#whoweare">Tentang Kami</a>
             </div>
             <Button
               classname="2xl:px-10 md:px-8 py-3 rounded-2xl"
@@ -103,10 +103,10 @@ const Navbar = () => {
                     ? "outline-[#3BC152] outline-1 shadow-lg shadow-[#3BC152]/50 rounded-3xl"
                     : ""
                 }`}>
-                <a href="#home">Home</a>
-                <a href="#feature">Features</a>
-                <a href="#howitworks">How it works</a>
-                <a href="#whoweare">Who we are</a>
+                <a href="#home">Beranda</a>
+                <a href="#feature">Fitur</a>
+                <a href="#howitworks">Cara Kerja</a>
+                <a href="#whoweare">Tentang Kami</a>
                 <Button
                   onclick={() => navigate("/auth/company-employe/login")}
                   variant="secondary"
@@ -119,7 +119,10 @@ const Navbar = () => {
         </>
       ) : location.pathname.startsWith("/chat") ||
         location.pathname.startsWith("/chat/faq") ? (
-        <div className={`${location.pathname === "/chat" ? "" : "md:grid md:grid-cols-3"} flex bg-white p-5 items-center sticky top-0 z-10`}>
+        <div
+          className={`${
+            location.pathname === "/chat" ? "" : "md:grid md:grid-cols-3"
+          } flex bg-white p-5 items-center sticky top-0 z-10`}>
           <button
             onClick={() => setIsOpen()}
             className="bg-transparent md:hidden">
@@ -130,7 +133,7 @@ const Navbar = () => {
           ) : (
             <div className="md:flex gap-3 items-center hidden">
               <img src={smartAiMascot} alt="" />
-              <h1 className="text-xl font-semibold">Corporate Assistant Bot</h1>
+              <h1 className="text-xl font-semibold font-manrope">ORBIT</h1>
             </div>
           )}
           <div className="flex flex-col sticky top-10 justify-center items-center w-full">
@@ -155,7 +158,9 @@ const Navbar = () => {
               <Button variant="link" classname="flex items-center gap-2">
                 <CircleUser className="2xl:size-[27px]" />
                 <div className="flex flex-col text-start text-[#2F2F2F] w-24">
-                  <p className="2xl:text-base md:text-sm font-semibold truncate">{me?.name}</p>
+                  <p className="2xl:text-base md:text-sm font-semibold truncate">
+                    {me?.name}
+                  </p>
                   <p className="text-xs truncate">{me?.role}</p>
                 </div>
               </Button>

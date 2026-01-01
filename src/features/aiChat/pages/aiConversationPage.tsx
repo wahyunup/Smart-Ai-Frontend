@@ -19,6 +19,7 @@ const aiConversationPage = () => {
     []
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [value, setValue] = useState("");
   const { monthly_quota } = usePlanStore();
@@ -32,6 +33,20 @@ const aiConversationPage = () => {
     scrollToBottom();
   }, []);
 
+  const normalizeMarkdown = (text: string) => {
+    return (
+      text
+        // 1. Paksa numbering jadi list valid
+        .replace(/([.:]|^)\s*(\d+)\.(?=\S)/g, "\n\n$2. ")
+
+        // 2. Pecah deskripsi pakai dash jadi sub-bullet
+        .replace(/\s+-\s+/g, "\n   - ")
+
+        // 3. Trim akhir
+        .trim()
+    );
+  };
+
   useEffect(() => {
     const fetchConversation = async () => {
       setIsLoading(true);
@@ -40,7 +55,7 @@ const aiConversationPage = () => {
           const res = await fetchConversationApi(conversationId);
           const regex = res.map((rx: { answer: string }) => ({
             ...rx,
-            answer: rx.answer.replace(/(\d+)\./g, "\n$1. "),
+            answer: normalizeMarkdown(rx.answer),
           }));
 
           setChats(regex);
@@ -86,7 +101,7 @@ const aiConversationPage = () => {
     if (!value.trim()) return;
 
     setIsLoadingSubmit(true);
-
+    setIsStreaming(true);
     try {
       if (conversationId) {
         // Tambahkan pertanyaan pengguna dulu
@@ -112,9 +127,9 @@ const aiConversationPage = () => {
                     line.startsWith("data:") && line.trim() !== "data: {}"
                 ) // ambil baris data
                 .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
-                .join("\n")
-                .replace(/(\d+)\./g, "\n$1. ");
-              fullAnswer += chunk;
+                .join("\n");
+              // .replace(/(\d+)\./g, "\n$1. ");
+              // fullAnswer += chunk;
 
               // Update chat terakhir secara live
               setChats((prev) => {
@@ -134,6 +149,7 @@ const aiConversationPage = () => {
       console.error(error);
     } finally {
       setIsLoadingSubmit(false);
+      setIsStreaming(false);
     }
   };
 
@@ -142,7 +158,7 @@ const aiConversationPage = () => {
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col h-full md:px-20 px-5">
-        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm md:mb-0 mb-22">  
+        <div className="flex flex-col gap-3 overflow-auto h-full  2xl:text-base md:text-sm md:mb-0 mb-22">
           {isLoading ? (
             <>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -166,29 +182,39 @@ const aiConversationPage = () => {
                 </div>
                 <div className="flex justify-start">
                   <div className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none wrap-anywhere">
-                    <ReactMarkDown
-                      components={{
-                        h1: ({ children }) => (
-                          <h1 className="text-2xl font-bold">{children}</h1>
-                        ),
-                        p: ({ children }) => (
-                          <p className="my-2 leading-relaxed">{children}</p>
-                        ),
-                        ol: ({ children }) => (
-                          <ol className="list-decimal ml-6 mb-3">{children}</ol>
-                        ),
-                        li: ({ children }) => (
-                          <li className="mb-1">{children}</li>
-                        ),
-                        code: ({ children }) => (
-                          <code className="px-1 py-0.5 bg-gray-200 rounded text-sm">
-                            {children}
-                          </code>
-                        ),
-                      }}
-                      remarkPlugins={[remarkGfm]}>
-                      {chat.answer}
-                    </ReactMarkDown>
+                    {i === chats.length - 1 && isStreaming && !chat.answer ? (
+                      <div>
+                        <p className="text-sm animate-pulse">
+                          Orbit sedang berfikir 🚀
+                        </p>
+                      </div>
+                    ) : (
+                      <ReactMarkDown
+                        components={{
+                          h1: ({ children }) => (
+                            <h1 className="text-2xl font-bold">{children}</h1>
+                          ),
+                          p: ({ children }) => (
+                            <p className="my-2 leading-relaxed">{children}</p>
+                          ),
+                          ol: ({ children }) => (
+                            <ol className="list-decimal ml-6 mb-3">
+                              {children}
+                            </ol>
+                          ),
+                          li: ({ children }) => (
+                            <li className="mb-1">{children}</li>
+                          ),
+                          code: ({ children }) => (
+                            <code className="px-1 py-0.5 bg-gray-200 rounded text-sm">
+                              {children}
+                            </code>
+                          ),
+                        }}
+                        remarkPlugins={[remarkGfm]}>
+                        {chat.answer}
+                      </ReactMarkDown>
+                    )}
                   </div>
                 </div>
                 <div ref={chatEndRef} />
@@ -196,7 +222,8 @@ const aiConversationPage = () => {
             ))
           )}
         </div>
-        <div className="bg-white border-t border-gray-100 py-5 px-5 md:sticky fixed bottom-0 right-0
+        <div
+          className="bg-white border-t border-gray-100 py-5 px-5 md:sticky fixed bottom-0 right-0
   w-full md:w-full 2xl:py-10 md:py-5">
           {monthly_quota > 0 ? (
             <Input
@@ -220,9 +247,17 @@ const aiConversationPage = () => {
               placeholder="Tanyakan apa saja terkait perusahaan"
             />
           ) : (
-           <div className="rounded-lg bg-[#F2F2F2] outline text-sm outline-[#E5E5E5] text-[#000000AB] 2xl:p-3 md:p-2 text-center">
-            <p className="text-[#B2B2B2]">Kuota pertanyaan habis. <a href="https://api.whatsapp.com/send/?phone=6287790417767&text=Halo+saya+ingin+tambah+kuota&type=phone_number&app_absent=0" target="_blank" className="text-[#126F3D]">Hubungi Admin Perusahaan.</a></p>
-           </div>
+            <div className="rounded-lg bg-[#F2F2F2] outline text-sm outline-[#E5E5E5] text-[#000000AB] 2xl:p-3 md:p-2 text-center">
+              <p className="text-[#B2B2B2]">
+                Kuota pertanyaan habis.{" "}
+                <a
+                  href="https://api.whatsapp.com/send/?phone=6287790417767&text=Halo+saya+ingin+tambah+kuota&type=phone_number&app_absent=0"
+                  target="_blank"
+                  className="text-[#126F3D]">
+                  Hubungi Admin Perusahaan.
+                </a>
+              </p>
+            </div>
           )}
         </div>
       </form>

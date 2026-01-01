@@ -146,3 +146,8 @@ export interface updateTransactionApiProps {
   plans: plan[];
   top_up_packages: topUpPackage[];
 }
+
+export interface SwitchProps {
+  checked : boolean,
+  onChange : (e) => void
+}

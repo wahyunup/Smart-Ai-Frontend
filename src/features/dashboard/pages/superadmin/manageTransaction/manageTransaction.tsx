@@ -175,6 +175,7 @@ const manageTransaction = () => {
                 prevPage={prevPage}
                 page={page}
                 totalPage={totalPage}
+                
                 canAction={false}
                 data={data}
                 classname="grid-cols-6 text-center"

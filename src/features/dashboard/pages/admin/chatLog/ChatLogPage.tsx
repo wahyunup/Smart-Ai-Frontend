@@ -34,10 +34,12 @@ const ChatLogPage = () => {
       setIsLoadingDoc(true);
       try {
         const res = await chatLog(page, 4, value);
+        console.log(res, "<-------admin log");
+
         setData(res.chatlogs);
         setTotalPage(res.total_pages);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        console.log(error.response.data.message);
       } finally {
         setIsLoadingDoc(false);
       }
@@ -61,8 +63,14 @@ const ChatLogPage = () => {
 
   const exportCsv = async () => {
     setIsLoading(true);
+    const date = new Date();
+    const getDays = String(date.getDate()).padStart(2, "0");
+    const getMonth = String(date.getMonth()).padStart(2, "0")
+    const getYear = date.getFullYear();
+
+    const dateNow = `${getYear}-${getMonth}-${getDays}`;
     try {
-      const res = await downloadCsv();
+      const res = await downloadCsv(dateNow);
       const blob = new Blob([res], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -70,8 +78,8 @@ const ChatLogPage = () => {
       a.download = "chat_log.csv";
       a.click();
       window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -94,7 +102,9 @@ const ChatLogPage = () => {
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
-        <h1 className="2xl:text-3xl md:text-2xl font-semibold">Dashboard Admin Perusahaan</h1>
+        <h1 className="2xl:text-3xl md:text-2xl font-semibold">
+          Dashboard Admin Perusahaan
+        </h1>
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">

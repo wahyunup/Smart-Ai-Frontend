@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import LogoFooter from "../../../assets/icons/logo-footer.png";
+import { Icon } from "@iconify/react";
 
 const Footer = () => {
   const location = useLocation();
@@ -82,7 +83,7 @@ const Footer = () => {
       </div>
     </>
   ) : (
-    <div className="pt-7 flex flex-col items-center 2xl:gap-4 bg-white text-manrope">
+    <div className="pt-7 pb-3 flex flex-col items-center 2xl:gap-4 md:gap-3 bg-white text-manrope">
       <img
         src={LogoFooter}
         className="2xl:w-[103.83977508544922px] md:w-[80px] w-[70px]"
@@ -95,7 +96,12 @@ const Footer = () => {
         <p className="text-[#2F2F2F] 2xl:mr-50 md:mr-34 underline  2xl:text-base text-xs">
           Term & Condition . Privacy Polici . Hak Cipta
         </p>
-        <img src={LogoFooter} className="w-20" alt="" />
+        <div className="flex gap-4">
+          <Icon icon="entypo-social:linkedin"color="#1D8A45" width="20" height="20" />
+          <Icon icon="entypo-social:linkedin"color="#1D8A45" width="20" height="20" />
+          <Icon icon="entypo-social:linkedin"color="#1D8A45" width="20" height="20" />
+        </div>
+        {/* <img src={LogoFooter} className="w-20" alt="" /> */}
       </div>
     </div>
   );

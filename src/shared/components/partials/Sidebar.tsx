@@ -682,7 +682,7 @@ const Sidebar = () => {
               )}
             </div>
 
-            <div className="p-3 absolute md:bottom-18 w-full">
+            <div className="p-3 absolute md:bottom-15 2xl:bottom-19 w-full">
               {visibleActionProfile && (
                 <div
                   onMouseLeave={() =>
@@ -701,12 +701,12 @@ const Sidebar = () => {
               )}
             </div>
 
-            <div className="flex w-full flex-col p-3 gap-3">
+            <div className="flex w-full flex-col 2xl:px-3 md:py-3 md:px-2 gap-3">
               <div
                 onClick={() => setVisibleActionProfile(!visibleActionProfile)}
                 className={`flex ${
                   isOpen ? "justify-start" : "justify-center"
-                } gap-3 items-center p-3  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full`}>
+                } gap-3 items-center 2xl:p-3 md:py-2  rounded-xl hover:bg-[#f7f7f7] hover:outline hover:outline-gray-200 cursor-pointer w-full`}>
                 {!loginUser.profile_picture_url ? (
                   <div className="2xl:w-12 2xl:h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-[#3BC15240]">
                     <p className="text-[#1D8A45] mb-1 uppercase">
@@ -716,7 +716,7 @@ const Sidebar = () => {
                 ) : (
                   <div className="w-12 h-12 md:w-9 md:h-9 overflow-hidden flex justify-center rounded-full items-center bg-gray-300">
                     <img
-                      className="w-12"
+                      className="w-full h-full"
                       src={loginUser.profile_picture_url}
                       alt="profile-picture"
                     />

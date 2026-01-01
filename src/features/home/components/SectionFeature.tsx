@@ -23,7 +23,7 @@ const SectionFeature = () => {
         <div data-aos="fade-up" data-aos-duration="1400">
           <Card
             iconLayout="left"
-            classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+            classname=" bg-[#FFFFFF] shadow-2xl/5 outline outline-gray-100 hover:scale-105 scale-100 transition-all duration-300 px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
             heading="Upload Dokumen"
             subheading="Unggah dokumen penting (PDF, Word, Excel). Siap dianalisis dan menjadi sumber jawaban chatbot."
             icon={
@@ -38,7 +38,7 @@ const SectionFeature = () => {
         <div data-aos="fade-up" data-aos-duration="1600">
           <Card
             iconLayout="left"
-            classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+            classname=" bg-[#FFFFFF] shadow-2xl/5 outline outline-gray-100 hover:scale-105 scale-100 transition-all duration-300 px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
             heading="Ekstraksi Teks Cerdas"
             subheading="Sistem memindai dan membaca teks dari dokumen, gambar, atau tabel, menjadikannya dapat dicari."
             icon={
@@ -53,7 +53,7 @@ const SectionFeature = () => {
         <div data-aos="fade-up" data-aos-duration="1800">
           <Card
             iconLayout="left"
-            classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+            classname=" bg-[#FFFFFF] shadow-2xl/5 outline outline-gray-100 hover:scale-105 scale-100 transition-all duration-300 px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
             heading="Chatbot"
             subheading="Ajukan pertanyaan. AI memberikan jawaban akurat dan referensi langsung dari data perusahaan."
             icon={
@@ -68,7 +68,7 @@ const SectionFeature = () => {
         <div data-aos="fade-up" data-aos-duration="2000">
           <Card
             iconLayout="left"
-            classname=" bg-[#8BEC8940] px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
+            classname=" bg-[#FFFFFF] shadow-2xl/5 outline outline-gray-100 hover:scale-105 scale-100 transition-all duration-300 px-4 py-5 2xl:px-8 2xl:py-10 md:px-6 md:py-5"
             heading="Dashboard & Monitoring"
             subheading="Lacak penggunaan chatbot, kinerja, dan akurasi data dalam satu dashboard terpusat."
             icon={

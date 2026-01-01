@@ -114,6 +114,7 @@ const ManageAdminCompanyPage = () => {
               onClickPreview={(id) =>
                 navigate(`/superadmin/manage-admin-company/details/${id}`)
               }
+              
               nextPage={handleNextPage}
               prevPage={handlePrevPage}
               classname="grid-cols-6"

@@ -9,7 +9,7 @@ const Card = ({
 }: CardProps) => {
   return (
     <div
-      className={`${classname} flex flex-col rounded-2xl gap-3`}>
+      className={`${classname} flex flex-col rounded-2xl gap-3 `}>
       {iconLayout === "left" ? (
         <div className="flex justify-start w-full">
           <div className="bg-[#1D8A45B2] rounded-full p-3 flex justify-center items-center">

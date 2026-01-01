@@ -47,4 +47,13 @@ const countDownDate = (rawDate: string) => {
   return daysLeft;
 };
 
-export { formatDate, countDownDate };
+const formatDateBasic = (rawDate: string) => {
+  const date = new Date(rawDate);
+  const getDays = String(date.getDate()).padStart(2, "0");
+  const getMonth = String(date.getMonth()+1).padStart(2, "0");
+  const getYears = date.getFullYear();
+
+  return `${getMonth}-${getDays}-${getYears}`;
+};
+
+export { formatDate, countDownDate, formatDateBasic };

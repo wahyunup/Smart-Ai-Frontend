@@ -41,22 +41,25 @@ const DashboardPage = () => {
       chat_mom_change_pct_status: "",
     },
   });
-
+  const [isLoadingFetch, setIsLoadingFetch] = useState(false);
   const [dataTable, setDataTable] = useState([]);
   const [dailyChat, setDailyChat] = useState();
+  const [companyRegistered, setCompanyRegistered] = useState();
   const { decoded } = useAuthStore();
 
   useEffect(() => {
     const fetchSummary = async () => {
+      setIsLoadingFetch(true);
       try {
         const res = await summaryApi();
+        console.log(res);
+
         const roundPercent = {
           chatPercentase: Math.floor(res.dashboard_summary.chat_mom_change_pct),
           totalUserPercentase: Math.floor(
             res.dashboard_summary.user_wow_change_pct
           ),
         };
-
         setBreakDown({
           totalClientActive: {
             active_company_admins: res.dashboard_summary.active_company_admins,
@@ -85,8 +88,11 @@ const DashboardPage = () => {
         });
         setDailyChat(res.dashboard_summary.daily_chat_counts);
         setDataTable(res.dashboard_summary.top_user_logs);
+        setCompanyRegistered(res.dashboard_summary.daily_company_registrations_7d);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoadingFetch(false);
       }
     };
     fetchSummary();
@@ -94,11 +100,23 @@ const DashboardPage = () => {
 
   const chartDataChatDaily = Object.values(dailyChat || {});
   const chartDaysChatDaily = Object.keys(dailyChat || {});
-  const days = chartDaysChatDaily.map((t) => {
+
+  const chartDataCompanyRegist = Object.values(companyRegistered || {})
+  const chartDaysCompanyRegist = Object.keys(companyRegistered || {})
+
+  const daysChatDaily = chartDaysChatDaily.map((t) => {
     const date = new Date(t);
     const namaHari = date.toLocaleDateString("id-ID", { day: "numeric" });
     return namaHari;
   });
+
+  const daysCompanyRegist = chartDaysCompanyRegist.map((t) => {
+    const date = new Date(t);
+    const namaHari = date.toLocaleDateString("id-ID", { day: "numeric" });
+    return namaHari;
+  });
+
+
   return (
     <MainLayout>
       <div className="p-10">
@@ -252,13 +270,13 @@ const DashboardPage = () => {
             heading="Tren Pertanyaan Chatbot (Harian)"
             color="#4379EE"
             datas={chartDataChatDaily.map(Number)}
-            days={days.map(String)}
+            days={daysChatDaily.map(String)}
           />
           <BasicArea
-            heading="Tren Pertanyaan Chatbot (Harian)"
-            color="#4379EE"
-            datas={chartDataChatDaily.map(Number)}
-            days={days.map(String)}
+            heading="Statistik Pendaftaran Perusahaan (Mingguan)"
+            color="#2BA54B"
+            datas={chartDataCompanyRegist.map(Number)}
+            days={daysCompanyRegist.map(String)}
           />
         </div>
         {/* table */}
@@ -277,10 +295,11 @@ const DashboardPage = () => {
             <TableBody
               classname="grid-cols-5"
               data={dataTable}
+              isLoadingFetch={isLoadingFetch}
               canAction={false}
               renderItem={(item) => {
                 const typeText = item.activity_type_category.split("/")[0];
-                const convertDate = formatDate(item.timestamp, true)
+                const convertDate = formatDate(item.timestamp, true);
                 return (
                   <>
                     <span className="text-center">{convertDate}</span>

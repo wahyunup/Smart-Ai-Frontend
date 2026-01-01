@@ -12,9 +12,9 @@ const Button = ({
       <button
         onClick={onclick}
         className={clsx(
-          "cursor-pointer transition-all duration-200 2xl:text-base md:text-sm 2xl:rounded-lg md:rounded-lg",
+          "cursor-pointer transition-all duration-200 2xl:text-base md:text-sm 2xl:rounded-lg rounded-lg ",
           {
-            "bg-white  text-[#09976F] hover:shadow-md shadow-[#09976F]/30 outline-1 outline-[#09976F] hover:outline-[2px] active:outline-1 active:shadow-none ":
+            "bg-white text-[#09976F] hover:shadow-md shadow-[#09976F]/30 outline-1 outline-[#09976F] hover:outline-[2px] active:outline-1 active:shadow-none ":
               variant === "primary",
             "bg-[#1D8A45] text-white hover:bg-white hover:text-[#09976F] border hover:border-[#09976F]":
               variant === "secondary",

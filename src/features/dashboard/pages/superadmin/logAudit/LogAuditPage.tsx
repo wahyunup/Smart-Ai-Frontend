@@ -140,8 +140,8 @@ const LogAuditPage = () => {
       );
       setDataLogs(res.logs);
       setTotalPage(res.total_pages);
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      console.log(error.response.data.message);
     }
   };
 
@@ -175,8 +175,8 @@ const LogAuditPage = () => {
         a.click();
         window.URL.revokeObjectURL(url);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }

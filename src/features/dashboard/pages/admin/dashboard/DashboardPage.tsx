@@ -30,10 +30,12 @@ const AdminDashboard = () => {
   });
   const [chatActivity, setChatActivity] = useState();
   const [chatBotActivity, setChatBotActivity] = useState();
+  const [isLoadingFetch, setIsLoadingFetch] = useState(false);
   const [recentDocuments, setRecentDocuments] = useState([]);
   const { decoded } = useAuthStore();
 
   useEffect(() => {
+    setIsLoadingFetch(true);
     const fetchSummary = async () => {
       try {
         const res = await SummaryApi();
@@ -54,6 +56,8 @@ const AdminDashboard = () => {
         setChatActivity(res.dashboard_breakdown.chat_activity_30d);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoadingFetch(false);
       }
     };
     fetchSummary();
@@ -195,6 +199,7 @@ const AdminDashboard = () => {
               <span>Terakhir Diperbarui</span>
             </TableHeaderList>
             <TableBody
+              isLoadingFetch={isLoadingFetch}
               classname="grid-cols-3"
               data={recentDocuments}
               canAction={false}

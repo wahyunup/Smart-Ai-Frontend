@@ -2,18 +2,23 @@ import { SquarePen, X } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
 import Button from "../../../../../shared/components/ui/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import mascot from "../../../../../assets/icons/SmartAI-2.png";
 import Input from "../../../../../shared/components/ui/Input";
+import {
+  getSetting,
+  updateProfile,
+} from "../../../services/superadmin/Setting";
+import Swal from "sweetalert2";
 
 const SettingsPage = () => {
+  const [previewPassword, setPreviewPassword] = useState(false);
   const [edit, setEdit] = useState({
     Email: false,
     Name: false,
     Username: false,
     Password: false,
   });
-  const [previewPassword, setPreviewPassword] = useState(false);
   const [value, setValue] = useState({
     name: "",
     email: "",
@@ -21,12 +26,72 @@ const SettingsPage = () => {
     password: "",
   });
 
+  useEffect(() => {
+    const fetchSetting = async () => {
+      try {
+        const res = await getSetting();
+        setValue({
+          email: res.email,
+          name: res.name,
+          username: res.username,
+          password: "",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSetting();
+  }, []);
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setValue((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await updateProfile(
+        value.name,
+        value.username,
+        value.email,
+        value.password
+      );
+      console.log(res);
+      
+      if (res) {
+        Swal.fire({
+          text: "profil berhasil diperbarui",
+          icon: "success",
+          confirmButtonText: "oke",
+          confirmButtonColor: "#2BA54B",
+          buttonsStyling: true,
+          customClass: {
+            confirmButton: "primary-button",
+          },
+        });
+      }
+    } catch (error:any) {
+      Swal.fire({
+              text: error.response.data.message,
+              icon: "error",
+              confirmButtonText: "oke",
+              confirmButtonColor: "#DB3726",
+              buttonsStyling: true,
+              customClass: {
+                confirmButton: "danger-button",
+              },
+            });
+    } finally {
+      setEdit({
+        Email: false,
+        Name: false,
+        Password: false,
+        Username: false,
+      });
+    }
   };
 
   return (
@@ -64,7 +129,9 @@ const SettingsPage = () => {
                     icon={
                       edit.Name ? (
                         <div className="flex items-center gap-3">
-                          <Button classname="px-5 py-2">submit</Button>
+                          <Button classname="px-5 py-2" onclick={handleSubmit}>
+                            submit
+                          </Button>
                           <X
                             className="text-red-700"
                             onClick={() =>
@@ -112,7 +179,9 @@ const SettingsPage = () => {
                     icon={
                       edit.Username ? (
                         <div className="flex items-center gap-3">
-                          <Button classname="px-5 py-2">submit</Button>
+                          <Button classname="px-5 py-2" onclick={handleSubmit}>
+                            submit
+                          </Button>
                           <X
                             className="text-red-700"
                             onClick={() =>
@@ -160,7 +229,9 @@ const SettingsPage = () => {
                     icon={
                       edit.Email ? (
                         <div className="flex items-center gap-3">
-                          <Button classname="px-5 py-2">submit</Button>
+                          <Button classname="px-5 py-2" onclick={handleSubmit}>
+                            submit
+                          </Button>
                           <X
                             className="text-red-700"
                             onClick={() =>
@@ -215,7 +286,9 @@ const SettingsPage = () => {
                     icon={
                       edit.Password ? (
                         <div className="flex items-center gap-3">
-                          <Button classname="px-5 py-2">submit</Button>
+                          <Button classname="px-5 py-2" onclick={handleSubmit}>
+                            submit
+                          </Button>
                           <X
                             className="text-red-700"
                             onClick={() =>

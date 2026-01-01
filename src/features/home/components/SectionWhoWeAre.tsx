@@ -26,7 +26,7 @@ const SectionWhoWeAre = () => {
             heading="Data Perusahaan Dijamin Aman"
             subheading="Dokumen perusahaan Anda tidak akan pernah tercampur atau dilihat oleh perusahaan lain yang menggunakan SmartAI."
             icon={<Icon icon="circum:lock" color="#2BA54B" width="58" />}
-            classname="shadow-xl shadow-[#2BA54B40] outline-3 outline-[#8BEC89] text-center px-8 py-15 
+            classname="shadow-xl bg-[#FFFFFF] shadow-2xl/5 shadow-[#2BA54B0D] outline-2 outline-[#8BEC89] hover:scale-105 scale-100 transition-all duration-300 text-center px-8 py-15 
           justify-center text-wrap"
           />
         </div>
@@ -36,8 +36,8 @@ const SectionWhoWeAre = () => {
             heading="Jawaban Selalu Tepat & Jelas"
             subheading="Chatbot hanya menjawab dari dokumen yang Anda unggah, tidak mengarang, sehingga informasinya selalu akurat."
             icon={<Icon icon="ph:target-light" color="#2BA54B" width="58" />}
-            classname="shadow-xl shadow-[#2BA54B40] outline-3 outline-[#8BEC89] text-center px-8 py-15 
-          justify-center"
+            classname="shadow-xl bg-[#FFFFFF] shadow-2xl/5 shadow-[#2BA54B0D] outline-2 outline-[#8BEC89] hover:scale-105 scale-100 transition-all duration-300 text-center px-8 py-15 
+          justify-center text-wrap"
           />
         </div>
         <div data-aos="fade-up" data-aos-duration="1800">
@@ -46,8 +46,8 @@ const SectionWhoWeAre = () => {
             heading="Langsung Bisa Dipakai"
             subheading="Proses pemasangan dan pengenalan dokumen cepat. Perusahaan Anda bisa mulai menggunakan Chatbot dalam waktu singkat."
             icon={<Icon icon="mdi:clock-fast" color="#2BA54B" width="58" />}
-            classname="shadow-xl shadow-[#2BA54B40] outline-3 outline-[#8BEC89] text-center px-8 py-15 
-          justify-center"
+            classname="shadow-xl bg-[#FFFFFF] shadow-2xl/5 shadow-[#2BA54B0D] outline-2 outline-[#8BEC89] hover:scale-105 scale-100 transition-all duration-300 text-center px-8 py-15 
+          justify-center text-wrap"
           />
         </div>
       </div>

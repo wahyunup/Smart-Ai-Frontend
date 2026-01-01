@@ -48,7 +48,6 @@ const ManageStaffPage = () => {
     setIsLoadingStaff(true);
     try {
       const res = await getStaff(page, 4, value);
-console.log(res, "<----staff");
 
       setData(res.users);
       setTotalPage(res.total_pages);
@@ -242,13 +241,13 @@ console.log(res, "<----staff");
                         )}
                       </div>
 
-                      <Tooltip label={item.username}>
+                      <Tooltip label={item.name}>
                         <span className="inline-block w-20 truncate text-start">
-                          {item.username}
+                          {item.name}
                         </span>
                       </Tooltip>
                     </div>
-                    {/* email */}
+                    {/* username */}
                     <Tooltip label={item.username}>
                       <span className="inline-block w-20 truncate text-center">
                         {item.username}

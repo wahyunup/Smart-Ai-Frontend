@@ -6,8 +6,14 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { allCompanyApi } from "../../../services/superadmin/ManageCompany";
+import {
+  allCompanyApi,
+  deleteCompanyApi,
+  toggleIsActiveApi,
+} from "../../../services/superadmin/ManageCompany";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
+import Swal from "sweetalert2";
+import { Icon } from "@iconify/react";
 
 const ManageDocumentsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,8 +21,9 @@ const ManageDocumentsPage = () => {
   const initParamsSearch = searchParams.get("search") ?? "";
   const [filter, setFilter] = useState(initParamsSearch);
   const [page, setPage] = useState(initParamsPage);
-  const [totalPage, setTotalPage] = useState(120);
+  const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingToggle, setIsLoadingToggle] = useState<number | null>(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState<number>(0);
   const [isOpenStat, setIsOpenStat] = useState<number | null>(null);
 
@@ -29,9 +36,13 @@ const ManageDocumentsPage = () => {
       const res = await allCompanyApi(page, 4, filter);
       console.log(res);
 
-      setData(res.companies);
+      const destructerCompany = res.companies.map((item: any) => ({
+        ...item,
+        id: item.company_id,
+      }));
+      setData(destructerCompany);
       setPage(res.current_page);
-      setTotalPage(res.total_pages);
+      setTotalPage(res.total_page);
     } catch (error) {
       console.log(error);
     } finally {
@@ -58,12 +69,23 @@ const ManageDocumentsPage = () => {
   };
 
   const handleStatUser = async (id: number, is_active: boolean) => {
-    console.log(id);
-    console.log(is_active);
+    setIsLoadingToggle(id);
     try {
+      await toggleIsActiveApi(id, is_active);
       await fetchAllCompany();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
+      });
+    } finally {
+      setIsLoadingToggle(null);
     }
   };
 
@@ -71,8 +93,38 @@ const ManageDocumentsPage = () => {
     setIsOpenStat((prev) => (prev === id ? null : id));
   };
 
-  const deleteCompany = (id: number) => {
+  const deleteCompany = async (id: number) => {
     setIsLoadingDelete(id);
+    try {
+      await deleteCompanyApi(id);
+      Swal.fire({
+        text: "perusahaan berhasil dihapus",
+        icon: "success",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#2BA54B",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "primary-button",
+        },
+      }).then(async (response) => {
+        if (response.isConfirmed) {
+          fetchAllCompany();
+        }
+      });
+    } catch (error: any) {
+      Swal.fire({
+        text: error.response.data.message,
+        icon: "error",
+        confirmButtonText: "oke",
+        confirmButtonColor: "#DB3726",
+        buttonsStyling: true,
+        customClass: {
+          confirmButton: "danger-button",
+        },
+      });
+    } finally {
+      setIsLoadingDelete(0);
+    }
   };
 
   useEffect(() => {
@@ -130,9 +182,9 @@ const ManageDocumentsPage = () => {
               renderItem={(item) => {
                 return (
                   <>
-                    <span>{item.code}</span>
-                    <span>{item.name}</span>
-                    <span>{item.name}</span>
+                    <span>{item.company_code}</span>
+                    <span>{item.company_name}</span>
+                    <span>{item.admin_name}</span>
                     <Tooltip label={item.company_email}>
                       <span className=" inline-block truncate w-40">
                         {item.company_email}
@@ -140,20 +192,35 @@ const ManageDocumentsPage = () => {
                     </Tooltip>
                     <div className="flex justify-center">
                       <div className="relative">
-                        {item.is_active ? (
+                        {item.company_is_active ? (
                           <>
-                            <button
-                              onClick={() => handleToogleStatus(item.id)}
-                              className="flex gap-2 justify-between bg-[#00AA58] text-white w-fit rounded-full px-8 py-1.5 cursor-pointer">
-                              Aktif <ChevronDown />
-                            </button>
-                            {isOpenStat === item.id && (
+                            {isLoadingToggle === item.company_id ? (
+                              <button className="flex gap-2 justify-between bg-[#00AA58] text-white w-fit rounded-full px-8 py-1.5 cursor-pointer">
+                                <Icon
+                                  icon="line-md:loading-loop"
+                                  width="24"
+                                  height="24"
+                                />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  handleToogleStatus(item.company_id)
+                                }
+                                className="flex gap-2 justify-between bg-[#00AA58] text-white w-fit rounded-full px-8 py-1.5 cursor-pointer">
+                                Aktif <ChevronDown />
+                              </button>
+                            )}
+                            {isOpenStat === item.company_id && (
                               <div className="absolute flex flex-col z-1 bg-white 2xl:py-2 md:py-1.5 w-33 mt-1 border 2xl:rounded-xl md:rounded-lg 2xl:text-base md:text-xs">
-                                {!item.is_active ? (
+                                {!item.company_is_active ? (
                                   <button
                                     className="cursor-pointer"
                                     onClick={() => {
-                                      handleStatUser(item.id, item.is_active);
+                                      handleStatUser(
+                                        item.company_id,
+                                        !item.company_is_active
+                                      );
                                       setIsOpenStat(null);
                                     }}>
                                     Aktif
@@ -162,7 +229,10 @@ const ManageDocumentsPage = () => {
                                   <button
                                     className="cursor-pointer"
                                     onClick={() => {
-                                      handleStatUser(item.id, item.is_active);
+                                      handleStatUser(
+                                        item.company_id,
+                                        !item.company_is_active
+                                      );
                                       setIsOpenStat(null);
                                     }}>
                                     Nonaktif
@@ -173,23 +243,42 @@ const ManageDocumentsPage = () => {
                           </>
                         ) : (
                           <>
-                            <button
-                              onClick={() => handleToogleStatus(item.id)}
-                              className="cursor-pointer text-center bg-[#DB3726] text-white w-fit rounded-full px-8 py-1.5 flex gap-2 items-center ">
-                              Nonaktif
-                              <ChevronDown />
-                            </button>
-                            {isOpenStat === item.id && (
+                            {isLoadingToggle ? (
+                              <button className="cursor-pointer text-center bg-[#DB3726] text-white w-fit rounded-full px-8 py-1.5 flex gap-2 items-center ">
+                                <Icon
+                                  icon="line-md:loading-loop"
+                                  width="24"
+                                  height="24"
+                                />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  handleToogleStatus(item.company_id)
+                                }
+                                className="cursor-pointer text-center bg-[#DB3726] text-white w-fit rounded-full px-8 py-1.5 flex gap-2 items-center ">
+                                Nonaktif
+                                <ChevronDown />
+                              </button>
+                            )}
+
+                            {isOpenStat === item.company_id && (
                               <div
                                 onClick={() =>
-                                  handleStatUser(item.id, item.is_active)
+                                  handleStatUser(
+                                    item.company_id,
+                                    !item.company_is_active
+                                  )
                                 }
                                 className="absolute flex flex-col z-3 bg-white py-2 w-33 mt-1 border rounded-xl 2xl:text-base md:text-xs 2xl:rounded-xl md:rounded-lg 2xl:py-2 md:py-1.5">
-                                {!item.is_active ? (
+                                {!item.company_is_active ? (
                                   <button
                                     className="cursor-pointer"
                                     onClick={() => {
-                                      handleStatUser(item.id, item.is_active);
+                                      handleStatUser(
+                                        item.company_id,
+                                        !item.company_is_active
+                                      );
                                       setIsOpenStat(null);
                                     }}>
                                     Aktif
@@ -198,7 +287,10 @@ const ManageDocumentsPage = () => {
                                   <button
                                     className="cursor-pointer"
                                     onClick={() => {
-                                      handleStatUser(item.id, item.is_active);
+                                      handleStatUser(
+                                        item.company_id,
+                                        !item.company_is_active
+                                      );
                                       setIsOpenStat(null);
                                     }}>
                                     Nonaktif
