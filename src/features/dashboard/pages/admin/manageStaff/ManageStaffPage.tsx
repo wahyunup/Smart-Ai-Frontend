@@ -25,8 +25,8 @@ const ManageStaffPage = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(0);
   const [isLoadingStaff, setIsLoadingStaff] = useState(false);
-  const [statusSelected, setStatusSelected] = useState("");
-  const [roleSelected, setRoleSelected] = useState("");
+  // const [statusSelected, setStatusSelected] = useState("");
+  // const [roleSelected, setRoleSelected] = useState("");
   // const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
   const [isOpenStat, setIsOpenStat] = useState<number | null>(null);
 
@@ -169,7 +169,7 @@ const ManageStaffPage = () => {
                 htmlFor="search"
                 icon={<Search color="#2F2F2F" />}
               />
-              <div className="flex gap-3 pl-5">
+              {/* <div className="flex gap-3 pl-5">
                 <select
                   className="outline px-5 rounded-2xl flex py-3"
                   id="status"
@@ -191,7 +191,7 @@ const ManageStaffPage = () => {
                   <option value="Aktif">Employee</option>
                   <option value="Tidak Aktif">Admin</option>
                 </select>
-              </div>
+              </div> */}
               <div className="flex gap-5"></div>
             </div>
           </div>

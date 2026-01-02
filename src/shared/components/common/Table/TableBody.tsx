@@ -96,7 +96,7 @@ const TableBody = ({
                           </button>
                         ) : (
                           <button
-                            onClick={() => onclickDelete?.(item?.id)}
+                            onClick={() => onclickDelete?.(item?.id || item?.company_id)}
                             className="p-2 text-[#0B5C37] hover:scale-[1.05] duration-100 transition-all cursor-pointer active:scale-[1]">
                             <Trash2 className="2xl:size-[24px] md:size-[20px]" />
                           </button>

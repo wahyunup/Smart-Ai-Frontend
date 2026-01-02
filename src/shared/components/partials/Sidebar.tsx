@@ -953,7 +953,7 @@ const Sidebar = () => {
                       <div
                         ref={contentRef}
                         onScroll={handleInfinitScroll}
-                        className="flex flex-col gap-2 h-70 overflow-auto ">
+                        className="flex flex-col gap-2 max-h-50 overflow-auto ">
                         {conversationList.map((conv) => (
                           <div className=" flex justify-between items-center px-3 active:bg-gray-100 rounded-xl">
                             <span

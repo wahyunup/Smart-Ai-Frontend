@@ -4,7 +4,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   allCompanyApi,
@@ -96,19 +96,36 @@ const ManageDocumentsPage = () => {
   const deleteCompany = async (id: number) => {
     setIsLoadingDelete(id);
     try {
-      await deleteCompanyApi(id);
       Swal.fire({
-        text: "perusahaan berhasil dihapus",
-        icon: "success",
-        confirmButtonText: "oke",
-        confirmButtonColor: "#2BA54B",
+        text: "yakin ingin menghapus perusahaan?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#DB3726",
+        cancelButtonColor: "#F2F2F2",
         buttonsStyling: true,
         customClass: {
-          confirmButton: "primary-button",
+          confirmButton: "danger-button",
+          cancelButton: "disable-button",
         },
       }).then(async (response) => {
         if (response.isConfirmed) {
-          fetchAllCompany();
+          await deleteCompanyApi(id);
+          Swal.fire({
+            text: "perusahaan berhasil dihapus",
+            icon: "success",
+            confirmButtonText: "oke",
+            confirmButtonColor: "#2BA54B",
+            buttonsStyling: true,
+            customClass: {
+              confirmButton: "primary-button",
+            },
+          }).then(async (response) => {
+            if (response.isConfirmed) {
+              fetchAllCompany();
+            }
+          });
         }
       });
     } catch (error: any) {
@@ -181,7 +198,7 @@ const ManageDocumentsPage = () => {
               prevPage={handlePrevPage}
               renderItem={(item) => {
                 return (
-                  <>
+                  <React.Fragment key={item.company_id}>
                     <span>{item.company_code}</span>
                     <span>{item.company_name}</span>
                     <span>{item.admin_name}</span>
@@ -302,7 +319,7 @@ const ManageDocumentsPage = () => {
                         )}
                       </div>
                     </div>
-                  </>
+                  </React.Fragment>
                 );
               }}
             />

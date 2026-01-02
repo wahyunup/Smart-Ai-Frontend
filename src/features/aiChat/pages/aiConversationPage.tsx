@@ -29,10 +29,6 @@ const aiConversationPage = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, []);
-
   const normalizeMarkdown = (text: string) => {
     return (
       text
@@ -47,26 +43,26 @@ const aiConversationPage = () => {
     );
   };
 
-  useEffect(() => {
-    const fetchConversation = async () => {
-      setIsLoading(true);
-      try {
-        if (conversationId) {
-          const res = await fetchConversationApi(conversationId);
-          const regex = res.map((rx: { answer: string }) => ({
-            ...rx,
-            answer: normalizeMarkdown(rx.answer),
-          }));
+  const fetchConversation = async () => {
+    setIsLoading(true);
+    try {
+      if (conversationId) {
+        const res = await fetchConversationApi(conversationId);
+        const regex = res.map((rx: { answer: string }) => ({
+          ...rx,
+          answer: normalizeMarkdown(rx.answer),
+        }));
 
-          setChats(regex);
-          scrollToBottom();
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
+        setChats(regex);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
     fetchConversation();
   }, [conversationId]);
 
@@ -129,7 +125,7 @@ const aiConversationPage = () => {
                 .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
                 .join("\n");
               // .replace(/(\d+)\./g, "\n$1. ");
-              fullAnswer += normalizeMarkdown(chunk);;
+              fullAnswer += normalizeMarkdown(chunk);
 
               // Update chat terakhir secara live
               setChats((prev) => {
