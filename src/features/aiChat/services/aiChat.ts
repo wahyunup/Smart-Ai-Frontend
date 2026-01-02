@@ -9,6 +9,16 @@ const fetchAllConversation = async ( limit?:number, search?:string) => {
     throw error;
   }
 };
+
+const refreshAllConversation = async () => {
+  try {
+    const res = await api.get(`/chatlogs/conversations`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const planStatusApi = async () => {
   try {
     const res = await api.get("/subscriptions/my-status");
@@ -88,4 +98,4 @@ const createConversationApi = async (
   }
 };
 
-export { fetchAllConversation, createConversationApi, fetchConversationApi, createConversationAxApi, deleteConversationApi, planStatusApi };
+export { fetchAllConversation, createConversationApi, fetchConversationApi, createConversationAxApi, deleteConversationApi, planStatusApi, refreshAllConversation };

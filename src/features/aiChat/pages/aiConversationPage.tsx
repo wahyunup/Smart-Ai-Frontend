@@ -3,8 +3,8 @@ import MainLayout from "../../../shared/layouts/MainLayout";
 import React, { useEffect, useRef, useState } from "react";
 import {
   createConversationApi,
-  fetchAllConversation,
   fetchConversationApi,
+  refreshAllConversation,
 } from "../services/aiChat";
 import Input from "../../../shared/components/ui/Input";
 import { CircleArrowUp } from "lucide-react";
@@ -129,7 +129,7 @@ const aiConversationPage = () => {
                 .map((line) => line.replace(/^data:\s*/, "")) // hapus "data:" dan spasi
                 .join("\n");
               // .replace(/(\d+)\./g, "\n$1. ");
-              // fullAnswer += chunk;
+              fullAnswer += normalizeMarkdown(chunk);;
 
               // Update chat terakhir secara live
               setChats((prev) => {
@@ -144,10 +144,10 @@ const aiConversationPage = () => {
           }
         }
       }
-      await fetchAllConversation();
     } catch (error) {
       console.error(error);
     } finally {
+      refreshAllConversation();
       setIsLoadingSubmit(false);
       setIsStreaming(false);
     }
@@ -176,46 +176,48 @@ const aiConversationPage = () => {
             chats.map((chat: { question: string; answer: string }, i) => (
               <>
                 <div key={i} className="flex justify-end">
-                  <p className="bg-[#1D8A45] p-3 rounded-3xl rounded-br-none text-white w-fit">
+                  <p className="bg-[#1D8A45] max-w-300 text-xs md:text-base p-3 rounded-3xl rounded-br-none text-white w-fit h-fit">
                     {chat.question}
                   </p>
                 </div>
                 <div className="flex justify-start">
-                  <div className="bg-[#F2F2F2] p-3 rounded-3xl rounded-tl-none w-fit prose max-w-none wrap-anywhere">
-                    {i === chats.length - 1 && isStreaming && !chat.answer ? (
-                      <div>
-                        <p className="text-sm animate-pulse">
-                          Orbit sedang berfikir 🚀
-                        </p>
-                      </div>
-                    ) : (
-                      <ReactMarkDown
-                        components={{
-                          h1: ({ children }) => (
-                            <h1 className="text-2xl font-bold">{children}</h1>
-                          ),
-                          p: ({ children }) => (
-                            <p className="my-2 leading-relaxed">{children}</p>
-                          ),
-                          ol: ({ children }) => (
-                            <ol className="list-decimal ml-6 mb-3">
-                              {children}
-                            </ol>
-                          ),
-                          li: ({ children }) => (
-                            <li className="mb-1">{children}</li>
-                          ),
-                          code: ({ children }) => (
-                            <code className="px-1 py-0.5 bg-gray-200 rounded text-sm">
-                              {children}
-                            </code>
-                          ),
-                        }}
-                        remarkPlugins={[remarkGfm]}>
-                        {chat.answer}
-                      </ReactMarkDown>
-                    )}
-                  </div>
+                  {i === chats.length - 1 && isStreaming && !chat.answer ? (
+                    <div>
+                      <p className="text-sm animate-pulse">
+                        Orbit sedang berfikir 🚀
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="h-fit">
+                      <p className="bg-[#F2F2F2] text-xs md:text-base p-3 rounded-3xl rounded-tl-none max-w-300 prose wrap-anywhere text-justify">
+                        <ReactMarkDown
+                          components={{
+                            h1: ({ children }) => (
+                              <h1 className="md:text-2xl font-bold">
+                                {children}
+                              </h1>
+                            ),
+                            p: ({ children }) => <p>{children}</p>,
+                            ol: ({ children }) => (
+                              <ol className="list-decimal ml-6 mb-3">
+                                {children}
+                              </ol>
+                            ),
+                            li: ({ children }) => (
+                              <li className="mb-1">{children}</li>
+                            ),
+                            code: ({ children }) => (
+                              <code className="px-1 py-0.5 bg-gray-200 rounded text-sm">
+                                {children}
+                              </code>
+                            ),
+                          }}
+                          remarkPlugins={[remarkGfm]}>
+                          {chat.answer}
+                        </ReactMarkDown>
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <div ref={chatEndRef} />
               </>
