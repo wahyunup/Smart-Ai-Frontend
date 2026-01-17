@@ -1,21 +1,14 @@
 import {
   BellRing,
-  Building2,
   ChevronDown,
-  CircleDollarSign,
-  CircleUser,
-  ClipboardClock,
   Ellipsis,
-  Files,
   FileText,
-  House,
   LogOut,
   MessageCircleMore,
   PanelLeftClose,
   Search,
   SquarePen,
   Trash2,
-  UserCog,
   Users,
   X,
 } from "lucide-react";
@@ -36,6 +29,7 @@ import { Icon } from "@iconify/react";
 import { useAuthStore } from "../../store/useCookieAuth";
 import Swal from "sweetalert2";
 import { countDownDate, formatDate } from "../../utils/FormatDate";
+import { navListSuperAdmin, navlist } from "../../config/sidebarConfig";
 
 const Sidebar = () => {
   const { isOpen, setIsOpen } = useToggle();
@@ -146,72 +140,6 @@ const Sidebar = () => {
       console.log(error);
     }
   };
-
-  const navlist = [
-    {
-      icon: <House className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Dashboard",
-      link: "/admin/dashboard",
-    },
-    {
-      icon: <Files className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Kelola Dokumen",
-      link: "/admin/manage-documents",
-    },
-    {
-      icon: <MessageCircleMore className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Log Chat/Riwayat",
-      link: "/admin/chat-log",
-    },
-    {
-      icon: <UserCog className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Kelola Staff",
-      link: "/admin/manage-staff",
-    },
-    {
-      icon: <CircleUser className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Profil Perusahaan",
-      link: "/admin/company-profile",
-    },
-    {
-      icon: <CircleDollarSign className="2xl:size-[27px] md:size-[24px]" />,
-      lable: "Subcription",
-      link: "/admin/subcription",
-    },
-  ];
-
-  const navListSuperAdmin = [
-    {
-      icon: <House className="2xl:size-[27px]" />,
-      lable: "Dashboard",
-      link: "/superadmin/dashboard",
-      category: "Manajemen Klien",
-    },
-    {
-      icon: <Building2 className="2xl:size-[27px]" />,
-      lable: "Kelola Perusahaan",
-      link: "/superadmin/manage-company",
-      category: "Manajemen Klien",
-    },
-    {
-      icon: <CircleDollarSign className="2xl:size-[27px]" />,
-      lable: "Manajemen Transaksi",
-      link: "/superadmin/manage-transaction",
-      category: "Manajemen Klien",
-    },
-    {
-      icon: <ClipboardClock className="2xl:size-[27px]" />,
-      lable: "Audit Log & Aktivitas",
-      link: "/superadmin/log-audit",
-      category: "Sistem & Keamanan",
-    },
-    {
-      icon: <UserCog className="2xl:size-[27px]" />,
-      lable: "Pengaturan Sistem Dasar",
-      link: "/superadmin/settings",
-      category: "Sistem & Keamanan",
-    },
-  ];
 
   const logout = () => {
     const token = getCookie("accesstoken");

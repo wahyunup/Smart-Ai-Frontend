@@ -1,8 +1,8 @@
-export { default as AdminLoginPage } from "./pages/AdminLoginPage";
-export { default as EmployeLoginPage } from "./pages/EmployeLoginPage";
-export { default as AdminCompanyLoginPage } from "./pages/AdminCompanyLoginPage";
-export { default as CompanyRegisterPage } from "./pages/CompanyRegisterPage";
-export { default as VerifiedAccountPage } from "./pages/VerifiedAccountPage";
-export { default as FillCompanyBiodata } from "./pages/FillCompanyBiodata";
-export { default as ResetPasswordPage } from "./pages/ResetPassword/ResetPasswordPage";
-export { default as ResetPasswordSendEmailPage } from "./pages/ResetPassword/ResetPasswordSendEmailPage";
+export { default as AdminLoginPage } from "./pages/Superadmin/LoginPage";
+export { default as EmployeLoginPage } from "./pages/Employee/LoginPage";
+export { default as AdminCompanyLoginPage } from "./pages/Admin/LoginPage";
+export { default as CompanyRegisterPage } from "./pages/Admin/RegisterPage";
+export { default as VerifiedAccountPage } from "./pages/Admin/VerifiedAccountPage";
+export { default as FillCompanyBiodata } from "./pages/Admin/FillCompanyBiodataPage";
+export { default as ResetPasswordPage } from "./pages/Admin/ResetPassword/ResetPasswordPage";
+export { default as ResetPasswordSendEmailPage } from "./pages/Admin/ResetPassword/ResetPasswordSendEmailPage";

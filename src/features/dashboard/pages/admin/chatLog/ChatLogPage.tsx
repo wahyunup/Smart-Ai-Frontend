@@ -1,104 +1,30 @@
-import { useEffect, useState } from "react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../../../../shared/components/ui/Input";
 import { Download, Search } from "lucide-react";
 import Button from "../../../../../shared/components/ui/Button";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
-import { chatLog, downloadCsv } from "../../../services/admin/ChatLog";
 import { Icon } from "@iconify/react";
-import type { ChatLogProps } from "../../../../../shared/types/type";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
+import { useChatLog } from "../../../hooks/admin/chatLog/useChatLog";
 
 const ChatLogPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initParams = Number(searchParams.get("page")) || 1;
-  const initFilterParams = searchParams.get("filter") ?? "";
+  const {
+    data,
+    handleDeleteChatLog,
+    value,
+    setValue,
+    page,
+    handleNextPage,
+    handlePrevPage,
+    isLoading,
+    totalPage,
+    exportCsv,
+    handleEditChatLog,
+    isLoadingDoc,
+  } = useChatLog();
 
-  const [value, setValue] = useState(initFilterParams);
-  const [page, setPage] = useState(initParams);
-  const navigate = useNavigate();
-  const [data, setData] = useState<ChatLogProps[]>([]);
-  const [totalPage, setTotalPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingDoc, setIsLoadingDoc] = useState(false);
-  // const [hoverEffect, setHoverEffect] = useState<number | boolean>(false);
-  // const [hoverType, setHoverType] = useState<"question" | "answer" | null>(
-  //   null
-  // );
-
-  useEffect(() => {
-    const fetchChatLog = async () => {
-      setIsLoadingDoc(true);
-      try {
-        const res = await chatLog(page, 4, value);
-        console.log(res, "<-------admin log");
-
-        setData(res.chatlogs);
-        setTotalPage(res.total_pages);
-      } catch (error: any) {
-        console.log(error.response.data.message);
-      } finally {
-        setIsLoadingDoc(false);
-      }
-    };
-    fetchChatLog();
-  }, [page, value]);
-
-  const handleNextPage = () => {
-    if (isLoadingDoc) return;
-    if (page < totalPage) {
-      setPage(page + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (isLoadingDoc) return;
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
-
-  const exportCsv = async () => {
-    setIsLoading(true);
-    const date = new Date();
-    const getDays = String(date.getDate()).padStart(2, "0");
-    const getMonth = String(date.getMonth()).padStart(2, "0")
-    const getYear = date.getFullYear();
-
-    const dateNow = `${getYear}-${getMonth}-${getDays}`;
-    try {
-      const res = await downloadCsv(dateNow);
-      const blob = new Blob([res], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "chat_log.csv";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleEditChatLog = (id: number) => {
-    const getChatLogId = data.find((chat: any) => chat.id === id);
-
-    if (getChatLogId) {
-      const conversation_id = getChatLogId.conversation_id;
-      navigate(`/admin/chat-log/detail/${conversation_id}`);
-    }
-  };
-
-  useEffect(() => {
-    setSearchParams({ page: String(page), filter: String(value) });
-  }, [page, value]);
-
-  const handleDeleteChatLog = () => {};
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
@@ -157,26 +83,10 @@ const ChatLogPage = () => {
               prevPage={handlePrevPage}
               classname="grid grid-cols-6"
               page={page}
-              // tooltipe={(item, i) =>
-              //   hoverEffect === i &&
-              //   (hoverType === "question"
-              //     ? item.question.length > 40
-              //     : item.answer.length > 40) && (
-              //     <div className="transition-all duration-300 fixed 2xl:left-[50vw] wrap-anywhere w-[20vw] md:left-150 2xl:top-80 md:top-50 bg-orange-100 rounded-xl p-3 outline outline-orange-400 md:text-sm 2xl:text-base z-[5] ">
-              //       {hoverType === "question"
-              //         ? item.question.slice(0, 400)
-              //         : item.answer.slice(0, 400)}
-              //     </div>
-              //   )
-              // }
               totalPage={totalPage}
               renderItem={(item) => {
                 const uploadedAt = formatDate(item.created_at);
 
-                // const answerRegex = item.answer.replace(
-                //   /\*{1,2}\s?(.*?)\s?\*{1,2}/g,
-                //   "<strong>$1</strong>"
-                // );
                 return (
                   <>
                     <span className="text-center">{item.id}</span>
@@ -193,22 +103,7 @@ const ChatLogPage = () => {
                         {item.answer}
                       </span>
                     </div>
-                    {/* <div
-                      className="relative text-center"
-                      onMouseEnter={() => {
-                        setHoverEffect(i);
-                        setHoverType("answer");
-                      }}
-                      onMouseLeave={() => setHoverEffect(false)}>
-                      <span
-                        className="z-[2] wrap-anywhere"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            item.answer.length > 50
-                              ? answerRegex.slice(0, 50) + "..."
-                              : answerRegex,
-                        }}></span>
-                    </div> */}
+                   
                   </>
                 );
               }}

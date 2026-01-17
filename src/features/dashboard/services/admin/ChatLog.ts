@@ -34,4 +34,13 @@ const chatLogDetail = async (conversation_id: string) => {
   }
 };
 
-export { chatLog, downloadCsv, chatLogDetail };
+const deleteChatlogApi = async (id: number) => {
+  try {
+    const res = await api.delete(`/company/chatlogs/${id}`);
+    return res.data;
+  } catch (error) {
+    throw error
+  }
+}
+
+export { chatLog, downloadCsv, chatLogDetail,deleteChatlogApi };

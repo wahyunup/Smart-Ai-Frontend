@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
+import { useSubscriptionRequest } from "../../../hooks/admin/subscription/useSubscriptionRequest";
 
 const SubscriptionRequestPage = () => {
-  const [dataCompany, setDataCompany] = useState({
-    companyName: "",
-    companyEmail: "",
-  });
-
-  useEffect(() => {
-    setDataCompany({
-      companyEmail: "mycompany@example.com",
-      companyName: "PT. myCompany",
-    });
-  }, []);
+  const { dataCompany } = useSubscriptionRequest();
   return (
     <MainLayout>
       <div className="flex flex-col gap-6 items-center mt-5 ">

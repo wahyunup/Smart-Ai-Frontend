@@ -17,7 +17,6 @@ import {
   SubscriptionPage,
   SubscriptionRequestPage,
   AdminPaymentSuccessPage,
-  AdminPaymentFailedPage,
   ManageTransactionPage,
   SuperadminManageCompanyCreate,
   SuperadminAdminCompanyCreate,
@@ -92,7 +91,6 @@ function App() {
               path="payment-success"
               element={<AdminPaymentSuccessPage />}
             />
-            <Route path="payment-failed" element={<AdminPaymentFailedPage />} />
             <Route path="invoice" element={<InvoicePage />} />
           </Route>
         </Route>

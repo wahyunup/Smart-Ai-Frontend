@@ -1,36 +1,9 @@
 import Button from "../../../../../shared/components/ui/Button";
 import successImage from "../../../../../../public/img succes transaction.png";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { paymentStatus } from "../../../services/admin/Subcription";
-import { formatDate } from "../../../../../shared/utils/FormatDate";
+import { usePaymentSuccess } from "../../../hooks/admin/subscription/usePaymentSuccess";
 
 const paymentSuccessPage = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const trx_id = Number(searchParams.get("trx_id")) || 0;
-  const [status, setStatus] = useState({
-    plan_name: "",
-    active_end: "",
-    subscription_status: "",
-  });
-  useEffect(() => {
-    const fetchPaymentStatus = async () => {
-      try {
-        const res = await paymentStatus(trx_id);
-        const date = formatDate(res.active_end);
-
-        setStatus({
-          active_end: date,
-          plan_name: res.plan_name,
-          subscription_status: res.subscription_status,
-        });
-      } catch (error: any) {
-        console.log(error.response.data.message);
-      }
-    };
-    fetchPaymentStatus();
-  }, []);
+  const { navigate, status, trx_id } = usePaymentSuccess();
 
   return (
     <>

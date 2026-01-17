@@ -1,80 +1,19 @@
 import { CircleArrowUp } from "lucide-react";
 import Input from "../../../shared/components/ui/Input";
 import MainLayout from "../../../shared/layouts/MainLayout";
-import { useState } from "react";
-import { createConversationAxApi } from "../services/aiChat";
-import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import { useAIChat } from "../hooks/useAIChat";
+import { defaultMessage } from "../config/messageConfig";
 
 const aiChatPage = () => {
-  const [value, setValue] = useState("");
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingDefaultValue, setIsLoadingDefaultValue] = useState<
-    number | null
-  >(null);
-  const uuid = uuidv4();
-  const defaultMessage = [
-    {
-      id: 1,
-      message: "Laporan Anggaran Campaign",
-    },
-    {
-      id: 2,
-      message: "Prosedur Data Lead",
-    },
-    {
-      id: 3,
-      message: "Timeline Proyek",
-    },
-    {
-      id: 4,
-      message: "Dokumen Media Vendor",
-    },
-    {
-      id: 5,
-      message: "Kebijakan Diskon Reseller",
-    },
-  ];
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const messageToSend = value;
-
-    try {
-      const res = await createConversationAxApi(messageToSend, uuid);
-
-      if (res.status === 200) {
-        navigate(`/chat/conversation/${uuid}`);
-      }
-    } catch (error) {
-      console.error("Gagal mengirim pesan:", error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    setValue("");
-  };
-
-  const handleSubmitDefaultValue = async (message: string, i: number) => {
-    setIsLoadingDefaultValue(i);
-    try {
-      const res = await createConversationAxApi(message, uuid);
-      if (res.status === 200) {
-        navigate(`/chat/conversation/${uuid}`);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingDefaultValue(null);
-    }
-  };
+  const {
+    handleOnChange,
+    handleSubmitDefaultValue,
+    handleSumbit,
+    isLoading,
+    isLoadingDefaultValue,
+    value,
+  } = useAIChat();
   return (
     <MainLayout>
       <div className="md:flex md:justify-center md:items-center fixed md:w-screen h-full">

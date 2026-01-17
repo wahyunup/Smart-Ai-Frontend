@@ -4,124 +4,29 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  deleteDocument,
-  getDocuments,
-} from "../../../services/admin/ManageDocuments";
-import Swal from "sweetalert2";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-
+import { useManageDocuments } from "../../../hooks/admin/manageDocuments/useManageDocuments";
 const ManageDocuments = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initParams = Number(searchParams.get("page")) || 1;
-  const initFilterParams = searchParams.get("filter") ?? "";
-  const [value, setValue] = useState(initFilterParams);
-  const [page, setPage] = useState(initParams);
-  const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchDocument = async () => {
-    setIsLoading(true);
-    try {
-      const res = await getDocuments(page, 4, value);
-      setData(res.documents);
-      setTotalPage(res.total_pages);
-    } catch (error) {
-      console.log(Response.error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchDocument();
-  }, [page, value]);
-
-  useEffect(() => {
-    setSearchParams({ page: String(page), filter: String(value) });
-  }, [page, value]);
-
-  const handleEdit = (data_id: number) => {
-    const selectedData = data.find(
-      (data: { id: number }) => data.id === data_id
-    );
-
-    if (selectedData) {
-      navigate("/admin/manage-documents/edit", {
-        state: { datas: selectedData },
-      });
-    }
-  };
-
-  const handleNextPage = () => {
-    if (isLoading) return;
-    if (page < totalPage) {
-      setPage(page + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (isLoading) return;
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      Swal.fire({
-        text: "yakin ingin menghapus dokumen",
-        icon: "warning",
-        confirmButtonText: "Ya",
-        cancelButtonText: "Batal",
-        confirmButtonColor: "#DB3726",
-        cancelButtonColor: "#F2F2F2",
-        buttonsStyling: true,
-        customClass: {
-          confirmButton: "danger-button",
-          cancelButton : "disable-button"
-        },
-      }).then(async (response) => {
-        if (response.isConfirmed) {
-          await deleteDocument(id);
-          Swal.fire({
-            text: "dokumen berhasil dihapus",
-            icon: "warning",
-            confirmButtonText: "oke",
-            confirmButtonColor: "#2BA54B",
-            buttonsStyling: true,
-            customClass: {
-              confirmButton: "primary-button",
-            },
-          }).then((response) => {
-            if (response.isConfirmed) {
-              fetchDocument();
-            }
-          });
-        }
-      });
-    } catch (error: any) {
-      Swal.fire({
-        text: error.response.data.message,
-        icon: "error",
-        confirmButtonText: "oke",
-        confirmButtonColor: "#DB3726",
-        buttonsStyling: true,
-        customClass: {
-          confirmButton: "danger-button",
-        },
-      });
-    }
-  };
+  const {
+    data,
+    handleDelete,
+    handleEdit,
+    handleNextPage,
+    handlePrevPage,
+    isLoading,
+    page,
+    setValue,
+    value,
+    navigate,
+    totalPage,
+  } = useManageDocuments();
 
   return (
     <MainLayout>
       <div className="p-10 flex flex-col gap-10">
-        <h1 className="2xl:text-3xl md:text-2xl font-semibold">Kelola Dokumen</h1>
+        <h1 className="2xl:text-3xl md:text-2xl font-semibold">
+          Kelola Dokumen
+        </h1>
 
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">
@@ -171,28 +76,28 @@ const ManageDocuments = () => {
               page={page}
               totalPage={totalPage}
               renderItem={(item) => {
-                const convertDate = formatDate(item.uploaded_at, true)
+                const convertDate = formatDate(item.uploaded_at, true);
                 return (
                   <>
                     <span className="text-center">{item.title}</span>
                     <div>
-                    <span
-                      className={`lowercase w-fit px-4 py-1 rounded-full ${
-                        item.status === "UPLOAD_FAILED" ||
-                        item.status === "PROCESSING_FAILED"
-                          ? "bg-red-700 text-white"
-                          : item.status === "UPLOADED" ||
-                            item.status === "COMPLETED"
-                          ? "bg-green-600 text-white"
-                          : item.status === "UPLOADING" ||
-                            item.status === "OCR_PROCESSING" ||
-                            item.status === "PENDING_VALIDATION" ||
-                            item.status === "EMBEDDING"
-                          ? "bg-orange-500 text-white"
-                          : ""
-                      }`}>
-                      {item.status}
-                    </span>
+                      <span
+                        className={`lowercase w-fit px-4 py-1 rounded-full ${
+                          item.status === "UPLOAD_FAILED" ||
+                          item.status === "PROCESSING_FAILED"
+                            ? "bg-red-700 text-white"
+                            : item.status === "UPLOADED" ||
+                              item.status === "COMPLETED"
+                            ? "bg-green-600 text-white"
+                            : item.status === "UPLOADING" ||
+                              item.status === "OCR_PROCESSING" ||
+                              item.status === "PENDING_VALIDATION" ||
+                              item.status === "EMBEDDING"
+                            ? "bg-orange-500 text-white"
+                            : ""
+                        }`}>
+                        {item.status}
+                      </span>
                     </div>
                     <div className="flex flex-wrap justify-center gap-2">
                       {item.tags.map((tag: string) => (

@@ -1,71 +1,9 @@
 import { Check } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useEffect, useState } from "react";
-import {
-  myPaymentApi,
-  planSubcriptionApi,
-} from "../../../services/admin/Subcription";
 import { Icon } from "@iconify/react";
-
+import { useSelectSubcription } from "../../../hooks/admin/subscription/useSelectSubcription";
 const SelectSubcriptionPage = () => {
-  const [data, setData] = useState([]);
-  const [optionPlan, setOptionPlan] = useState<any | []>([]);
-  const [currentPlan, setCurrentPlan] = useState();
-  const [isLoading, setIsLoading] = useState<string | boolean>(false);
-  const isLocalhost = window.location.hostname === "localhost";
-
-  useEffect(() => {
-    const fetchSubPlan = async () => {
-      try {
-        const res = await planSubcriptionApi();
-        console.log(res);
-        setCurrentPlan(res?.current_subscription?.plan_name);
-        setData(res?.plans);
-        setOptionPlan(res?.top_up_packages);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSubPlan();
-  }, [isLoading]);
-
-  const handlePayment = async (id: number, package_type?: string) => {
-    const loadId = package_type ? `topup-${id}` : `plan-${id}`;
-    setIsLoading(loadId);
-    const baseURL = !isLocalhost
-      ? import.meta.env.VITE_VERCEL_URL ?? import.meta.env.VITE_VPS_URL
-      : "http://localhost:5173";
-    const successRoute = `${baseURL}/admin/subcription/payment-success`;
-    const failedRoute = `${baseURL}/admin/subcription/payment-failed`;
-
-    try {
-      if (!package_type) {
-        const res = await myPaymentApi(id, successRoute, failedRoute, "");
-
-        if (res) {
-          window.open(res.payment_url, "_blank");
-        }
-      } else {
-        if (!package_type) {
-          return;
-        }
-        const res = await myPaymentApi(
-          0,
-          successRoute,
-          failedRoute,
-          package_type
-        );
-        if (res) {
-          window.open(res.payment_url, "_blank");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  console.log(currentPlan);
+  const { currentPlan, data, handlePayment, isLoading, optionPlan } = useSelectSubcription();
 
   return (
     <MainLayout>
@@ -83,48 +21,50 @@ const SelectSubcriptionPage = () => {
 
           <div className="flex gap-3 justify-center mt-10">
             {currentPlan === undefined && (
-            <div
-              className={` py-9 px-7 w-80 flex flex-col gap-3 ${
-                currentPlan === undefined
-                  ? "border-gray-200 bg-gray-50 border"
-                  : "bg-white border border-transparent hover:border hover:border-gray-200"
-              }  rounded-2xl shadow-2xl/6 `}>
-              <div className="flex flex-col gap-1">
-                <h1 className="text-[#2BA54B] font-semibold text-4xl">Trial</h1>
-                <p className="text-sm">Trial</p>
-              </div>
-              <p className="text-sm text-gray-500">
-                <span className="text-2xl text-black">Gratis 7 Hari</span>
-              </p>
-              {currentPlan === undefined ? (
-                <button className="w-full px-10 py-2 rounded-full text-sm bg-[#88888888] text-[#272727]">
-                  Paket Aktif Saat Ini
-                </button>
-              ) : (
-                <button className="w-full cursor-pointer px-10 py-2 rounded-full text-sm bg-[#2BA54B] text-white">
-                  Upgrade Ke Trial Plan
-                </button>
-              )}
+              <div
+                className={` py-9 px-7 w-80 flex flex-col gap-3 ${
+                  currentPlan === undefined
+                    ? "border-gray-200 bg-gray-50 border"
+                    : "bg-white border border-transparent hover:border hover:border-gray-200"
+                }  rounded-2xl shadow-2xl/6 `}>
+                <div className="flex flex-col gap-1">
+                  <h1 className="text-[#2BA54B] font-semibold text-4xl">
+                    Trial
+                  </h1>
+                  <p className="text-sm">Trial</p>
+                </div>
+                <p className="text-sm text-gray-500">
+                  <span className="text-2xl text-black">Gratis 7 Hari</span>
+                </p>
+                {currentPlan === undefined ? (
+                  <button className="w-full px-10 py-2 rounded-full text-sm bg-[#88888888] text-[#272727]">
+                    Paket Aktif Saat Ini
+                  </button>
+                ) : (
+                  <button className="w-full cursor-pointer px-10 py-2 rounded-full text-sm bg-[#2BA54B] text-white">
+                    Upgrade Ke Trial Plan
+                  </button>
+                )}
 
-              <div className="text-xs flex flex-col gap-2">
-                <p className="flex items-center gap-1">
-                  <Check color="#13D376" size={15} />
-                  <span>100 pertanyaan / bulan</span>
-                </p>
-                <p className="flex items-center gap-1">
-                  <Check color="#13D376" size={15} />
-                  <span> Maksimal 2 Users</span>
-                </p>
-                <p className="flex items-center gap-1">
-                  <Check color="#13D376" size={15} />
-                  <span>Tidak ada Custom Prompt</span>
-                </p>
-                <p className="flex items-center gap-1">
-                  <Check color="#13D376" size={15} />
-                  <span>5 Dokumen</span>
-                </p>
+                <div className="text-xs flex flex-col gap-2">
+                  <p className="flex items-center gap-1">
+                    <Check color="#13D376" size={15} />
+                    <span>100 pertanyaan / bulan</span>
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <Check color="#13D376" size={15} />
+                    <span> Maksimal 2 Users</span>
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <Check color="#13D376" size={15} />
+                    <span>Tidak ada Custom Prompt</span>
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <Check color="#13D376" size={15} />
+                    <span>5 Dokumen</span>
+                  </p>
+                </div>
               </div>
-            </div>
             )}
             {data.map((item: any) => (
               <div

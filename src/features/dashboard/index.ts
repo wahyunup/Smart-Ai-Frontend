@@ -11,7 +11,6 @@ export { default as SelectSubscriptionPage } from "./pages/admin/subscription/Se
 export { default as InvooicePage } from "./pages/admin/subscription/InvoicePage";
 export { default as SubscriptionRequestPage } from "./pages/admin/subscription/SubscriptionRequestPage";
 export { default as AdminPaymentSuccessPage } from "./pages/admin/subscription/PaymentSuccessPage";
-export { default as AdminPaymentFailedPage } from "./pages/admin/subscription/PaymentFailedPage";
 export { default as SuperAdminDashboardPage } from "./pages/superadmin/dashboard/DashboardPage";
 export { default as SuperAdminLogAuditPage } from "./pages/superadmin/logAudit/LogAuditPage";
 export { default as SuperAdminManageCompanyPage } from "./pages/superadmin/manageCompany/ManageCompanyPage";

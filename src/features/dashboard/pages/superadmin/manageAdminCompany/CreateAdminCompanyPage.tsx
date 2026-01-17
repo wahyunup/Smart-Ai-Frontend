@@ -1,47 +1,20 @@
-import { useState } from "react";
 import Button from "../../../../../shared/components/ui/Button";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCreateAdminCompany } from "../../../hooks/superadmin/manageAdminCompany/useCreateAdminCompany";
 
 const CreateAdminCompanyPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = useParams();
-  const id = params.id;
-  const [showPassword, setShowPassword] = useState(false);
-
-  const isEditPage = location.pathname.startsWith(
-    "/superadmin/manage-admin-company/edit"
-  );
-
-  const isDetailPage = location.pathname.startsWith(
-    "/superadmin/manage-admin-company/details"  
-  );
-
-  const [form, setForm] = useState({
-    companyName: "",
-    fullname: "",
-    emailAdmin: "",
-    password: "",
-  });
-
-  const handleCancle = () => {
-    setForm({
-      companyName: "",
-      fullname: "",
-      emailAdmin: "",
-      password: "",
-    });
-  };
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const {
+    form,
+    handleCancle,
+    handleOnChange,
+    isDetailPage,
+    isEditPage,
+    navigate,
+    showPassword,
+    id,
+    setShowPassword,
+  } = useCreateAdminCompany();
   return (
     <MainLayout>
       <div className="p-10">
@@ -50,10 +23,9 @@ const CreateAdminCompanyPage = () => {
           {isEditPage ? (
             <h2 className="text-xl font-medium">Edit Admin Perusahaan</h2>
           ) : isDetailPage ? (
-              <h2 className="text-xl font-medium">Lihat Admin Perusahaan</h2>
-        ) : (
-              <h2 className="text-xl font-medium">Tambah Admin Perusahaan</h2>
-
+            <h2 className="text-xl font-medium">Lihat Admin Perusahaan</h2>
+          ) : (
+            <h2 className="text-xl font-medium">Tambah Admin Perusahaan</h2>
           )}
           <div>
             <h3 className="text-xl font-semibold">Detail Akun Admin</h3>
@@ -62,18 +34,18 @@ const CreateAdminCompanyPage = () => {
 
         <div className="mt-10">
           {(isEditPage || isDetailPage) && (
-              <div className="w-1/2">
-                <Input
-                  name="idCompany"
-                  htmlFor="idCompany"
-                  value={id}
-                  label="ID Perusahaan"
-                  labelLayout="block"
-                  variant="disable"
-                  type="text"
-                />
-              </div>
-            )}
+            <div className="w-1/2">
+              <Input
+                name="idCompany"
+                htmlFor="idCompany"
+                value={id}
+                label="ID Perusahaan"
+                labelLayout="block"
+                variant="disable"
+                type="text"
+              />
+            </div>
+          )}
 
           <div className="flex gap-5 mt-10">
             {isDetailPage ? (
