@@ -5,7 +5,8 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { ChevronDown, FilePlus, Search } from "lucide-react";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
-import { useManageStaff } from "../../../hooks/admin/manageStaff/useManageStaff";
+import { useManageStaff } from "../../../hooks";
+
 const ManageStaffPage = () => {
   const {
     data,

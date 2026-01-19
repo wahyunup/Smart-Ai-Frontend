@@ -1,6 +1,6 @@
 import Button from "../../../../../shared/components/ui/Button";
 import successImage from "../../../../../../public/img succes transaction.png";
-import { usePaymentSuccess } from "../../../hooks/admin/subscription/usePaymentSuccess";
+import { usePaymentSuccess } from "../../../hooks";
 
 const paymentSuccessPage = () => {
   const { navigate, status, trx_id } = usePaymentSuccess();

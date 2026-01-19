@@ -27,7 +27,7 @@ const Input = ({
         {label ? (
           <label
             htmlFor={htmlFor}
-            className={`2xl:font-semibold 2xl:text-base md:text-xs md:font-medium ${
+            className={`2xl:font-semibold 2xl:text-sm md:text-xs md:font-medium ${
               labelLayout === "inline" ? " w-33" : ""
             }`}>
             {label}

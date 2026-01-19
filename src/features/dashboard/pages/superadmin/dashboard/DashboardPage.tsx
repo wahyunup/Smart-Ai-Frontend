@@ -13,7 +13,7 @@ import BasicArea from "../../../../../shared/components/common/Chart/LineChart";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useDashboard } from "../../../hooks/superadmin/dashboard/useDashboard";
+import { useDashboardSuperadmin } from "../../../hooks";
 
 const DashboardPage = () => {
   const {
@@ -25,7 +25,7 @@ const DashboardPage = () => {
     daysCompanyRegist,
     decoded,
     isLoadingFetch,
-  } = useDashboard();
+  } = useDashboardSuperadmin();
 
   return (
     <MainLayout>

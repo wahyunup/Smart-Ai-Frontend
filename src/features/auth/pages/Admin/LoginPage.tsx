@@ -3,7 +3,7 @@ import AuthLayout from "../../../../shared/layouts/AuthLayout";
 import AuthSection from "../../components/AuthSection";
 import Button from "../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { useAdminCompanyLogin } from "../../hooks/Admin/useLogin";
+import { useLoginAdmin } from "../../hooks";
 const CompanyLoginPage = () => {
   const {
     form,
@@ -13,7 +13,7 @@ const CompanyLoginPage = () => {
     setShowingPassword,
     showingPassword,
     navigate,
-  } = useAdminCompanyLogin();
+  } = useLoginAdmin();
   
   return (
     <AuthLayout>

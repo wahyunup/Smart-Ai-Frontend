@@ -2,7 +2,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useSubscription } from "../../../hooks/admin/subscription/useSubscription";
+import { useSubscription } from "../../../hooks";
 const SubcriptionPage = () => {
   const {
     handleNextPage,

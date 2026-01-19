@@ -3,7 +3,7 @@ import AuthSection from "../../components/AuthSection";
 import Input from "../../../../shared/components/ui/Input";
 import Button from "../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { useLogin } from "../../hooks/Employee/useLogin";
+import { useLoginEmployee } from "../../hooks";
 
 const EmployeLoginPage = () => {
   const {
@@ -13,7 +13,7 @@ const EmployeLoginPage = () => {
     showingPassword,
     setShowingPassword,
     isLoading,
-  } = useLogin();
+  } = useLoginEmployee();
   
   return (
     <AuthLayout>

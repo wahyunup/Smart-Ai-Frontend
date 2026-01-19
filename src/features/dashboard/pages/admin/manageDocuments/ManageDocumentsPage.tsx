@@ -5,7 +5,8 @@ import Button from "../../../../../shared/components/ui/Button";
 import TableHeaderList from "../../../../../shared/components/common/Table/TableHeaderList";
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useManageDocuments } from "../../../hooks/admin/manageDocuments/useManageDocuments";
+import { useManageDocuments } from "../../../hooks";
+
 const ManageDocuments = () => {
   const {
     data,

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../../../shared/store/useCookieAuth";
 import { summaryApi } from "../../../services/superadmin/Dashboard";
 
-export const useDashboard = () => {
+export const useDashboardSuperadmin = () => {
   const navigate = useNavigate();
   const [breakdown, setBreakDown] = useState({
     totalClientActive: {

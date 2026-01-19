@@ -5,7 +5,7 @@ import { SummaryApi } from "../../../services/admin/Dashboard";
 import { statUserCompanyApi } from "../../../../auth/services/authApis";
 import Swal from "sweetalert2";
 
-export const useDashboard = () => {
+export const useDashboardAdmin = () => {
   const navigate = useNavigate();
   const [documentSummary, setDocumentSummary] = useState({
     completed_documents: 0,

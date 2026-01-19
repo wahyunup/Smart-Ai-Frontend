@@ -7,7 +7,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { Icon } from "@iconify/react";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
-import { useChatLog } from "../../../hooks/admin/chatLog/useChatLog";
+import { useChatLog } from "../../../hooks";
 
 const ChatLogPage = () => {
   const {

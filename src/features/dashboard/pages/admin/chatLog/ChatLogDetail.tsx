@@ -1,5 +1,5 @@
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useChatLogDetail } from "../../../hooks/admin/chatLog/useChatLogDetail";
+import { useChatLogDetail } from "../../../hooks";
 
 const ChatLogDetail = () => {
   const { data } = useChatLogDetail();

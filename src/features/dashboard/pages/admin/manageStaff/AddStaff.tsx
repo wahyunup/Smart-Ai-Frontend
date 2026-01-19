@@ -2,7 +2,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { useAddStaff } from "../../../hooks/admin/manageStaff/useAddStaff";
+import { useAddStaff } from "../../../hooks";
 const AddStaf = () => {
   const {
     dataEdit,

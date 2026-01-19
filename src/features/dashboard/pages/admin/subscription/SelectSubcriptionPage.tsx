@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { Icon } from "@iconify/react";
-import { useSelectSubcription } from "../../../hooks/admin/subscription/useSelectSubcription";
+import { useSelectSubcription } from "../../../hooks";
 const SelectSubcriptionPage = () => {
   const { currentPlan, data, handlePayment, isLoading, optionPlan } = useSelectSubcription();
 

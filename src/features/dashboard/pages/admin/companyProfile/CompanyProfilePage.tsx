@@ -3,7 +3,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
 import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
-import { useCompanyProfile } from "../../../hooks/admin/companyProfile/useCompanyProfile";
+import { useCompanyProfile } from "../../../hooks";
 const CompanyProfilePage = () => {
   const {
     datas,

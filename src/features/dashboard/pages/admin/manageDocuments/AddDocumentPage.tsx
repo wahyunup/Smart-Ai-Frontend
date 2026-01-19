@@ -3,7 +3,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
-import { useAddDocuments } from "../../../hooks/admin/manageDocuments/useAddDocuments";
+import { useAddDocuments } from "../../../hooks";
 const AddDocumentPage = () => {
   const {
     dataEdit,

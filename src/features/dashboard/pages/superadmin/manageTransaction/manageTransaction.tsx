@@ -5,10 +5,10 @@ import { formatDate } from "../../../../../shared/utils/FormatDate";
 import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { subNavigate } from "../../../../../shared/config/subNavigationConfig";
-import { useManageTransaction } from "../../../hooks/superadmin/manageTransaction/useManageTransaction";
+import { useManageTransaction } from "../../../hooks";
 
 
-const manageTransaction = () => {
+const ManageTransaction = () => {
   const {
     data,
     date,
@@ -169,4 +169,4 @@ const manageTransaction = () => {
   );
 };
 
-export default manageTransaction;
+export default ManageTransaction;

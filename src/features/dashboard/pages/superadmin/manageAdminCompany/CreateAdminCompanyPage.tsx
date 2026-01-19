@@ -1,7 +1,7 @@
 import Button from "../../../../../shared/components/ui/Button";
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
-import { useCreateAdminCompany } from "../../../hooks/superadmin/manageAdminCompany/useCreateAdminCompany";
+import { useCreateAdminCompany } from "../../../hooks";
 
 const CreateAdminCompanyPage = () => {
   const {

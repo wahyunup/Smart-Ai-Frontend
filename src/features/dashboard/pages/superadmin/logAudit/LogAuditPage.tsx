@@ -4,7 +4,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import Button from "../../../../../shared/components/ui/Button";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useLogAudit } from "../../../hooks/superadmin/logAudit/useLogAudit";
+import { useLogAudit } from "../../../hooks";
 const LogAuditPage = () => {
   const {
     companyList,
@@ -67,10 +67,10 @@ const LogAuditPage = () => {
             htmlFor="dateEnd"
             name="dateEnd"
           />
-          <div className="flex gap-2 items-center h-full w-full">
+          <div className="flex items-center h-full w-full">
             <label
               htmlFor="filtercompany"
-              className="2xl:font-semibold 2xl:text-md md:text-xs md:font-medium">
+              className="2xl:font-semibold 2xl:text-sm md:text-xs md:font-medium">
               Filter Perusahaan
             </label>
             <select
@@ -91,10 +91,10 @@ const LogAuditPage = () => {
             </select>
           </div>
 
-          <div className="flex gap-2 items-center h-full w-full">
+          <div className="flex items-center h-full w-full">
             <label
               htmlFor="filtercompany"
-              className="2xl:font-semibold 2xl:text-md md:text-xs md:font-medium">
+              className="2xl:font-semibold 2xl:text-sm md:text-xs md:font-medium">
               Filter Tipe Aktivitas
             </label>
             <select

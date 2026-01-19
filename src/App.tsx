@@ -1,77 +1,78 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
+import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
 import {
-  AddDocument,
+  AddDocumentPage,
   AddStaffPage,
-  AdminDashboardPage,
-  ChatLogDetailPage,
-  ChatLogPage,
+  ChatlogDetailPage,
+  ChatlogPage,
   CompanyProfilePage,
-  SuperAdminLogAuditPage,
+  DashboardAdminPage,
+  InvoicePage,
   ManageDocumentsPage,
   ManageStaffPage,
-  SuperAdminDashboardPage,
-  SuperAdminManageCompanyPage,
-  SuperAdminManageAdminCompanyPage,
-  SuperAdminSettingsPage,
+  PaymentSuccessPage,
+  SelectSubscriptionPage,
   SubscriptionPage,
   SubscriptionRequestPage,
-  AdminPaymentSuccessPage,
-  ManageTransactionPage,
-  SuperadminManageCompanyCreate,
-  SuperadminAdminCompanyCreate,
-} from "./features/dashboard";
+} from "./features/dashboard/pages/admin";
 import {
-  AdminLoginPage,
-  AdminCompanyLoginPage,
-  CompanyRegisterPage,
-  EmployeLoginPage,
-  VerifiedAccountPage,
-  FillCompanyBiodata,
+  CreateAdminCompanyPage,
+  CreateCompanyPage,
+  DashboardSuperadminPage,
+  LogAuditPage,
+  ManageAdminCompanyPage,
+  ManageCompanyPage,
+  ManageTransactionPage,
+  SettingsPage,
+} from "./features/dashboard/pages/superadmin";
+import {
+  EmployeeLoginPage,
+  FillCompanyBiodataPage,
+  LoginPage,
+  RegisterPage,
   ResetPasswordPage,
   ResetPasswordSendEmailPage,
-} from "./features/auth";
-import { HomePage } from "./features/home";
-import { AiChatPage, AiConversationPage, FAQPage } from "./features/aiChat";
-import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
-import SelectSubcriptionPage from "./features/dashboard/pages/admin/subscription/SelectSubcriptionPage";
-import InvoicePage from "./features/dashboard/pages/admin/subscription/InvoicePage";
+  SuperadminLoginPage,
+  VerifiedAccountPage,
+} from "./features/auth/pages";
+import { AiChatPage, AiConversationPage, FAQPage } from "./features/aiChat/pages";
+import { HomePage } from "./features/home/page";
 
 function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element={<HomePage />} />
+
         <Route path="/auth">
-          <Route path="company-employe/login" element={<EmployeLoginPage />} />
-          <Route
-            path="company-admin/login"
-            element={<AdminCompanyLoginPage />}
-          />
-          <Route
-            path="company-admin/register"
-            element={<CompanyRegisterPage />}
-          />
-          <Route path="admin/login" element={<AdminLoginPage />} />
+          <Route path="company-employe/login" element={<EmployeeLoginPage />} />
+          <Route path="company-admin/login" element={<LoginPage />} />
+          <Route path="company-admin/register" element={<RegisterPage />} />
+          <Route path="admin/login" element={<SuperadminLoginPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
-          <Route path="reset-password-send-email" element={<ResetPasswordSendEmailPage />} />
+          <Route
+            path="reset-password-send-email"
+            element={<ResetPasswordSendEmailPage />}
+          />
           <Route path="account-verified" element={<VerifiedAccountPage />} />
-          <Route path="fill-biodata" element={<FillCompanyBiodata />} />
+          <Route path="fill-biodata" element={<FillCompanyBiodataPage />} />
         </Route>
 
         <Route path="/admin">
-          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="dashboard" element={<DashboardAdminPage />} />
 
           <Route path="manage-documents">
             <Route index element={<ManageDocumentsPage />} />
-            <Route path="create" element={<AddDocument />} />
-            <Route path="edit" element={<AddDocument />} />
+            <Route path="create" element={<AddDocumentPage />} />
+            <Route path="edit" element={<AddDocumentPage />} />
           </Route>
 
           <Route path="chat-log">
-            <Route index element={<ChatLogPage />} />
+            <Route index element={<ChatlogPage />} />
             <Route
               path="detail/:conversationId"
-              element={<ChatLogDetailPage />}
+              element={<ChatlogDetailPage />}
             />
           </Route>
 
@@ -85,41 +86,33 @@ function App() {
 
           <Route path="subcription">
             <Route index element={<SubscriptionPage />} />
-            <Route path="select-sub" element={<SelectSubcriptionPage />} />
+            <Route path="select-sub" element={<SelectSubscriptionPage />} />
             <Route path="sub-req" element={<SubscriptionRequestPage />} />
-            <Route
-              path="payment-success"
-              element={<AdminPaymentSuccessPage />}
-            />
+            <Route path="payment-success" element={<PaymentSuccessPage />} />
             <Route path="invoice" element={<InvoicePage />} />
           </Route>
         </Route>
 
         <Route path="/superadmin">
-          <Route path="dashboard" element={<SuperAdminDashboardPage />} />
-          <Route path="log-audit" element={<SuperAdminLogAuditPage />} />
+          <Route path="dashboard" element={<DashboardSuperadminPage />} />
+          <Route path="log-audit" element={<LogAuditPage />} />
           <Route path="manage-company">
-            <Route index element={<SuperAdminManageCompanyPage />} />
-            <Route path="create" element={<SuperadminManageCompanyCreate />} />
-            <Route
-              path="edit/:id"
-              element={<SuperadminManageCompanyCreate />}
-            />
+            <Route index element={<ManageAdminCompanyPage />} />
+            <Route path="create" element={<CreateAdminCompanyPage />} />
+            <Route path="edit/:id" element={<CreateAdminCompanyPage />} />
           </Route>
           <Route path="manage-admin-company">
-            <Route index element={<SuperAdminManageAdminCompanyPage />} />
-            <Route path="create" element={<SuperadminAdminCompanyCreate />} />
-            <Route path="edit/:id" element={<SuperadminAdminCompanyCreate />} />
-            <Route path="details/:id" element={<SuperadminAdminCompanyCreate />} />
+            <Route index element={<ManageCompanyPage />} />
+            <Route path="create" element={<CreateCompanyPage />} />
+            <Route path="edit/:id" element={<CreateCompanyPage />} />
+            <Route path="details/:id" element={<CreateCompanyPage />} />
           </Route>
-          <Route path="settings" element={<SuperAdminSettingsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
           <Route
             path="manage-transaction"
             element={<ManageTransactionPage />}
           />
         </Route>
-
-        <Route path="/" element={<HomePage />} />
 
         <Route path="/chat">
           <Route index element={<AiChatPage />} />
@@ -127,11 +120,9 @@ function App() {
             path="conversation/:conversationId"
             element={<AiConversationPage />}
           />
-          <Route
-            path="faq"
-            element={<FAQPage />}
-          />
+          <Route path="faq" element={<FAQPage />} />
         </Route>
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

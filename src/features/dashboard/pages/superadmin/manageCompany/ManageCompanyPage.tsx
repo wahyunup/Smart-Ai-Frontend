@@ -7,7 +7,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 import { Icon } from "@iconify/react";
 import React from "react";
-import { useManageCompany } from "../../../hooks/superadmin/manageCompany/useManageCompany";
+import { useManageCompany } from "../../../hooks";
 
 const ManageDocumentsPage = () => {
   const {
@@ -27,6 +27,7 @@ const ManageDocumentsPage = () => {
     totalPage,
     setIsOpenStat,
   } = useManageCompany();
+  
   return (
     <MainLayout>
       <div className="p-10">
@@ -116,7 +117,7 @@ const ManageDocumentsPage = () => {
                                     onClick={() => {
                                       handleStatUser(
                                         item.company_id,
-                                        !item.company_is_active
+                                        !item.company_is_active,
                                       );
                                       setIsOpenStat(null);
                                     }}>
@@ -128,7 +129,7 @@ const ManageDocumentsPage = () => {
                                     onClick={() => {
                                       handleStatUser(
                                         item.company_id,
-                                        !item.company_is_active
+                                        !item.company_is_active,
                                       );
                                       setIsOpenStat(null);
                                     }}>
@@ -164,7 +165,7 @@ const ManageDocumentsPage = () => {
                                 onClick={() =>
                                   handleStatUser(
                                     item.company_id,
-                                    !item.company_is_active
+                                    !item.company_is_active,
                                   )
                                 }
                                 className="absolute flex flex-col z-3 bg-white py-2 w-33 mt-1 border rounded-xl 2xl:text-base md:text-xs 2xl:rounded-xl md:rounded-lg 2xl:py-2 md:py-1.5">
@@ -174,7 +175,7 @@ const ManageDocumentsPage = () => {
                                     onClick={() => {
                                       handleStatUser(
                                         item.company_id,
-                                        !item.company_is_active
+                                        !item.company_is_active,
                                       );
                                       setIsOpenStat(null);
                                     }}>
@@ -186,7 +187,7 @@ const ManageDocumentsPage = () => {
                                     onClick={() => {
                                       handleStatUser(
                                         item.company_id,
-                                        !item.company_is_active
+                                        !item.company_is_active,
                                       );
                                       setIsOpenStat(null);
                                     }}>

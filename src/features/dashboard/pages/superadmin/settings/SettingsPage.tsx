@@ -4,7 +4,7 @@ import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
 import Button from "../../../../../shared/components/ui/Button";
 import mascot from "../../../../../assets/icons/SmartAI-2.png";
 import Input from "../../../../../shared/components/ui/Input";
-import { useSettings } from "../../../hooks/superadmin/settings/useSettings";
+import { useSettings } from "../../../hooks";
 
 const SettingsPage = () => {
   const {

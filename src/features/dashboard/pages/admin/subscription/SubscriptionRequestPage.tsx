@@ -1,7 +1,7 @@
 import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
-import { useSubscriptionRequest } from "../../../hooks/admin/subscription/useSubscriptionRequest";
+import { useSubscriptionRequest } from "../../../hooks";
 
 const SubscriptionRequestPage = () => {
   const { dataCompany } = useSubscriptionRequest();

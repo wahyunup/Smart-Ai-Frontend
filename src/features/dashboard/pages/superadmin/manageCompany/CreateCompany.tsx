@@ -3,7 +3,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Switch from "../../../../../shared/components/ui/Switch";
 import { Icon } from "@iconify/react";
-import { useCreateCompany } from "../../../hooks/superadmin/manageCompany/useCreateCompany";
+import { useCreateCompany } from "../../../hooks";
 
 const CreateCompany = () => {
   const {

@@ -3,7 +3,7 @@ import Input from "../../../../shared/components/ui/Input";
 import AuthLayout from "../../../../shared/layouts/AuthLayout";
 import AuthSection from "../../components/AuthSection";
 import { Icon } from "@iconify/react";
-import { useLogin } from "../../hooks/Superadmin/useLogin";
+import { useLoginSuperadmin } from "../../hooks";
 
 const AdminLoginPage = () => {
   const {
@@ -13,12 +13,11 @@ const AdminLoginPage = () => {
     showingPassword,
     setShowingPassword,
     isLoading,
-  } = useLogin();
+  } = useLoginSuperadmin();
 
   return (
     <AuthLayout>
       <AuthSection
-        classname=""
         headingAuth="Selamat Datang Kembali"
         subHeadingAuth="Masuk ke akun SmartAI sebagai Super Admin."
         formContent={

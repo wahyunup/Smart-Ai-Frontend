@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { getCookie, removeCookie, setCookie } from "../../../../shared/utils/Cookies";
+import {
+  getCookie,
+  removeCookie,
+  setCookie,
+} from "../../../../shared/utils/Cookies";
 import { decodeJwt } from "../../../../shared/utils/Decode";
 import Swal from "sweetalert2";
 import { authLoginSuperadminApi } from "../../services/authApis";
 import { useNavigate } from "react-router-dom";
 
-export const useLogin = () => {
-    const [isLoading, setIsLoading] = useState(false);
+export const useLoginSuperadmin = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [showingPassword, setShowingPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -100,12 +104,12 @@ export const useLogin = () => {
       }
     }
   }, []);
-    return{
-handleOnChange,
-form,
-showingPassword,
-setShowingPassword,
-isLoading,
-handleLogin
-    }
-}
+  return {
+    handleOnChange,
+    form,
+    showingPassword,
+    setShowingPassword,
+    isLoading,
+    handleLogin,
+  };
+};

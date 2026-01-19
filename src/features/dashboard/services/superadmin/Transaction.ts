@@ -11,6 +11,7 @@ const allTransactionApi = async (page: number, limit: number) => {
     throw error;
   }
 };
+
 const allPlanApi = async () => {
   try {
     const res = await api.get("/admin/plans-pricing");

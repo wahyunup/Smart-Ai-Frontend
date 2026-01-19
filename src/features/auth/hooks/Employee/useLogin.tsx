@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { authLoginEmployeeApi } from "../../services/authApis";
 import { useNavigate } from "react-router-dom";
 
-export const useLogin = () => {
+export const useLoginEmployee = () => {
   const navigate = useNavigate();
   const [showingPassword, setShowingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

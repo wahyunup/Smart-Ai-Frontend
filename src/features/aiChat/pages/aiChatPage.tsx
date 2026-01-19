@@ -2,7 +2,7 @@ import { CircleArrowUp } from "lucide-react";
 import Input from "../../../shared/components/ui/Input";
 import MainLayout from "../../../shared/layouts/MainLayout";
 import { Icon } from "@iconify/react";
-import { useAIChat } from "../hooks/useAIChat";
+import { useAIChat } from "../hooks";
 import { defaultMessage } from "../config/messageConfig";
 
 const aiChatPage = () => {

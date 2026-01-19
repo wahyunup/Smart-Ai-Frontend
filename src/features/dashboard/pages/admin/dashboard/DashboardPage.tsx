@@ -14,7 +14,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import TableBody from "../../../../../shared/components/common/Table/TableBody";
 
 import { formatDate } from "../../../../../shared/utils/FormatDate";
-import { useDashboard } from "../../../hooks/admin/dashboard/useDashboard";
+import { useDashboardAdmin } from "../../../hooks";
 const AdminDashboard = () => {
   const {
     documentSummary,
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     isLoadingFetch,
     month,
     navigate,
-  } = useDashboard();
+  } = useDashboardAdmin();
 
   return (
     <MainLayout>
