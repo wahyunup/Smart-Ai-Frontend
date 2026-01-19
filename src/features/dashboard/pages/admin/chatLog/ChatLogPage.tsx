@@ -9,7 +9,7 @@ import { formatDate } from "../../../../../shared/utils/FormatDate";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 import { useChatLog } from "../../../hooks";
 
-const ChatLogPage = () => {
+export const ChatLogPage = () => {
   const {
     data,
     handleDeleteChatLog,
@@ -114,5 +114,3 @@ const ChatLogPage = () => {
     </MainLayout>
   );
 };
-
-export default ChatLogPage;

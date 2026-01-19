@@ -4,7 +4,7 @@ import AuthLayout from "../../../../shared/layouts/AuthLayout";
 import AuthSection from "../../components/AuthSection";
 import Button from "../../../../shared/components/ui/Button";
 
-const VerifiedAccountPage = () => {
+export const VerifiedAccountPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -39,5 +39,3 @@ const VerifiedAccountPage = () => {
     </AuthLayout>
   );
 };
-
-export default VerifiedAccountPage;

@@ -3,7 +3,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useAddStaff } from "../../../hooks";
-const AddStaf = () => {
+export const AddStafPage = () => {
   const {
     dataEdit,
     editPreviewImage,
@@ -232,4 +232,3 @@ const AddStaf = () => {
   );
 };
 
-export default AddStaf;

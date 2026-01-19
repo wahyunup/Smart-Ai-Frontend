@@ -4,7 +4,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useAddDocuments } from "../../../hooks";
-const AddDocumentPage = () => {
+export const AddDocumentPage = () => {
   const {
     dataEdit,
     handleOnChange,
@@ -144,5 +144,3 @@ const AddDocumentPage = () => {
     </MainLayout>
   );
 };
-
-export default AddDocumentPage;

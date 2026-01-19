@@ -1,6 +1,6 @@
-export { default as FillCompanyBiodataPage } from "./FillCompanyBiodataPage";
-export { default as LoginPage } from "./LoginPage";
-export { default as RegisterPage } from "./RegisterPage";
-export { default as VerifiedAccountPage } from "./VerifiedAccountPage";
-export { default as ResetPasswordPage } from "./ResetPassword/ResetPasswordPage";
-export { default as ResetPasswordSendEmailPage } from "./ResetPassword/ResetPasswordSendEmailPage";
+export { FillCompanyBiodataPage } from "./FillCompanyBiodataPage";
+export { CompanyLoginPage } from "./LoginPage";
+export { CompanyRegisterPage } from "./RegisterPage";
+export { VerifiedAccountPage } from "./VerifiedAccountPage";
+export { ResetPasswordPage } from "./ResetPassword/ResetPasswordPage";
+export { ResetPasswordSendEmailPage } from "./ResetPassword/ResetPasswordSendEmailPage";

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const useInvoice = () => {
-    const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const initParams = Number(searchParams.get("trx-id")) || 0;
   const navigate = useNavigate();
   const [invoice, setInvoice] = useState({
@@ -75,6 +75,6 @@ export const useInvoice = () => {
     invoice,
     isLoading,
     downloadPdf,
-    navigate
-  }
-}
+    navigate,
+  };
+};

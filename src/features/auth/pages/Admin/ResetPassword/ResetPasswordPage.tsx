@@ -5,7 +5,7 @@ import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useResetPassword } from "../../../hooks/Admin/ResetPassword/useResetPassword";
 
-const ResetPasswordPage = () => {
+export const ResetPasswordPage = () => {
   const {
     form,
     handleOnChange,
@@ -85,5 +85,3 @@ const ResetPasswordPage = () => {
     </AuthLayout>
   );
 };
-
-export default ResetPasswordPage;

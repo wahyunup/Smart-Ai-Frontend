@@ -4,7 +4,8 @@ import AuthSection from "../../components/AuthSection";
 import Button from "../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useLoginAdmin } from "../../hooks";
-const CompanyLoginPage = () => {
+
+export const CompanyLoginPage = () => {
   const {
     form,
     handleLogin,
@@ -85,5 +86,3 @@ const CompanyLoginPage = () => {
     </AuthLayout>
   );
 };
-
-export default CompanyLoginPage;

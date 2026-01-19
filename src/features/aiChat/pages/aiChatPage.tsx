@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { useAIChat } from "../hooks";
 import { defaultMessage } from "../config/messageConfig";
 
-const aiChatPage = () => {
+export const AiChatPage = () => {
   const {
     handleOnChange,
     handleSubmitDefaultValue,
@@ -102,5 +102,3 @@ const aiChatPage = () => {
     </MainLayout>
   );
 };
-
-export default aiChatPage;

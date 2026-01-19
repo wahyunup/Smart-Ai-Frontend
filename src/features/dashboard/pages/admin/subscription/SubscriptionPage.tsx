@@ -3,7 +3,7 @@ import TableHeaderList from "../../../../../shared/components/common/Table/Table
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import { useSubscription } from "../../../hooks";
-const SubcriptionPage = () => {
+export const SubscriptionPage = () => {
   const {
     handleNextPage,
     handlePrevPage,
@@ -162,5 +162,3 @@ const SubcriptionPage = () => {
     </MainLayout>
   );
 };
-
-export default SubcriptionPage;

@@ -1,5 +1,5 @@
-export { default as InvoicePage } from "./InvoicePage";
-export { default as SubscriptionPage } from "./SubscriptionPage";
-export { default as PaymentSuccessPage } from "./PaymentSuccessPage";
-export { default as SelectSubscriptionPage } from "./SelectSubcriptionPage";
-export { default as SubscriptionRequestPage } from "./SubscriptionRequestPage";
+export { InvoicePage } from "./InvoicePage";
+export { SubscriptionPage } from "./SubscriptionPage";
+export { PaymentSuccessPage } from "./PaymentSuccessPage";
+export { SelectSubcriptionPage } from "./SelectSubcriptionPage";
+export { SubscriptionRequestPage } from "./SubscriptionRequestPage";

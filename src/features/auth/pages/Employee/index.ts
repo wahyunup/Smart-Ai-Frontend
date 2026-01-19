@@ -1,1 +1,1 @@
-export {default as EmployeeLoginPage} from "./LoginPage"
+export { EmployeeLoginPage } from "./LoginPage";

@@ -1,7 +1,7 @@
 import logo from "../../../../../../public/LOGO FIX.svg";
 import Button from "../../../../../shared/components/ui/Button";
 import { useInvoice } from "../../../hooks";
-const InvoicePage = () => {
+export const InvoicePage = () => {
   const { downloadPdf, invoice, isLoading, navigate } = useInvoice();
 
   return (
@@ -205,5 +205,3 @@ const InvoicePage = () => {
     </>
   );
 };
-
-export default InvoicePage;

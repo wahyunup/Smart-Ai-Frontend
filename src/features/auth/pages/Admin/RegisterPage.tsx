@@ -5,7 +5,7 @@ import Button from "../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useRegister } from "../../hooks/Admin/useRegister";
 
-const CompanyRegisterPage = () => {
+export const CompanyRegisterPage = () => {
   const {
     handleOnChange,
     handleRegister,
@@ -212,5 +212,3 @@ const CompanyRegisterPage = () => {
     </AuthLayout>
   );
 };
-
-export default CompanyRegisterPage;

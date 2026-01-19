@@ -4,7 +4,8 @@ import TableCompanyProfile from "../../../components/admin/TableCompanyProfile";
 import Input from "../../../../../shared/components/ui/Input";
 import Button from "../../../../../shared/components/ui/Button";
 import { useCompanyProfile } from "../../../hooks";
-const CompanyProfilePage = () => {
+
+export const CompanyProfilePage = () => {
   const {
     datas,
     editEmailCompany,
@@ -191,5 +192,3 @@ const CompanyProfilePage = () => {
     </MainLayout>
   );
 };
-
-export default CompanyProfilePage;

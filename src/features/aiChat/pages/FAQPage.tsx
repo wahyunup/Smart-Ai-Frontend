@@ -4,7 +4,7 @@ import Input from "../../../shared/components/ui/Input";
 import MainLayout from "../../../shared/layouts/MainLayout";
 import { useFAQ } from "../hooks/useFAQ";
 
-const FAQPage = () => {
+export const FAQPage = () => {
   const { filter, setValue } = useFAQ();
 
   return (
@@ -46,4 +46,3 @@ const FAQPage = () => {
   );
 };
 
-export default FAQPage;

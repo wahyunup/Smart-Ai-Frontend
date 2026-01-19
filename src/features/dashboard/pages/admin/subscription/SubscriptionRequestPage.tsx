@@ -3,7 +3,7 @@ import MainLayout from "../../../../../shared/layouts/MainLayout";
 import Button from "../../../../../shared/components/ui/Button";
 import { useSubscriptionRequest } from "../../../hooks";
 
-const SubscriptionRequestPage = () => {
+export const SubscriptionRequestPage = () => {
   const { dataCompany } = useSubscriptionRequest();
   return (
     <MainLayout>

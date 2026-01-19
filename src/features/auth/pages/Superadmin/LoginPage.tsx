@@ -5,7 +5,7 @@ import AuthSection from "../../components/AuthSection";
 import { Icon } from "@iconify/react";
 import { useLoginSuperadmin } from "../../hooks";
 
-const AdminLoginPage = () => {
+export const SuperadminLoginPage = () => {
   const {
     form,
     handleLogin,
@@ -70,5 +70,3 @@ const AdminLoginPage = () => {
     </AuthLayout>
   );
 };
-
-export default AdminLoginPage;

@@ -2,7 +2,7 @@ import Button from "../../../../../shared/components/ui/Button";
 import successImage from "../../../../../../public/img succes transaction.png";
 import { usePaymentSuccess } from "../../../hooks";
 
-const paymentSuccessPage = () => {
+export const PaymentSuccessPage = () => {
   const { navigate, status, trx_id } = usePaymentSuccess();
 
   return (
@@ -53,5 +53,3 @@ const paymentSuccessPage = () => {
     </>
   );
 };
-
-export default paymentSuccessPage;

@@ -7,7 +7,7 @@ import { ChevronDown, FilePlus, Search } from "lucide-react";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 import { useManageStaff } from "../../../hooks";
 
-const ManageStaffPage = () => {
+export const ManageStaffPage = () => {
   const {
     data,
     value,
@@ -219,4 +219,3 @@ const ManageStaffPage = () => {
   );
 };
 
-export default ManageStaffPage;

@@ -1,7 +1,7 @@
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useChatLogDetail } from "../../../hooks";
 
-const ChatLogDetail = () => {
+export const ChatLogDetailPage = () => {
   const { data } = useChatLogDetail();
   return (
     <MainLayout>
@@ -93,5 +93,3 @@ const ChatLogDetail = () => {
     </MainLayout>
   );
 };
-
-export default ChatLogDetail;

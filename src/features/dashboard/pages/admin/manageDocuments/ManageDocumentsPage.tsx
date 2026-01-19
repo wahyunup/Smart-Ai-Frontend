@@ -7,7 +7,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import { useManageDocuments } from "../../../hooks";
 
-const ManageDocuments = () => {
+export const ManageDocumentsPage = () => {
   const {
     data,
     handleDelete,
@@ -120,4 +120,3 @@ const ManageDocuments = () => {
   );
 };
 
-export default ManageDocuments;

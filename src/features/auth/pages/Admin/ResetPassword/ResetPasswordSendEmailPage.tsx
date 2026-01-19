@@ -5,7 +5,7 @@ import Button from "../../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useResetPasswordSendEmail } from "../../../hooks/Admin/ResetPassword/useResetPasswordSendEmail";
 
-const ResetPasswordSendEmailPage = () => {
+export const ResetPasswordSendEmailPage = () => {
   const {email,handleSubmit,isLoading,setEmail} = useResetPasswordSendEmail()
   return (
     <AuthLayout>
@@ -47,5 +47,3 @@ const ResetPasswordSendEmailPage = () => {
     </AuthLayout>
   );
 };
-
-export default ResetPasswordSendEmailPage;

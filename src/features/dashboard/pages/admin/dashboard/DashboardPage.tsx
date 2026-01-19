@@ -15,7 +15,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import { useDashboardAdmin } from "../../../hooks";
-const AdminDashboard = () => {
+export const DashboardAdminPage = () => {
   const {
     documentSummary,
     recentDocuments,
@@ -160,5 +160,3 @@ const AdminDashboard = () => {
     </MainLayout>
   );
 };
-
-export default AdminDashboard;

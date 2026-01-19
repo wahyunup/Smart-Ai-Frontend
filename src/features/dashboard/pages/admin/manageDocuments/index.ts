@@ -1,2 +1,2 @@
-export { default as AddDocumentPage } from "./AddDocumentPage";
-export { default as ManageDocumentsPage } from "./ManageDocumentsPage";
+export { AddDocumentPage } from "./AddDocumentPage";
+export { ManageDocumentsPage } from "./ManageDocumentsPage";

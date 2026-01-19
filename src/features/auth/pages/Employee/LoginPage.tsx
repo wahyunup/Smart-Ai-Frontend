@@ -5,7 +5,7 @@ import Button from "../../../../shared/components/ui/Button";
 import { Icon } from "@iconify/react";
 import { useLoginEmployee } from "../../hooks";
 
-const EmployeLoginPage = () => {
+export const EmployeeLoginPage = () => {
   const {
     form,
     handleLogin,
@@ -75,5 +75,3 @@ const EmployeLoginPage = () => {
     </AuthLayout>
   );
 };
-
-export default EmployeLoginPage;

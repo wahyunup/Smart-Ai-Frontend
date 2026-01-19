@@ -5,7 +5,7 @@ import AuthSection from "../../components/AuthSection";
 import { UploadCloud } from "lucide-react";
 import { useFillCompanyBiodata } from "../../hooks/Admin/useFillCompanyBiodata";
 
-const FillCompanyBiodata = () => {
+export const FillCompanyBiodataPage = () => {
   const {
     form,
     handleFileChange,
@@ -87,5 +87,3 @@ const FillCompanyBiodata = () => {
     </AuthLayout>
   );
 };
-
-export default FillCompanyBiodata;

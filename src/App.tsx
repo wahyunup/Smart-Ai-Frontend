@@ -1,42 +1,50 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
 import NotFoundPage from "./shared/components/common/Fallback/NotFoundPage";
+
 import {
   AddDocumentPage,
-  AddStaffPage,
-  ChatlogDetailPage,
-  ChatlogPage,
+  AddStafPage,
+  ChatLogDetailPage,
+  ChatLogPage,
   CompanyProfilePage,
   DashboardAdminPage,
   InvoicePage,
   ManageDocumentsPage,
   ManageStaffPage,
   PaymentSuccessPage,
-  SelectSubscriptionPage,
+  SelectSubcriptionPage,
   SubscriptionPage,
   SubscriptionRequestPage,
 } from "./features/dashboard/pages/admin";
+
 import {
   CreateAdminCompanyPage,
   CreateCompanyPage,
   DashboardSuperadminPage,
   LogAuditPage,
-  ManageAdminCompanyPage,
   ManageCompanyPage,
   ManageTransactionPage,
   SettingsPage,
 } from "./features/dashboard/pages/superadmin";
+
 import {
+  CompanyLoginPage,
+  CompanyRegisterPage,
   EmployeeLoginPage,
   FillCompanyBiodataPage,
-  LoginPage,
-  RegisterPage,
   ResetPasswordPage,
   ResetPasswordSendEmailPage,
   SuperadminLoginPage,
   VerifiedAccountPage,
 } from "./features/auth/pages";
-import { AiChatPage, AiConversationPage, FAQPage } from "./features/aiChat/pages";
+
+import {
+  AiChatPage,
+  AiConversationPage,
+  FAQPage,
+} from "./features/aiChat/pages";
+
 import { HomePage } from "./features/home/page";
 
 function App() {
@@ -47,8 +55,11 @@ function App() {
 
         <Route path="/auth">
           <Route path="company-employe/login" element={<EmployeeLoginPage />} />
-          <Route path="company-admin/login" element={<LoginPage />} />
-          <Route path="company-admin/register" element={<RegisterPage />} />
+          <Route path="company-admin/login" element={<CompanyLoginPage />} />
+          <Route
+            path="company-admin/register"
+            element={<CompanyRegisterPage />}
+          />
           <Route path="admin/login" element={<SuperadminLoginPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
           <Route
@@ -69,24 +80,24 @@ function App() {
           </Route>
 
           <Route path="chat-log">
-            <Route index element={<ChatlogPage />} />
+            <Route index element={<ChatLogPage />} />
             <Route
               path="detail/:conversationId"
-              element={<ChatlogDetailPage />}
+              element={<ChatLogDetailPage />}
             />
           </Route>
 
           <Route path="manage-staff">
             <Route index element={<ManageStaffPage />} />
-            <Route path="create" element={<AddStaffPage />} />
-            <Route path="edit" element={<AddStaffPage />} />
+            <Route path="create" element={<AddStafPage />} />
+            <Route path="edit" element={<AddStafPage />} />
           </Route>
 
           <Route path="company-profile" element={<CompanyProfilePage />} />
 
           <Route path="subcription">
             <Route index element={<SubscriptionPage />} />
-            <Route path="select-sub" element={<SelectSubscriptionPage />} />
+            <Route path="select-sub" element={<SelectSubcriptionPage />} />
             <Route path="sub-req" element={<SubscriptionRequestPage />} />
             <Route path="payment-success" element={<PaymentSuccessPage />} />
             <Route path="invoice" element={<InvoicePage />} />

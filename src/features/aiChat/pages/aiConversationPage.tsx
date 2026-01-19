@@ -7,7 +7,7 @@ import ReactMarkDown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useAIConversation } from "../hooks/useAIConversation";
 
-const aiConversationPage = () => {
+export const AiConversationPage = () => {
   const {
     chatEndRef,
     chats,
@@ -133,5 +133,3 @@ const aiConversationPage = () => {
     </MainLayout>
   );
 };
-
-export default aiConversationPage;
