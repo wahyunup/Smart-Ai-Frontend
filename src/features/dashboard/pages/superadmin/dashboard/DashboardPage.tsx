@@ -15,7 +15,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import { useDashboardSuperadmin } from "../../../hooks";
 
-const DashboardPage = () => {
+export const DashboardSuperadminPage = () => {
   const {
     breakdown,
     chartDataChatDaily,
@@ -261,4 +261,3 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;

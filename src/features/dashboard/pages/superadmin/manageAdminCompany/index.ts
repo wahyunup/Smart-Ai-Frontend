@@ -1,2 +1,2 @@
-export {default as CreateAdminCompanyPage} from "./CreateAdminCompanyPage"
-export {default as ManageAdminCompanyPage} from "./ManageAdminCompanyPage"
+export {CreateAdminCompanyPage} from "./CreateAdminCompanyPage"
+export {ManageAdminCompanyPage} from "./ManageAdminCompanyPage"

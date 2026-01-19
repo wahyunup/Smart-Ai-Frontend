@@ -1,1 +1,1 @@
-export {default as LogAuditPage} from "./LogAuditPage"
+export {LogAuditPage} from "./LogAuditPage"

@@ -6,7 +6,7 @@ import mascot from "../../../../../assets/icons/SmartAI-2.png";
 import Input from "../../../../../shared/components/ui/Input";
 import { useSettings } from "../../../hooks";
 
-const SettingsPage = () => {
+export const SettingsPage = () => {
   const {
     edit,
     handleOnChange,
@@ -250,4 +250,3 @@ const SettingsPage = () => {
     </MainLayout>
   );
 };
-export default SettingsPage;

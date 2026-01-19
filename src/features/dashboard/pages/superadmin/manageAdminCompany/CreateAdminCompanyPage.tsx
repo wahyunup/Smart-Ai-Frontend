@@ -3,7 +3,7 @@ import Input from "../../../../../shared/components/ui/Input";
 import MainLayout from "../../../../../shared/layouts/MainLayout";
 import { useCreateAdminCompany } from "../../../hooks";
 
-const CreateAdminCompanyPage = () => {
+export const CreateAdminCompanyPage = () => {
   const {
     form,
     handleCancle,
@@ -189,5 +189,3 @@ const CreateAdminCompanyPage = () => {
     </MainLayout>
   );
 };
-
-export default CreateAdminCompanyPage;

@@ -5,7 +5,7 @@ import Switch from "../../../../../shared/components/ui/Switch";
 import { Icon } from "@iconify/react";
 import { useCreateCompany } from "../../../hooks";
 
-const CreateCompany = () => {
+export const CreateCompanyPage = () => {
   const {
     dogglePassword,
     form,
@@ -246,4 +246,3 @@ const CreateCompany = () => {
   );
 };
 
-export default CreateCompany;

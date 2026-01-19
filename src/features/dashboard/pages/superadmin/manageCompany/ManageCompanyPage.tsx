@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import { useManageCompany } from "../../../hooks";
 
-const ManageDocumentsPage = () => {
+export const ManageCompanyPage = () => {
   const {
     data,
     deleteCompany,
@@ -211,4 +211,3 @@ const ManageDocumentsPage = () => {
   );
 };
 
-export default ManageDocumentsPage;

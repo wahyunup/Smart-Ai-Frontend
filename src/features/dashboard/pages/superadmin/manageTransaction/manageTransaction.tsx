@@ -8,7 +8,7 @@ import { subNavigate } from "../../../../../shared/config/subNavigationConfig";
 import { useManageTransaction } from "../../../hooks";
 
 
-const ManageTransaction = () => {
+export const ManageTransactionPage = () => {
   const {
     data,
     date,
@@ -169,4 +169,3 @@ const ManageTransaction = () => {
   );
 };
 
-export default ManageTransaction;

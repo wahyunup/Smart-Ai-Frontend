@@ -97,7 +97,7 @@ function App() {
           <Route path="dashboard" element={<DashboardSuperadminPage />} />
           <Route path="log-audit" element={<LogAuditPage />} />
           <Route path="manage-company">
-            <Route index element={<ManageAdminCompanyPage />} />
+            <Route index element={<ManageCompanyPage />} />
             <Route path="create" element={<CreateAdminCompanyPage />} />
             <Route path="edit/:id" element={<CreateAdminCompanyPage />} />
           </Route>

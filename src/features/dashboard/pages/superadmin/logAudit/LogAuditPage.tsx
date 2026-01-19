@@ -5,7 +5,7 @@ import TableBody from "../../../../../shared/components/common/Table/TableBody";
 import Button from "../../../../../shared/components/ui/Button";
 import { formatDate } from "../../../../../shared/utils/FormatDate";
 import { useLogAudit } from "../../../hooks";
-const LogAuditPage = () => {
+export const LogAuditPage = () => {
   const {
     companyList,
     dataLogs,
@@ -197,4 +197,3 @@ const LogAuditPage = () => {
   );
 };
 
-export default LogAuditPage;

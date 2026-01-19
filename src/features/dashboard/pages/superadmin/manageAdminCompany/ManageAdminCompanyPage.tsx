@@ -7,7 +7,7 @@ import { ChevronDown, Search } from "lucide-react";
 import Tooltip from "../../../../../shared/components/common/Tooltip/Tooltip";
 import { useManageAdminCompany } from "../../../hooks/superadmin/manageAdminCompany/useManageAdminCompany";
 
-const ManageAdminCompanyPage = () => {
+export const ManageAdminCompanyPage = () => {
   const {
     navigate,
     handleNextPage,
@@ -167,4 +167,3 @@ const ManageAdminCompanyPage = () => {
   );
 };
 
-export default ManageAdminCompanyPage;
