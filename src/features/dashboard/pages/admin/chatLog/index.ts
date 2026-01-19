@@ -1,2 +1,2 @@
 export { ChatLogPage } from "./ChatLogPage";
-export { ChatLogDetailPage } from "./ChatLogDetail";
+export { ChatLogDetailPage } from "./ChatLogDetailPage";

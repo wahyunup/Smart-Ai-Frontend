@@ -1,1 +1,1 @@
-export { ManageTransactionPage } from "./ManageTransaction";
+export { ManageTransactionPage } from "./ManageTransactionPage";

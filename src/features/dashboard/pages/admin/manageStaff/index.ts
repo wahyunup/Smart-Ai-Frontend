@@ -1,2 +1,2 @@
 export { ManageStaffPage } from "./ManageStaffPage";
-export { AddStafPage } from "./AddStaff";
+export { AddStafPage } from "./AddStaffPage";

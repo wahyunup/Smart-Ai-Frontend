@@ -1,2 +1,2 @@
-export {CreateCompanyPage} from "./CreateCompany"
-export {ManageCompanyPage} from "./ManageCompanyPage"
+export { CreateCompanyPage } from "./CreateCompanyPage";
+export { ManageCompanyPage } from "./ManageCompanyPage";
