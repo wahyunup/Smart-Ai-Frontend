@@ -27,39 +27,53 @@ export const ManageStaffPage = () => {
     isLoading,
     setIsOpenStat,
   } = useManageStaff();
+
   return (
     <MainLayout>
-      <div className="p-10 flex flex-col gap-10">
-        <h1 className="text-3xl font-semibold">Kelola Staff</h1>
+      <div className="p-10 flex flex-col gap-8">
+        {/* ── Page header ── */}
+        <h1 className="font-syne font-extrabold text-white text-3xl">
+          Kelola Staff
+        </h1>
 
-        <div className="flex flex-col gap-3 shadow-2xl p-8 rounded-3xl">
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-between">
-              <h3 className="text-xl">Data Staff Perusahaan</h3>
-              <Button
-                onclick={() => navigate("/admin/manage-staff/create")}
-                classname="px-5 flex justify-center py-3 items-center gap-2 rounded-xl"
-                variant="secondary">
-                Tambah <FilePlus size={20} />
-              </Button>
-            </div>
-            <div className="flex items-center">
-              <Input
-                value={value}
-                onchange={(e) => setValue(e.target.value)}
-                variant="secondary"
-                placeholder="Masukan nama dokumen atau kata kunci"
-                name="search"
-                type="text"
-                htmlFor="search"
-                icon={<Search color="#2F2F2F" />}
-              />
-              <div className="flex gap-5"></div>
-            </div>
+        {/* ── Card container ── */}
+        <div
+          className="relative bg-[#0A1A20] border border-[#16FF6E]/[.07]
+                      rounded-[20px] p-6 flex flex-col gap-5 overflow-hidden"
+        >
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+
+          {/* Toolbar */}
+          <div className="flex justify-between items-center">
+            <h3 className="font-syne font-bold text-white text-lg">
+              Data Staff Perusahaan
+            </h3>
+            <Button
+              onclick={() => navigate("/admin/manage-staff/create")}
+              classname="group px-5 py-2.5 flex items-center gap-2 rounded-[10px]"
+              variant="primary"
+            >
+              <FilePlus size={15} />
+              Tambah
+            </Button>
           </div>
 
-          <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
-            <TableHeaderList classname="bg-[#E3F9E8] grid-cols-7">
+          <div className="w-full max-w-sm">
+            <Input
+              value={value}
+              onchange={(e) => setValue(e.target.value)}
+              variant="primary"
+              placeholder="Masukan nama atau kata kunci"
+              name="search"
+              type="text"
+              htmlFor="search"
+              icon={<Search size={16} className="text-[#6B8C80]" />}
+            />
+          </div>
+
+          {/* Table */}
+          <div className="rounded-[14px] overflow-hidden border border-[#16FF6E]/[.07]">
+            <TableHeaderList classname="grid-cols-7">
               <span>Nama</span>
               <span>Username</span>
               <span>Divisi</span>
@@ -81,92 +95,97 @@ export const ManageStaffPage = () => {
               totalPage={totalPage}
               renderItem={(item) => {
                 const bgColor = getRandomColor(item.id);
-
                 return (
                   <>
-                    {/* nama */}
+                    {/* Nama */}
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden rounded-full bg-gray-200">
-                        {item.profile_picture_url === null ||
-                        !item.profile_picture_url ? (
+                      <div className="w-9 h-9 overflow-hidden rounded-full shrink-0">
+                        {!item.profile_picture_url ? (
                           <div
                             style={{ backgroundColor: bgColor }}
-                            className="h-full w-full text-white flex items-center justify-center">
+                            className="h-full w-full text-white flex items-center justify-center font-syne font-bold text-sm"
+                          >
                             {item.name.slice(0, 1)}
                           </div>
                         ) : (
                           <img
-                            className="h-full w-full"
+                            className="h-full w-full object-cover"
                             src={item.profile_picture_url}
                             alt=""
                           />
                         )}
                       </div>
-
                       <Tooltip label={item.name}>
-                        <span className="inline-block w-20 truncate text-start">
+                        <span className="font-dm text-[#E8F4F0] text-sm inline-block w-20 truncate text-start">
                           {item.name}
                         </span>
                       </Tooltip>
                     </div>
-                    {/* username */}
+
+                    {/* Username */}
                     <Tooltip label={item.username}>
-                      <span className="inline-block w-20 truncate text-center">
+                      <span className="font-dm text-[#6B8C80] text-sm inline-block w-20 truncate text-center">
                         {item.username}
                       </span>
                     </Tooltip>
 
+                    {/* Divisi */}
                     {item.division === null ? (
-                      <span className="text-center">Tidak ada</span>
+                      <span className="font-dm text-[#6B8C80]/50 text-sm text-center italic">
+                        Tidak ada
+                      </span>
                     ) : (
                       <Tooltip label={item.division}>
-                        <span className="inline-block w-20 truncate">
+                        <span className="font-dm text-[#6B8C80] text-sm inline-block w-20 truncate">
                           {item.division}
                         </span>
                       </Tooltip>
                     )}
 
+                    {/* Peran */}
                     <Tooltip label={item.role}>
-                      <span className="inline-block w-20 truncate text-start">
-                        {item.role}
-                      </span>
-                    </Tooltip>
-                    <Tooltip label={item.role}>
-                      <span className="inline-block w-20 truncate text-start">
+                      <span className="font-dm text-[#6B8C80] text-sm inline-block w-20 truncate text-start">
                         {item.role}
                       </span>
                     </Tooltip>
 
-                    {/* status */}
+                    {/* Pengguna qty */}
+                    <Tooltip label={item.role}>
+                      <span className="font-dm text-[#6B8C80] text-sm inline-block w-20 truncate text-start">
+                        {item.role}
+                      </span>
+                    </Tooltip>
+
+                    {/* Status toggle */}
                     <div className="relative">
                       {item.is_active ? (
                         <>
                           <button
                             onClick={() => handleToogleStatus(item.id)}
-                            className="flex gap-2 justify-between bg-[#00AA58] text-white w-fit rounded-full px-8 py-1.5 cursor-pointer">
-                            Aktif <ChevronDown />
+                            className="flex items-center gap-1.5
+                                       bg-[#16FF6E]/10 text-[#16FF6E] border border-[#16FF6E]/20
+                                       font-dm font-medium text-xs
+                                       w-fit rounded-full px-4 py-1.5 cursor-pointer
+                                       hover:bg-[#16FF6E]/15 transition-all duration-200"
+                          >
+                            Aktif <ChevronDown size={12} />
                           </button>
                           {isOpenStat === item.id && (
-                            <div className="absolute flex flex-col z-1 bg-white 2xl:py-2 md:py-1.5 w-33 mt-1 border 2xl:rounded-xl md:rounded-lg 2xl:text-base md:text-xs">
-                              {!item.is_active ? (
-                                <button
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    handleStatUser(item.id, item.is_active);
-                                    setIsOpenStat(null);
-                                  }}>
-                                  Aktif
-                                </button>
-                              ) : (
-                                <button
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    handleStatUser(item.id, item.is_active);
-                                    setIsOpenStat(null);
-                                  }}>
-                                  Nonaktif
-                                </button>
-                              )}
+                            <div
+                              className="absolute z-10 mt-1 w-32
+                                          bg-[#0A1A20] border border-[#16FF6E]/20
+                                          rounded-[10px] overflow-hidden
+                                          shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+                            >
+                              <button
+                                className="w-full font-dm text-sm text-[#6B8C80] hover:text-[#16FF6E] hover:bg-[#16FF6E]/[.05] px-4 py-2.5 text-left transition-colors duration-200 cursor-pointer"
+                                onClick={() => {
+                                  handleStatUser(item.id, item.is_active);
+                                  setIsOpenStat(null);
+                                }}
+                              >
+                                {!item.is_active ? "Aktif" : "Nonaktif"}
+                              </button>
                             </div>
                           )}
                         </>
@@ -174,35 +193,33 @@ export const ManageStaffPage = () => {
                         <>
                           <button
                             onClick={() => handleToogleStatus(item.id)}
-                            className="cursor-pointer text-center bg-[#DB3726] text-white w-fit rounded-full px-8 py-1.5 flex gap-2 items-center ">
-                            Nonaktif
-                            <ChevronDown />
+                            className="flex items-center gap-1.5
+                                       bg-red-500/10 text-red-400 border border-red-500/20
+                                       font-dm font-medium text-xs
+                                       w-fit rounded-full px-4 py-1.5 cursor-pointer
+                                       hover:bg-red-500/15 transition-all duration-200"
+                          >
+                            Nonaktif <ChevronDown size={12} />
                           </button>
                           {isOpenStat === item.id && (
                             <div
                               onClick={() =>
                                 handleStatUser(item.id, item.is_active)
                               }
-                              className="absolute flex flex-col z-3 bg-white py-2 w-33 mt-1 border rounded-xl 2xl:text-base md:text-xs 2xl:rounded-xl md:rounded-lg 2xl:py-2 md:py-1.5">
-                              {!item.is_active ? (
-                                <button
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    handleStatUser(item.id, item.is_active);
-                                    setIsOpenStat(null);
-                                  }}>
-                                  Aktif
-                                </button>
-                              ) : (
-                                <button
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    handleStatUser(item.id, item.is_active);
-                                    setIsOpenStat(null);
-                                  }}>
-                                  Nonaktif
-                                </button>
-                              )}
+                              className="absolute z-10 mt-1 w-32
+                                          bg-[#0A1A20] border border-[#16FF6E]/20
+                                          rounded-[10px] overflow-hidden
+                                          shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+                            >
+                              <button
+                                className="w-full font-dm text-sm text-[#6B8C80] hover:text-[#16FF6E] hover:bg-[#16FF6E]/[.05] px-4 py-2.5 text-left transition-colors duration-200 cursor-pointer"
+                                onClick={() => {
+                                  handleStatUser(item.id, item.is_active);
+                                  setIsOpenStat(null);
+                                }}
+                              >
+                                {!item.is_active ? "Aktif" : "Nonaktif"}
+                              </button>
                             </div>
                           )}
                         </>
@@ -218,4 +235,3 @@ export const ManageStaffPage = () => {
     </MainLayout>
   );
 };
-

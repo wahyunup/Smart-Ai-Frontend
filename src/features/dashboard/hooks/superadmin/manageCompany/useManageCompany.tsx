@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import {
   allCompanyApi,
@@ -18,16 +18,27 @@ export const useManageCompany = () => {
   const [isLoadingToggle, setIsLoadingToggle] = useState<number | null>(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState<number>(0);
   const [isOpenStat, setIsOpenStat] = useState<number | null>(null);
+  const [debounceSearch, setDebounceSearch] = useState<string>("");
 
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFilter(value);
+  };
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      setDebounceSearch(filter)
+    }, 500)
+    return () => clearTimeout(debounce)
+  },[filter])
+
   const fetchAllCompany = async () => {
     setIsLoading(true);
     try {
-      const res = await allCompanyApi(page, 4, filter);
-      console.log(res);
-
+      const res = await allCompanyApi(page, 4, debounceSearch);
       const destructerCompany = res.companies.map((item: any) => ({
         ...item,
         id: item.company_id,
@@ -44,7 +55,7 @@ export const useManageCompany = () => {
 
   useEffect(() => {
     fetchAllCompany();
-  }, [filter, page]);
+  }, [debounceSearch, page]);
 
   const handleNextPage = () => {
     if (isLoading) return;
@@ -155,5 +166,6 @@ export const useManageCompany = () => {
     handleToogleStatus,
     handleStatUser,
     deleteCompany,
+    handleOnChange,
   };
 };

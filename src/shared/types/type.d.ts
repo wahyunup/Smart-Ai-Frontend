@@ -39,7 +39,7 @@ export interface ButtonProps {
   onclick?: () => void;
   children: React.ReactNode;
   classname?: string;
-  variant?: "primary" | "secondary" | "link" | "cancel" | "cancel secondary" | "info";
+  variant?: "primary" | "secondary" | "link" | "cancel" | "cancel secondary" | "info" | "nav";
 }
 
 export interface CardProps {

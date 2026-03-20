@@ -24,7 +24,7 @@ export const CompanyRegisterPage = () => {
     <AuthLayout>
       {step === 1 ? (
         <AuthSection
-          classname="gap-3"
+          classname="gap-5"
           headingAuth="Daftar Admin Perusahaan"
           subHeadingAuth="Kami perlu verifikasi manual akun admin perusahaan."
           formContent={
@@ -40,7 +40,7 @@ export const CompanyRegisterPage = () => {
                   htmlFor="companyName"
                   label="Nama Perusahaan"
                 />
-                <p className="text-center text-black/65 mt-3 text-xs">
+                <p className="font-dm text-[#6B8C80] mt-2 text-xs">
                   Nama resmi yang lengkap.
                 </p>
               </div>
@@ -55,26 +55,37 @@ export const CompanyRegisterPage = () => {
                   htmlFor="companyEmail"
                   label="Email Perusahaan"
                 />
-                <p className="text-center text-black/65 mt-3 text-xs">
+                <p className="font-dm text-[#6B8C80] mt-2 text-xs">
                   Email resmi yang lengkap.
                 </p>
               </div>
             </>
           }
           footerContent={
-            <div className="w-70">
+            <div className="md:w-100 w-90 flex flex-col items-center gap-3">
               <Button
                 onclick={() => setStep(2)}
                 variant="primary"
-                classname="py-3 w-full rounded-xl cursor-pointer">
+                classname="w-full py-3.5 flex items-center justify-center gap-2.5 group"
+              >
                 Selanjutnya
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Button>
-              <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
-                sudah punya aku?{" "}
+              <p className="font-dm text-center text-[#6B8C80] text-xs">
+                Sudah punya akun?{" "}
                 <span
-                  className="text-[#0B5C37] cursor-pointer"
-                  onClick={() => navigate("/auth/company-admin/login")}>
-                  masuk disini
+                  className="text-[#16FF6E] cursor-pointer hover:underline underline-offset-2 transition-all duration-200"
+                  onClick={() => navigate("/auth/company-admin/login")}
+                >
+                  Masuk disini
                 </span>
               </p>
             </div>
@@ -82,7 +93,7 @@ export const CompanyRegisterPage = () => {
         />
       ) : step === 2 ? (
         <AuthSection
-          classname="gap-3"
+          classname="gap-5"
           headingAuth="Daftar Admin Perusahaan"
           subHeadingAuth="Kami perlu verifikasi manual akun perusahaan"
           formContent={
@@ -99,21 +110,6 @@ export const CompanyRegisterPage = () => {
                   label="Nama PIC"
                 />
               </div>
-              {/* <div className="md:w-100 w-90">
-                <Input
-                  variant="primary"
-                  onchange={handleOnChange}
-                  value={form.picNo}
-                  name="picNo"
-                  placeholder="Masukan nomor PIC"
-                  type="number"
-                  htmlFor="picNo"
-                  label="Nomor PIC"
-                />
-                <span className="text-gray-400 text-xs">
-                  Nomor Whatsapp Yang Aktif
-                </span>
-              </div> */}
               <div className="md:w-100 w-90">
                 <Input
                   variant="primary"
@@ -144,27 +140,41 @@ export const CompanyRegisterPage = () => {
             </>
           }
           footerContent={
-            <div className="w-80">
+            <div className="md:w-100 w-90 flex flex-col items-center gap-3">
               {isLoading ? (
+                /* loading — same shape as primary button, disabled */
                 <Button
                   variant="primary"
-                  classname="py-3 w-full rounded-xl cursor-pointer flex items-center justify-center">
-                  <Icon icon="line-md:loading-loop" width="24" height="24" />
+                  classname="w-full py-3.5 flex items-center justify-center gap-2.5 opacity-75 cursor-not-allowed pointer-events-none"
+                >
+                  <Icon icon="line-md:loading-loop" width="20" height="20" />
+                  Memproses...
                 </Button>
               ) : (
                 <Button
                   onclick={handleRegister}
                   variant="primary"
-                  classname="py-3 w-full rounded-xl cursor-pointer">
+                  classname="w-full py-3.5 flex items-center justify-center gap-2.5 group"
+                >
                   Daftar
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
                 </Button>
               )}
-              <p className="text-center text-black/65 mt-3 md:text-sm text-xs">
-                sudah punya aku?{" "}
+              <p className="font-dm text-center text-[#6B8C80] text-xs">
+                Sudah punya akun?{" "}
                 <span
-                  className="text-[#0B5C37] cursor-pointer"
-                  onClick={() => navigate("/auth/company-admin/login")}>
-                  masuk disini
+                  className="text-[#16FF6E] cursor-pointer hover:underline underline-offset-2 transition-all duration-200"
+                  onClick={() => navigate("/auth/company-admin/login")}
+                >
+                  Masuk disini
                 </span>
               </p>
             </div>
@@ -172,38 +182,43 @@ export const CompanyRegisterPage = () => {
         />
       ) : step === 3 ? (
         <AuthSection
-          classname="gap-3"
+          classname="gap-5"
           headingAuth="Permintaan Anda Sedang Ditinjau"
           subHeadingAuth={
-            <>
-              <p className="text-center font-light font-inter text-[#282222]">
-                Terima kasih telah mendaftar. Kami akan menghubungi{" "}
-                <span className="font-medium underline">{verifyEmail}</span>{" "}
-                dalam 1x24 <br /> jam untuk verifikasi manual oleh tim Super
-                Admin.
-              </p>
-            </>
+            <p className="text-center font-dm text-[#6B8C80] text-sm leading-relaxed">
+              Terima kasih telah mendaftar. Kami akan menghubungi{" "}
+              <span className="font-semibold text-[#16FF6E] underline underline-offset-2">
+                {verifyEmail}
+              </span>{" "}
+              dalam 1×24 jam untuk verifikasi manual oleh tim Super Admin.
+            </p>
           }
           formContent={
             <div className="relative flex justify-center">
               {!isLoading && (
                 <div className="absolute inset-0 flex justify-center items-center">
-                  <Icon icon="line-md:loading-loop" width="50" height="50" />
+                  <Icon
+                    icon="line-md:loading-loop"
+                    width="50"
+                    height="50"
+                    className="text-[#16FF6E]"
+                  />
                 </div>
               )}
-
               <iframe
                 className="md:size-90 size-60"
                 src="https://lottie.host/embed/a21bfb0a-9614-44ae-8570-4e8ccc51c538/lJq53o4oER.lottie"
-                onLoad={() => setIsLoading(true)}></iframe>
+                onLoad={() => setIsLoading(true)}
+              />
             </div>
           }
           footerContent={
-            <>
-              <a href="#" className="underline text-[#000000A6] text-sm">
-                Hubungi Tim Dukungan Teknis
-              </a>
-            </>
+            <Button
+              variant="link"
+              classname="font-dm text-sm text-[#6B8C80] hover:text-[#16FF6E] underline-offset-2"
+            >
+              <a href="#">Hubungi Tim Dukungan Teknis</a>
+            </Button>
           }
         />
       ) : (

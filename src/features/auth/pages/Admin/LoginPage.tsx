@@ -15,15 +15,15 @@ export const CompanyLoginPage = () => {
     showingPassword,
     navigate,
   } = useLoginAdmin();
-  
+
   return (
     <AuthLayout>
       <AuthSection
-        classname="gap-1"
+        classname="gap-4"
         headingAuth="Selamat Datang Kembali"
         subHeadingAuth="Masuk sebagai Administrator SmartAI."
         formContent={
-          <div className="md:w-100 w-90 flex flex-col gap-2">
+          <div className="md:w-100 w-90 flex flex-col gap-4">
             <Input
               variant="primary"
               label="Email Perusahaan"
@@ -34,7 +34,7 @@ export const CompanyLoginPage = () => {
               value={form.email}
               onchange={handleOnChange}
             />
-            <div>
+            <div className="flex flex-col gap-1.5">
               <Input
                 variant="primary"
                 label="Kata Sandi"
@@ -49,34 +49,51 @@ export const CompanyLoginPage = () => {
               />
               <span
                 onClick={() => navigate("/auth/reset-password-send-email")}
-                className="text-[#0B5C37] text-xs cursor-pointer">
+                className="font-dm text-[12px] text-[#16FF6E] cursor-pointer
+                           hover:underline underline-offset-2 transition-all duration-200
+                           w-fit"
+              >
                 Lupa kata sandi?
               </span>
             </div>
           </div>
         }
         footerContent={
-          <div className="w-80">
+          <div className="md:w-100 w-90 flex flex-col items-center gap-3">
             {isLoading ? (
               <Button
-                classname="py-3 w-full flex justify-center"
-                variant="primary">
-                <Icon icon="line-md:loading-loop" width="24" height="24" />
+                variant="primary"
+                classname="w-full py-3.5 flex items-center justify-center gap-2.5 opacity-75 cursor-not-allowed pointer-events-none"
+              >
+                <Icon icon="line-md:loading-loop" width="20" height="20" />
+                Memproses...
               </Button>
             ) : (
               <Button
                 onclick={handleLogin}
                 variant="primary"
-                classname="py-3 w-full">
+                classname="group w-full py-3.5 flex items-center justify-center gap-2.5"
+              >
                 Masuk
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Button>
             )}
-            <p className="text-center text-black/65 mt-3 2xl:text-sm text-xs">
+
+            <p className="font-dm text-center text-[#6B8C80] 2xl:text-sm text-xs leading-relaxed">
               Ingin Mendaftarkan Perusahaan Anda? Daftar Sebagai Admin
-              Perusahaan
+              Perusahaan{" "}
               <span
-                className="text-[#3BC152] cursor-pointer ml-1"
-                onClick={() => navigate("/auth/company-admin/register")}>
+                className="text-[#16FF6E] cursor-pointer hover:underline underline-offset-2 transition-all duration-200"
+                onClick={() => navigate("/auth/company-admin/register")}
+              >
                 di Sini
               </span>
             </p>

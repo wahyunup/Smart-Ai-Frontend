@@ -14,11 +14,11 @@ export const EmployeeLoginPage = () => {
     setShowingPassword,
     isLoading,
   } = useLoginEmployee();
-  
+
   return (
     <AuthLayout>
       <AuthSection
-        classname="gap-1"
+        classname="gap-4"
         headingAuth="Selamat Datang Kembali"
         subHeadingAuth="Masuk ke akun SmartAI anda"
         subabHeading="Silakan gunakan kredensial yang telah diberikan oleh Admin Anda."
@@ -29,12 +29,12 @@ export const EmployeeLoginPage = () => {
               onchange={handleOnChange}
               value={form.username}
               htmlFor={form.username}
-              label="username"
+              label="Username"
               name="username"
               placeholder="Masukan username"
               type="text"
             />
-            <div>
+            <div className="flex flex-col gap-1.5">
               <Input
                 variant="primary"
                 onchange={handleOnChange}
@@ -47,26 +47,39 @@ export const EmployeeLoginPage = () => {
                 showPassword={showingPassword}
                 type={`${showingPassword ? "text" : "password"}`}
               />
-              <span className="text-[#0B5C37] text-xs cursor-pointer">
-                Lupa kata sandi? Hubungi admin perusahaan
+              <span className="font-dm text-[12px] text-[#6B8C80] cursor-default w-fit">
+                Lupa kata sandi?{" "}
+                <span className="text-[#16FF6E]">Hubungi admin perusahaan</span>
               </span>
             </div>
           </div>
         }
         footerContent={
-          <div className="w-80">
+          <div className="md:w-100 w-90 flex flex-col items-center gap-3">
             {isLoading ? (
               <Button
-                classname="py-3 w-full flex items-center justify-center"
-                variant="primary">
-                <Icon icon="line-md:loading-loop" width="24" height="24" />
+                variant="primary"
+                classname="w-full py-3.5 flex items-center justify-center gap-2.5 opacity-75 cursor-not-allowed pointer-events-none"
+              >
+                <Icon icon="line-md:loading-loop" width="20" height="20" />
+                Memproses...
               </Button>
             ) : (
               <Button
                 onclick={handleLogin}
-                classname="py-3 w-full"
-                variant="primary">
+                variant="primary"
+                classname="group w-full py-3.5 flex items-center justify-center gap-2.5"
+              >
                 Masuk
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Button>
             )}
           </div>

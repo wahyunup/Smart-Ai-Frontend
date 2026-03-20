@@ -6,7 +6,9 @@ import { Icon } from "@iconify/react";
 import { useResetPasswordSendEmail } from "../../../hooks/Admin/ResetPassword/useResetPasswordSendEmail";
 
 export const ResetPasswordSendEmailPage = () => {
-  const {email,handleSubmit,isLoading,setEmail} = useResetPasswordSendEmail()
+  const { email, handleSubmit, isLoading, setEmail } =
+    useResetPasswordSendEmail();
+
   return (
     <AuthLayout>
       <AuthSection
@@ -18,7 +20,7 @@ export const ResetPasswordSendEmailPage = () => {
               label="Email"
               placeholder="Masukan Email"
               labelLayout="block"
-              variant="secondary"
+              variant="primary"
               name="email"
               type="email"
               htmlFor="email"
@@ -28,17 +30,31 @@ export const ResetPasswordSendEmailPage = () => {
           </div>
         }
         footerContent={
-          <div className="w-80">
+          <div className="md:w-100 w-90 flex flex-col items-center gap-3">
             {isLoading ? (
-              <Button variant="primary" classname="py-3 w-full flex justify-center">
-                <Icon icon="line-md:loading-loop" width="24" height="24" />
+              <Button
+                variant="primary"
+                classname="w-full py-3.5 flex items-center justify-center gap-2.5 opacity-75 cursor-not-allowed pointer-events-none"
+              >
+                <Icon icon="line-md:loading-loop" width="20" height="20" />
+                Memproses...
               </Button>
             ) : (
               <Button
                 onclick={handleSubmit}
                 variant="primary"
-                classname="py-3 w-full">
-                Kirim
+                classname="group w-full py-3.5 flex items-center justify-center gap-2.5"
+              >
+                Kirim Link Reset
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Button>
             )}
           </div>

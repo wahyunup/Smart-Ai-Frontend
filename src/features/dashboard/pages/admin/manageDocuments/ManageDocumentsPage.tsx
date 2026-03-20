@@ -24,43 +24,54 @@ export const ManageDocumentsPage = () => {
 
   return (
     <MainLayout>
-      <div className="p-10 flex flex-col gap-10">
-        <h1 className="2xl:text-3xl md:text-2xl font-semibold">
+      <div className="p-10 flex flex-col gap-8">
+        {/* ── Page header ── */}
+        <h1 className="font-syne font-extrabold text-white 2xl:text-3xl md:text-2xl">
           Kelola Dokumen
         </h1>
 
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl">Daftar Dokumen</h3>
-            <div className="flex gap-5 items-center">
+        <div className="flex flex-col gap-5">
+          <h3 className="font-syne font-bold text-white text-lg">
+            Daftar Dokumen
+          </h3>
+
+          {/* Toolbar */}
+          <div className="flex gap-4 items-center">
+            <div className="flex-1">
               <Input
                 value={value}
                 onchange={(e) => setValue(e.target.value)}
-                variant="secondary"
+                variant="primary"
                 placeholder="Masukan nama dokumen atau kata kunci"
                 name="search"
                 type="text"
                 htmlFor="search"
-                icon={<Search color="#2F2F2F" />}
+                icon={<Search size={16} className="text-[#6B8C80]" />}
               />
-              <div className="flex gap-5">
-                <Button
-                  classname="w-50 py-3 flex justify-center items-center gap-2 rounded-xl bg-blue-500"
-                  variant="secondary">
-                  Reset Index <RotateCcw size={20} />
-                </Button>
-                <Button
-                  onclick={() => navigate("/admin/manage-documents/create")}
-                  classname="px-5 flex justify-center items-center gap-2 rounded-xl"
-                  variant="secondary">
-                  Tambah <FilePlus size={20} />
-                </Button>
-              </div>
+            </div>
+            <div className="flex gap-3">
+              <Button
+                variant="secondary"
+                classname="px-5 py-2.5 flex items-center gap-2 rounded-[10px]"
+              >
+                <RotateCcw size={15} />
+                Reset Index
+              </Button>
+              <Button
+                onclick={() => navigate("/admin/manage-documents/create")}
+                variant="primary"
+                classname="group px-5 py-2.5 flex items-center gap-2 rounded-[10px]"
+              >
+                <FilePlus size={15} />
+                Tambah
+              </Button>
             </div>
           </div>
 
-          <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
-            <TableHeaderList classname="grid bg-[#E3F9E8] grid-cols-5">
+          {/* Table */}
+          <div className="bg-[#0A1A20] border border-[#16FF6E]/[.07] rounded-[20px] overflow-hidden relative">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+            <TableHeaderList classname="grid grid-cols-5">
               <span>Judul</span>
               <span>Status</span>
               <span>Konten/Tag</span>
@@ -80,35 +91,51 @@ export const ManageDocumentsPage = () => {
                 const convertDate = formatDate(item.uploaded_at, true);
                 return (
                   <>
-                    <span className="text-center">{item.title}</span>
-                    <div>
+                    <span className="font-dm text-[#E8F4F0] text-sm text-center">
+                      {item.title}
+                    </span>
+
+                    {/* Status badge */}
+                    <div className="flex justify-center">
                       <span
-                        className={`lowercase w-fit px-4 py-1 rounded-full ${
-                          item.status === "UPLOAD_FAILED" ||
-                          item.status === "PROCESSING_FAILED"
-                            ? "bg-red-700 text-white"
-                            : item.status === "UPLOADED" ||
-                              item.status === "COMPLETED"
-                            ? "bg-green-600 text-white"
-                            : item.status === "UPLOADING" ||
-                              item.status === "OCR_PROCESSING" ||
-                              item.status === "PENDING_VALIDATION" ||
-                              item.status === "EMBEDDING"
-                            ? "bg-orange-500 text-white"
-                            : ""
-                        }`}>
+                        className={`font-dm font-medium text-xs lowercase px-4 py-1.5 rounded-full
+                          ${
+                            item.status === "UPLOAD_FAILED" ||
+                            item.status === "PROCESSING_FAILED"
+                              ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                              : item.status === "UPLOADED" ||
+                                  item.status === "COMPLETED"
+                                ? "bg-[#16FF6E]/10 text-[#16FF6E] border border-[#16FF6E]/20"
+                                : item.status === "UPLOADING" ||
+                                    item.status === "OCR_PROCESSING" ||
+                                    item.status === "PENDING_VALIDATION" ||
+                                    item.status === "EMBEDDING"
+                                  ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
+                                  : "bg-white/5 text-[#6B8C80] border border-white/10"
+                          }`}
+                      >
                         {item.status}
                       </span>
                     </div>
+
+                    {/* Tags */}
                     <div className="flex flex-wrap justify-center gap-2">
                       {item.tags.map((tag: string) => (
-                        <span className="bg-[#E3F9E8] px-5 py-2 text-sm text-center rounded-2xl flex gap-2">
+                        <span
+                          key={tag}
+                          className="font-dm text-xs px-3 py-1
+                                     bg-[#16FF6E]/[.07] text-[#16FF6E]
+                                     border border-[#16FF6E]/15
+                                     rounded-full"
+                        >
                           {tag}
                         </span>
                       ))}
                     </div>
 
-                    <span>{convertDate}</span>
+                    <span className="font-dm text-[#6B8C80] text-sm text-center">
+                      {convertDate}
+                    </span>
                   </>
                 );
               }}
@@ -119,4 +146,3 @@ export const ManageDocumentsPage = () => {
     </MainLayout>
   );
 };
-

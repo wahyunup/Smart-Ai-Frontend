@@ -15,24 +15,29 @@ export const CreateAdminCompanyPage = () => {
     id,
     setShowPassword,
   } = useCreateAdminCompany();
+
   return (
     <MainLayout>
       <div className="p-10">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-semibold">Kelola Admin Perusahaan</h1>
-          {isEditPage ? (
-            <h2 className="text-xl font-medium">Edit Admin Perusahaan</h2>
-          ) : isDetailPage ? (
-            <h2 className="text-xl font-medium">Lihat Admin Perusahaan</h2>
-          ) : (
-            <h2 className="text-xl font-medium">Tambah Admin Perusahaan</h2>
-          )}
-          <div>
-            <h3 className="text-xl font-semibold">Detail Akun Admin</h3>
-          </div>
+        {/* ── Page header ── */}
+        <div className="flex flex-col gap-2 mb-10">
+          <h1 className="font-syne font-extrabold text-white 2xl:text-3xl md:text-2xl">
+            Kelola Admin Perusahaan
+          </h1>
+          <h2 className="font-syne font-bold text-[#16FF6E] 2xl:text-xl md:text-base">
+            {isEditPage
+              ? "Edit Admin Perusahaan"
+              : isDetailPage
+                ? "Lihat Admin Perusahaan"
+                : "Tambah Admin Perusahaan"}
+          </h2>
+          <h3 className="font-syne font-bold text-white 2xl:text-lg md:text-base mt-1">
+            Detail Akun Admin
+          </h3>
         </div>
 
-        <div className="mt-10">
+        <div className="flex flex-col gap-8">
+          {/* ID field — edit/detail only */}
           {(isEditPage || isDetailPage) && (
             <div className="w-1/2">
               <Input
@@ -47,7 +52,8 @@ export const CreateAdminCompanyPage = () => {
             </div>
           )}
 
-          <div className="flex gap-5 mt-10">
+          {/* Row 1 */}
+          <div className="flex gap-5">
             {isDetailPage ? (
               <>
                 <Input
@@ -81,7 +87,7 @@ export const CreateAdminCompanyPage = () => {
                   value={form.companyName}
                   label="Pilih Perusahaan Klien"
                   labelLayout="block"
-                  variant="secondary"
+                  variant="primary"
                   type="select"
                 />
                 <Input
@@ -91,7 +97,7 @@ export const CreateAdminCompanyPage = () => {
                   value={form.fullname}
                   label="Nama Lengkap Admin"
                   labelLayout="block"
-                  variant="secondary"
+                  variant="primary"
                   placeholder="Ex: Rina Ayu"
                   type="text"
                 />
@@ -99,7 +105,8 @@ export const CreateAdminCompanyPage = () => {
             )}
           </div>
 
-          <div className=" flex gap-5 mt-10">
+          {/* Row 2 */}
+          <div className="flex gap-5">
             {isDetailPage ? (
               <>
                 <Input
@@ -134,7 +141,7 @@ export const CreateAdminCompanyPage = () => {
                   value={form.emailAdmin}
                   label="Email Login Admin"
                   labelLayout="block"
-                  variant="secondary"
+                  variant="primary"
                   type="email"
                 />
                 <Input
@@ -146,14 +153,15 @@ export const CreateAdminCompanyPage = () => {
                   value={form.password}
                   label="Kata Sandi"
                   labelLayout="block"
-                  variant="secondary"
+                  variant="primary"
                   type={showPassword ? "text" : "password"}
                 />
               </>
             )}
           </div>
 
-          <div className="flex gap-3 mt-6">
+          {/* Action buttons */}
+          <div className="flex gap-3">
             {form.companyName !== "" ||
             form.emailAdmin !== "" ||
             form.fullname !== "" ||
@@ -162,25 +170,60 @@ export const CreateAdminCompanyPage = () => {
                 <Button
                   onclick={handleCancle}
                   variant="cancel"
-                  classname="px-5 py-2 rounded-lg">
+                  classname="px-5 py-2.5 rounded-[10px]"
+                >
                   Batal
                 </Button>
                 {isEditPage ? (
-                  <Button variant="secondary" classname="px-5 py-2 rounded-lg">
-                    Edit
+                  <Button
+                    variant="primary"
+                    classname="group px-6 py-2.5 rounded-[10px] flex items-center gap-2"
+                  >
+                    Simpan Perubahan
+                    <svg
+                      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </Button>
                 ) : (
-                  <Button variant="secondary" classname="px-5 py-2 rounded-lg">
+                  <Button
+                    variant="primary"
+                    classname="group px-6 py-2.5 rounded-[10px] flex items-center gap-2"
+                  >
                     Submit
+                    <svg
+                      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </Button>
                 )}
               </>
             ) : (
               <Button
                 onclick={() => navigate("/superadmin/manage-admin-company")}
-                variant="info"
-                classname="px-5 py-2 rounded-lg">
-                kembali
+                variant="secondary"
+                classname="group px-6 py-2.5 rounded-[10px] flex items-center gap-2"
+              >
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1 rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                Kembali
               </Button>
             )}
           </div>

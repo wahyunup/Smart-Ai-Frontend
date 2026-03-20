@@ -1,20 +1,46 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 import type { BasicAreaProps } from "../../../types/type";
 
-export default function BasicArea({ heading, datas, days, color }: BasicAreaProps) {
-  const gradientId = color ?`gradient-${color.replace("#", "")}` : ""
+export default function BasicArea({
+  heading,
+  datas,
+  days,
+  color,
+}: BasicAreaProps) {
+  const gradientId = color ? `gradient-${color.replace("#", "")}` : "";
 
   return (
-    <div className="p-5 bg-white rounded-3xl shadow-[0_10px_20px_rgba(0,0,0,0.10)] w-full">
-      <h2 className="2xl:text-xl md:text-lg font-semibold mb-2">{heading}</h2>
+    <div
+      className="relative p-6 bg-[#0A1A20] border border-[#16FF6E]/[.07]
+                 rounded-[20px] w-full overflow-hidden"
+    >
+      {/* shimmer top line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+
+      <h2 className="font-syne font-bold text-white 2xl:text-lg md:text-base mb-4">
+        {heading}
+      </h2>
 
       <LineChart
-        height={380}
+        height={300}
         xAxis={[
           {
             data: days,
             scaleType: "band",
-            tickLabelStyle: { fontSize: 14 },
+            tickLabelStyle: {
+              fontSize: 11,
+              fill: "#6B8C80",
+              fontFamily: "DM Sans, sans-serif",
+            },
+          },
+        ]}
+        yAxis={[
+          {
+            tickLabelStyle: {
+              fontSize: 11,
+              fill: "#6B8C80",
+              fontFamily: "DM Sans, sans-serif",
+            },
           },
         ]}
         series={[
@@ -29,23 +55,36 @@ export default function BasicArea({ heading, datas, days, color }: BasicAreaProp
           },
         ]}
         sx={{
-          "& .MuiLineElement-root": {
-            strokeWidth: 3,
+          // transparent chart background
+          "& .MuiChartsAxis-root .MuiChartsAxis-line": {
+            stroke: "rgba(22,255,110,0.08)",
           },
+          "& .MuiChartsAxis-root .MuiChartsAxis-tick": {
+            stroke: "rgba(22,255,110,0.08)",
+          },
+          "& .MuiChartsGrid-line": { stroke: "rgba(22,255,110,0.05)" },
+          "& .MuiLineElement-root": { strokeWidth: 2.5 },
           "& .MuiAreaElement-root": {
             fill: `url(#${gradientId})`,
-            fillOpacity: 0.25,
+            fillOpacity: 0.3,
           },
           "& .MuiMarkElement-root": {
             stroke: color,
-            fill: color,
-            r: 5,
+            fill: "#0A1A20",
+            strokeWidth: 2,
+            r: 4,
           },
+          "& .MuiChartsLegend-root text": {
+            fill: "#6B8C80 !important",
+            fontFamily: "DM Sans, sans-serif !important",
+            fontSize: "12px !important",
+          },
+          backgroundColor: "transparent",
         }}
       >
         <defs>
           <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity={0.5} />
+            <stop offset="0%" stopColor={color} stopOpacity={0.4} />
             <stop offset="100%" stopColor={color} stopOpacity={0} />
           </linearGradient>
         </defs>

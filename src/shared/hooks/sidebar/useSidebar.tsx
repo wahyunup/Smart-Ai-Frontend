@@ -24,6 +24,8 @@ export const useSidebar = () => {
   const [visibleActionProfile, setVisibleActionProfile] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const { decoded } = useAuthStore();
+  console.log(decoded, "decoded");
+  
   const isLogin = decoded.role;
   const companyImage = decoded.logo_s3_path;
   const initAuth = useAuthStore((state) => state.initAuth);
@@ -47,6 +49,9 @@ export const useSidebar = () => {
     remaining_quota_percentage: 0,
     remaining_users_percentage: 0,
   });
+
+  console.log(planStatus);
+  
   const [isloadingScroll, setIsLoadingScroll] = useState(false);
   const [loginUser, setLoginUser] = useState({
     division: "",
@@ -97,7 +102,6 @@ export const useSidebar = () => {
       const roundedUserQuotaPercentage = Math.floor(
         res.remaining_users_percentage
       );
-
       setPlanStatus({
         exp_date: dateExpired,
         cd_exp_plan: countDown,
@@ -105,7 +109,7 @@ export const useSidebar = () => {
         current_question_quota: res.remaining_quota,
         current_users_quota: res.current_users,
         plan_name: res.plan_name,
-        total_doc_quota: res.document_quota,
+        total_doc_quota: res.document_quota > 0 ?  res.document_quota : 0,
         total_question_quota: res.total_quota,
         total_users_quota: res.max_users,
         remaining_documents_percentage: roundedDocQuotaPercentage,

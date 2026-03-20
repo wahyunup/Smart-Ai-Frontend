@@ -27,46 +27,58 @@ export const ChatLogPage = () => {
 
   return (
     <MainLayout>
-      <div className="p-10 flex flex-col gap-10">
-        <h1 className="2xl:text-3xl md:text-2xl font-semibold">
+      <div className="p-10 flex flex-col gap-8">
+        {/* ── Page header ── */}
+        <h1 className="font-syne font-extrabold text-white 2xl:text-3xl md:text-2xl">
           Dashboard Admin Perusahaan
         </h1>
 
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl">Log Chat Perusahaan</h3>
-            <div className="flex gap-5 items-center">
+        <div className="flex flex-col gap-5">
+          <h3 className="font-syne font-bold text-white text-lg">
+            Log Chat Perusahaan
+          </h3>
+
+          {/* Toolbar */}
+          <div className="flex gap-4 items-center">
+            <div className="flex-1 max-w-sm">
               <Input
                 value={value}
                 onchange={(e) => setValue(e.target.value)}
-                variant="secondary"
+                variant="primary"
                 placeholder="Cari (User ID/Keyword)"
                 name="search"
                 type="text"
                 htmlFor="search"
-                icon={<Search color="#2F2F2F" />}
+                icon={<Search size={16} className="text-[#6B8C80]" />}
               />
-              <div className="flex gap-5">
-                {isLoading ? (
-                  <Button
-                    classname="w-50 py-3 flex justify-center items-center gap-2 rounded-xl bg-blue-500"
-                    variant="secondary">
-                    <Icon icon="line-md:loading-loop" width="24" height="24" />
-                  </Button>
-                ) : (
-                  <Button
-                    onclick={exportCsv}
-                    classname="w-50 py-3 flex justify-center items-center gap-2 rounded-xl bg-blue-500"
-                    variant="secondary">
-                    Export CSV <Download size={20} />
-                  </Button>
-                )}
-              </div>
             </div>
+            {isLoading ? (
+              <Button
+                variant="info"
+                classname="px-6 py-3 rounded-[10px] flex items-center gap-2 opacity-75 cursor-not-allowed pointer-events-none"
+              >
+                <Icon icon="line-md:loading-loop" width="18" height="18" />
+                Exporting...
+              </Button>
+            ) : (
+              <Button
+                onclick={exportCsv}
+                variant="info"
+                classname="group px-6 py-3 rounded-[10px] flex items-center gap-2"
+              >
+                Export CSV
+                <Download
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+              </Button>
+            )}
           </div>
 
-          <div className="border border-[#B2B2B2] rounded-2xl overflow-hidden">
-            <TableHeaderList classname="grid bg-[#E3F9E8] grid-cols-6">
+          {/* Table */}
+          <div className="bg-[#0A1A20] border border-[#16FF6E]/[.07] rounded-[20px] overflow-hidden relative">
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+            <TableHeaderList classname="grid grid-cols-6">
               <span>ID</span>
               <span>Tanggal</span>
               <span>Username</span>
@@ -86,24 +98,27 @@ export const ChatLogPage = () => {
               totalPage={totalPage}
               renderItem={(item) => {
                 const uploadedAt = formatDate(item.created_at);
-
                 return (
                   <>
-                    <span className="text-center">{item.id}</span>
-                    <span className="text-center">{uploadedAt}</span>
-                    <span className="text-center">{item.username}</span>
-
+                    <span className="font-dm text-[#6B8C80] text-sm text-center">
+                      {item.id}
+                    </span>
+                    <span className="font-dm text-[#6B8C80] text-sm text-center">
+                      {uploadedAt}
+                    </span>
+                    <span className="font-dm text-[#E8F4F0] text-sm text-center">
+                      {item.username}
+                    </span>
                     <Tooltip label={item.question}>
-                      <span className="inline-block 2xl:w-50 md:w-30 truncate text-start">
+                      <span className="font-dm text-[#6B8C80] text-sm inline-block 2xl:w-48 md:w-28 truncate text-start">
                         {item.question}
                       </span>
                     </Tooltip>
                     <div className="flex justify-center">
-                      <span className="block 2xl:w-60 md:w-30 text-center truncate">
+                      <span className="font-dm text-[#6B8C80] text-sm block 2xl:w-56 md:w-28 text-center truncate">
                         {item.answer}
                       </span>
                     </div>
-                   
                   </>
                 );
               }}

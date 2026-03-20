@@ -21,9 +21,9 @@ export const ResetPasswordPage = () => {
         headingAuth="Reset Kata Sandi"
         subHeadingAuth="Buat kata sandi yang kuat dan beda dari kata sandi lamamu."
         formContent={
-          <div className="md:w-100 w-90 flex flex-col">
+          <div className="md:w-100 w-90 flex flex-col gap-4">
             <Input
-              variant="secondary"
+              variant="primary"
               htmlFor="password"
               label="Kata Sandi Baru"
               labelLayout="block"
@@ -40,7 +40,7 @@ export const ResetPasswordPage = () => {
               }
             />
             <Input
-              variant="secondary"
+              variant="primary"
               htmlFor="passwordConfirm"
               label="Konfirmasi Kata Sandi"
               labelLayout="block"
@@ -59,24 +59,31 @@ export const ResetPasswordPage = () => {
           </div>
         }
         footerContent={
-          <div className="w-80">
+          <div className="md:w-100 w-90 flex flex-col items-center gap-3">
             {isLoading ? (
               <Button
                 variant="primary"
-                classname="py-3 flex justify-center w-full">
-                <Icon
-                  className="text-center"
-                  icon="line-md:loading-loop"
-                  width="24"
-                  height="24"
-                />
+                classname="w-full py-3.5 flex items-center justify-center gap-2.5 opacity-75 cursor-not-allowed pointer-events-none"
+              >
+                <Icon icon="line-md:loading-loop" width="20" height="20" />
+                Memproses...
               </Button>
             ) : (
               <Button
                 onclick={handleSubmitResetPassword}
                 variant="primary"
-                classname="py-3 w-full">
+                classname="group w-full py-3.5 flex items-center justify-center gap-2.5"
+              >
                 Reset Kata Sandi
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Button>
             )}
           </div>

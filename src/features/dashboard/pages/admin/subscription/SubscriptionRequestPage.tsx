@@ -5,64 +5,89 @@ import { useSubscriptionRequest } from "../../../hooks";
 
 export const SubscriptionRequestPage = () => {
   const { dataCompany } = useSubscriptionRequest();
+
   return (
     <MainLayout>
-      <div className="flex flex-col gap-6 items-center mt-5 ">
-        <div className="flex flex-col gap-1 items-center">
-          <h1 className="text-3xl font-semibold">Subcription</h1>
-          <p className="text-sm text-[#666666]">
+      <div className="p-10 flex flex-col gap-8">
+        {/* ── Page header ── */}
+        <div className="text-center flex flex-col gap-2">
+          <h1 className="font-syne font-extrabold text-white text-3xl">
+            Subscription
+          </h1>
+          <p className="font-dm text-[#6B8C80] text-sm">
             Pengajuan Pesanan: Upgrade ke Enterprise Plan
           </p>
         </div>
 
-        <div className="flex gap-5 ">
-          {/* row 1 */}
-          <div className="bg-white border rounded-2xl">
-            <div className="border-b border-gray-100">
-              <h1 className="px-5 py-4 text-2xl">
+        <div className="flex gap-5">
+          {/* ── Row 1: Detail & Kebutuhan ── */}
+          <div
+            className="relative bg-[#0A1A20] border border-[#16FF6E]/[.07]
+                        rounded-[20px] overflow-hidden flex-1"
+          >
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+            <div className="border-b border-[#16FF6E]/[.07] px-6 py-4">
+              <h2 className="font-syne font-bold text-white text-xl">
                 1. Detail Penggunaan & Kebutuhan
-              </h1>
+              </h2>
             </div>
 
-            <div className="p-5 flex flex-col gap-8">
+            <div className="p-6 flex flex-col gap-6">
+              {/* Jumlah karyawan */}
               <div className="flex flex-col gap-2">
                 <Input
-                  label=" Perkiraan Jumlah Karyawan yang Akan Menggunakan Chatbot (Saat
-                  Ini)"
+                  label="Perkiraan Jumlah Karyawan yang Akan Menggunakan Chatbot (Saat Ini)"
                   labelLayout="block"
                   type="number"
                   variant="primary"
-                  classname=""
                 />
-                <p className="text-[#000000A6] text-xs">
+                <p className="font-dm text-[#6B8C80] text-xs">
                   *(Paket Enterprise mendukung pengguna tak terbatas, namun
                   jumlah awal memengaruhi setup kami)
                 </p>
               </div>
 
+              {/* Sistem internal */}
               <div className="flex flex-col gap-2">
-                <p className="font-semibold 2xl:text-md md:text-sm">
+                <p className="font-dm font-medium text-[#6B8C80] text-sm">
                   Perlu Dihubungkan ke Sistem Internal Perusahaan? (Contoh: CRM,
                   Database)
                 </p>
                 <textarea
-                  className="outline-2 rounded-xl p-3 outline-[#48E48954] h-30 placeholder:text-xs placeholder:text-gray-400 text-sm"
+                  className="w-full h-28 px-4 py-3 rounded-[10px]
+                             bg-[#0D1F27] border border-[#16FF6E]/[.10]
+                             font-dm text-[#E8F4F0] text-sm
+                             placeholder:text-[#6B8C80]/60 placeholder:text-xs
+                             outline-none resize-none
+                             focus:border-[#16FF6E]/40
+                             focus:shadow-[0_0_0_3px_rgba(22,255,110,0.07)]
+                             transition-all duration-200"
                   placeholder="Jelaskan kebutuhan Anda. Contoh: Kami ingin data dari Chatbot masuk ke sistem CRM Sales kami / Kami ingin menghubungkannya ke Database internal."
                 />
               </div>
 
+              {/* Fitur khusus */}
               <div className="flex flex-col gap-2">
-                <p className="font-semibold 2xl:text-md md:text-sm">
+                <p className="font-dm font-medium text-[#6B8C80] text-sm">
                   Permintaan Fitur Khusus Lainnya (Contoh: Pelaporan custom,
                   bahasa asing, dll.)
                 </p>
                 <textarea
-                  className="outline-2 rounded-xl outline-[#48E48954] h-30 placeholder:text-xs placeholder:text-gray-400 p-3 text-sm"
+                  className="w-full h-28 px-4 py-3 rounded-[10px]
+                             bg-[#0D1F27] border border-[#16FF6E]/[.10]
+                             font-dm text-[#E8F4F0] text-sm
+                             placeholder:text-[#6B8C80]/60 placeholder:text-xs
+                             outline-none resize-none
+                             focus:border-[#16FF6E]/40
+                             focus:shadow-[0_0_0_3px_rgba(22,255,110,0.07)]
+                             transition-all duration-200"
                   placeholder="Tuliskan permintaan khusus Anda di luar fitur standar. (Opsional)"
                 />
               </div>
+
+              {/* Company info */}
               <div className="flex flex-col gap-3">
-                <div className="flex gap-5">
+                <div className="flex gap-4">
                   <Input
                     variant="disable"
                     value={dataCompany.companyName}
@@ -76,7 +101,7 @@ export const SubscriptionRequestPage = () => {
                     labelLayout="block"
                   />
                 </div>
-                <p className="text-xs text-[#666666] text-center">
+                <p className="font-dm text-xs text-[#6B8C80]/70 text-center">
                   *Jika data ini salah, silakan ubah di halaman Profile
                   Perusahaan sebelum mengajukan pesanan.
                 </p>
@@ -84,56 +109,84 @@ export const SubscriptionRequestPage = () => {
             </div>
           </div>
 
-          {/* row 2 */}
-          <div className="bg-white border rounded-2xl h-fit max-w-[450px]">
-            <div className="border-b ">
-              <h1 className="px-5 text-3xl font-bold py-5 text-[#126F3D]">
+          {/* ── Row 2: Ringkasan ── */}
+          <div
+            className="relative bg-[#0A1A20] border border-[#16FF6E]/[.07]
+                        rounded-[20px] h-fit max-w-[420px] overflow-hidden"
+          >
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#16FF6E]/20 to-transparent" />
+            <div className="border-b border-[#16FF6E]/[.07] px-6 py-4">
+              <h2 className="font-syne font-extrabold text-[#16FF6E] text-2xl">
                 Ringkasan Kostum
-              </h1>
+              </h2>
             </div>
 
-            <div className="p-5 flex flex-col gap-3">
-              <div className="bg-[#FFF06933] rounded-xl border-l-4 border-[#FFE105] p-3 flex flex-col gap-1">
-                <h1 className="text-xl font-semibold">
+            <div className="p-6 flex flex-col gap-4">
+              {/* Pricing notice */}
+              <div
+                className="bg-yellow-400/[.07] border-l-4 border-yellow-400/60
+                            rounded-r-[10px] p-4 flex flex-col gap-1"
+              >
+                <h3 className="font-syne font-bold text-white text-lg">
                   Enterprise Plan: Harga Kustom
-                </h1>
-                <p className="text-xs text-[#2F2F2F]">
+                </h3>
+                <p className="font-dm text-xs text-[#6B8C80]">
                   Harga akan dibuat khusus setelah Tim Kami meninjau kebutuhan
                   integrasi dan skala pengguna Anda.
                 </p>
               </div>
 
-              <div>
-                <h1 className="text-sm">
-                  Paket yang Diminta:{" "}
-                  <span className="font-semibold">Enterprise Plan </span>Akan
-                  Dikonfirmasi
-                </h1>
-              </div>
+              <p className="font-dm text-sm text-[#6B8C80]">
+                Paket yang Diminta:{" "}
+                <span className="text-[#E8F4F0] font-medium">
+                  Enterprise Plan
+                </span>{" "}
+                — Akan Dikonfirmasi
+              </p>
 
-              <div className="flex flex-col gap-2 mt-5">
-                <p className="text-sm">Estimasi Biaya & Kostum</p>
-                <div className="bg-[#FFAC854D] rounded-xl border-l-4 border-[#DB3726] p-3 flex flex-col gap-1">
-                  <h1 className="text-lg font-semibold">
+              {/* Flow notice */}
+              <div className="flex flex-col gap-2 mt-2">
+                <p className="font-dm text-sm text-[#6B8C80]">
+                  Estimasi Biaya & Kostum
+                </p>
+                <div
+                  className="bg-red-400/[.07] border-l-4 border-red-400/60
+                              rounded-r-[10px] p-4 flex flex-col gap-1"
+                >
+                  <h3 className="font-syne font-bold text-white text-base">
                     Penting! Alur Selanjutnya
-                  </h1>
-                  <p className="text-xs text-[#2F2F2F]">
-                    1. Permintaan Anda diteruskan ke Tim Kami. <br />
-                    2. Tim akan menganalisis kebutuhan API. <br />
+                  </h3>
+                  <p className="font-dm text-xs text-[#6B8C80] leading-relaxed">
+                    1. Permintaan Anda diteruskan ke Tim Kami.
+                    <br />
+                    2. Tim akan menganalisis kebutuhan API.
+                    <br />
                     3. Anda akan dihubungi untuk negosiasi & penentuan harga
-                    akhir. <br />
+                    akhir.
+                    <br />
                     4. Invoice akan dibuat setelah harga disepakati.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-col gap-3">
-                <Button variant="secondary" classname="py-3 rounded-2xl">
-                  Kirim Permintaan Harga Khusus
-                </Button>
+              {/* Action buttons */}
+              <div className="mt-4 flex flex-col gap-3">
                 <Button
-                  classname="py-3 rounded-2xl border-red-600"
-                  variant="cancel">
+                  variant="primary"
+                  classname="group py-3 rounded-[10px] flex items-center justify-center gap-2"
+                >
+                  Kirim Permintaan Harga Khusus
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Button>
+                <Button classname="py-3 rounded-[10px]" variant="cancel">
                   Batalkan Pesanan
                 </Button>
               </div>
