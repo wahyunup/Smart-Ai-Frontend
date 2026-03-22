@@ -26,7 +26,7 @@ const SectionHome = () => {
           <span className="absolute inline-flex h-2 w-2 rounded-full bg-[#16FF6E] animate-ping"></span>
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[#16FF6E]"></span>
         </div>
-        AI-Powered Document Intelligence
+        Akses Gratis Selama 7 Hari
       </div>
 
       {/* ── Heading ── */}

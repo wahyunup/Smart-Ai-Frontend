@@ -3,7 +3,7 @@ const steps = [
     num: "01",
     heading: "Upload Dokumen",
     subheading:
-      "Unggah file dari berbagai format — PDF, Word, Excel siap diproses.",
+      "Unggah file dari format PDF",
     icon: (
       <svg
         className="w-7 h-7 text-[#16FF6E]"
