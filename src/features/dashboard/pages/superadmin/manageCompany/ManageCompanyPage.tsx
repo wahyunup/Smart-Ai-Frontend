@@ -50,13 +50,13 @@ export const ManageCompanyPage = () => {
 
           {/* ── Toolbar ── */}
           <div className="flex justify-between items-center mb-5">
-            <Button
+            {/* <Button
               onclick={() => navigate("/superadmin/manage-company/create")}
               variant="primary"
               classname="2xl:w-56 2xl:py-3 md:w-48 md:py-2.5 rounded-[10px] font-dm text-sm"
             >
               + Tambah Perusahaan
-            </Button>
+            </Button> */}
             <div className="2xl:w-96 md:w-72">
               <Input
                 onchange={(e) => handleOnChange(e)}

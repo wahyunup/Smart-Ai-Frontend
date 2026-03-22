@@ -9,7 +9,7 @@ export const useCreateAdminCompany = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isEditPage = location.pathname.startsWith(
-    "/superadmin/manage-admin-company/edit"
+    "/superadmin/manage-company/edit"
   );
 
   const isDetailPage = location.pathname.startsWith(

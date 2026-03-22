@@ -18,83 +18,75 @@ const Superadmin = () => {
       {/* ambient glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-[#16FF6E]/[.03] blur-[60px] rounded-full pointer-events-none" />
 
-      <div className="flex items-center flex-col 2xl:gap-8 md:gap-5 w-full px-3 relative z-10">
+      <div className="flex items-center flex-col 2xl:gap-8 md:gap-5 w-full px-3 relative z-10 h-full">
         {/* Logo */}
-        <div
-          className={`flex ${isOpen ? "justify-start" : "justify-center"} w-full`}
-        >
+        <img
+          className="2xl:size-12 md:size-9 drop-shadow-[0_0_8px_rgba(22,255,110,0.15)]"
+          src={logo}
+          alt="image-logo"
+        />
+
+        {/* Mascot */}
+        <div className="rounded-xl overflow-hidden border border-[#16FF6E]/10 bg-[#0A1A20] p-1">
           <img
-            className="2xl:size-12 md:size-9 drop-shadow-[0_0_8px_rgba(22,255,110,0.15)]"
-            src={logo}
-            alt=""
+            className="2xl:w-20 md:w-14 h-fit object-contain"
+            src={mascot}
+            alt="mascot"
           />
         </div>
 
-        {/* Mascot */}
-        <div className="flex flex-col gap-2 items-center">
-          <div className="rounded-2xl overflow-hidden border border-[#16FF6E]/10 bg-[#0A1A20]">
-            <img className="2xl:size-20 md:size-14" src={mascot} alt="" />
-          </div>
-          {isOpen && (
-            <span className="font-dm text-[#6B8C80] 2xl:text-sm md:text-xs">
-              Super Admin
-            </span>
-          )}
-        </div>
-
         {/* Nav items */}
-        <div
-          className={`flex flex-col ${isOpen ? "items-start" : "items-center"} gap-5 w-full`}
-        >
-          {Object.entries(
-            navListSuperAdmin.reduce(
-              (acc, item) => {
-                if (!acc[item.category]) acc[item.category] = [];
-                acc[item.category].push(item);
-                return acc;
-              },
-              {} as Record<string, typeof navListSuperAdmin>,
-            ),
-          ).map(([category, items]) => (
-            <div key={category} className="flex flex-col gap-1 w-full">
-              {isOpen ? (
-                <p className="font-dm text-[#6B8C80]/50 2xl:text-xs md:text-[10px] uppercase tracking-wider mb-1 px-3">
-                  {category}
-                </p>
-              ) : (
-                <div className="h-px w-full bg-[#16FF6E]/[.07]" />
-              )}
-              {items.map((item, i) => (
-                <Button
-                  key={i}
-                  variant="link"
-                  classname={`flex w-full items-center gap-3 transition-all duration-200
-                              2xl:py-2.5 2xl:px-4 md:py-2 md:px-3
-                              rounded-[10px] justify-start
-                              font-dm 2xl:text-sm md:text-xs font-medium
-                              ${
-                                location.pathname.startsWith(item.link)
-                                  ? "bg-[#16FF6E]/10 text-[#16FF6E] border border-[#16FF6E]/20"
-                                  : "text-[#6B8C80] hover:bg-[#16FF6E]/[.05] hover:text-[#16FF6E]"
-                              }`}
-                  onclick={() => navigate(item.link)}
-                >
-                  {item.icon}
-                  <span className={`${isOpen ? "" : "hidden"}`}>
-                    {item.lable}
-                  </span>
-                </Button>
-              ))}
-            </div>
-          ))}
+        <div className="flex flex-col items-center 2xl:gap-3 md:gap-1 w-full justify-between h-full">
+          <div className="flex flex-col items-center 2xl:gap-3 md:gap-1 w-full">
+            {Object.entries(
+              navListSuperAdmin.reduce(
+                (acc, item) => {
+                  if (!acc[item.category]) acc[item.category] = [];
+                  acc[item.category].push(item);
+                  return acc;
+                },
+                {} as Record<string, typeof navListSuperAdmin>,
+              ),
+            ).map(([category, items]) => (
+              <div key={category} className="flex flex-col gap-4 w-full">
+                {isOpen ? (
+                  <p className="font-dm text-[#6B8C80]/50 2xl:text-xs md:text-[10px] uppercase tracking-wider mb-1 px-3">
+                    {category}
+                  </p>
+                ) : (
+                  <div className="h-px w-full bg-[#16FF6E]/[.07] my-2" />
+                )}
+                {items.map((item, i) => (
+                  <Button
+                    key={i}
+                    variant="nav"
+                    classname={`flex items-center gap-3 transition-all duration-200
+                                2xl:py-4 2xl:px-4 md:py-2 md:px-3 rounded-2xl justify-center w-full
+                                font-dm font-medium 2xl:text-sm md:text-xs
+                                ${
+                                  location.pathname.startsWith(item.link)
+                                    ? "bg-[#16FF6E]/10 text-[#16FF6E] border border-[#16FF6E]/20"
+                                    : "text-[#6B8C80] hover:bg-[#16FF6E]/[.05] hover:text-[#16FF6E]"
+                                }`}
+                    onclick={() => navigate(item.link)}
+                  >
+                    {item.icon}
+                    <span className={`${isOpen ? "" : "hidden"}`}>
+                      {item.lable}
+                    </span>
+                  </Button>
+                ))}
+              </div>
+            ))}
+          </div>
 
           {/* Logout */}
           <Button
-            variant="link"
+            variant="nav"
             classname="flex items-center gap-3 font-dm text-red-400
-                       hover:bg-red-400/[.07] hover:text-red-300
-                       2xl:py-2.5 2xl:px-4 md:py-2 md:px-3
-                       rounded-[10px] w-full transition-all duration-200"
+                       hover:bg-red-400/[.07] hover:text-red-300 hover:outline-red-400
+                       2xl:py-4 2xl:px-4 md:py-2 md:px-3
+                       rounded-[10px] w-full justify-center transition-all duration-200 mt-2"
             onclick={logout}
           >
             <LogOut className="2xl:size-[18px] md:size-[16px]" />
